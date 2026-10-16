@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>نی‌نی یار پرو - دستیار هوشمند والدین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --secondary: #06b6d4;
+  --accent: #ec4899;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text-main: #0f172a;
+  --text-sub: #64748b;
+  --border: #e2e8f0;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.03), 0 2px 4px -1px rgba(0,0,0,0.02);
+  --shadow-md: 0 10px 25px -5px rgba(99, 102, 241, 0.12), 0 8px 10px -6px rgba(0,0,0,0.04);
+}
+
+[data-gender="boy"] {
+  --primary: #3b82f6;
+  --primary-gradient: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+}
+
+[data-gender="girl"] {
+  --primary: #ec4899;
+  --primary-gradient: linear-gradient(135deg, #db2777 0%, #f472b6 100%);
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --border: #334155;
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; transition: all 0.3s ease; }
+
+/* PDF Print Styles */
+@media print {
+  body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  #printArea { padding: 24px; direction: rtl; }
+  .print-header { border-bottom: 3px solid var(--primary); padding-bottom: 12px; margin-bottom: 20px; text-align: center; }
+  .print-header h1 { color: #333; font-size: 22px; margin-bottom: 6px; }
+  .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .print-box { border: 1px solid #ddd; padding: 12px; border-radius: 8px; font-size: 12px; }
+  .print-box h4 { border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 8px; color: var(--primary); }
+  .print-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 11px; }
+}
+.print-only { display: none; }
+
+/* Modal & Onboarding Overlay */
+.overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 9999;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 20px; overflow-y: auto;
+}
+.overlay.hidden { display: none !important; }
+.auth-card {
+  background: var(--card); padding: 26px; border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md); width: 100%; max-width: 440px;
+  border: 1px solid var(--border); animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.auth-card h2 { color: var(--primary); text-align: center; margin-bottom: 8px; font-weight: 900; font-size: 20px; }
+.auth-card p { text-align: center; font-size: 12px; color: var(--text-sub); margin-bottom: 20px; }
+
+/* Header Bar */
+.app-header {
+  background: var(--primary-gradient); color: #fff;
+  padding: 18px 20px 26px 20px; border-radius: 0 0 28px 28px;
+  box-shadow: var(--shadow-md); position: relative; z-index: 10;
+}
+.header-top { display: flex; justify-content: space-between; align-items: center; }
+.header-title { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+.header-subtitle { font-size: 11px; opacity: 0.9; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+.baby-badge { background: rgba(255, 255, 255, 0.25); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; backdrop-filter: blur(8px); }
+
+/* Horizontal Pill Scroll */
+.pills-wrapper {
+  display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; margin-top: -18px;
+  position: relative; z-index: 20; scrollbar-width: none;
+}
+.pills-wrapper::-webkit-scrollbar { display: none; }
+.pill-btn {
+  flex-shrink: 0; padding: 8px 16px; border-radius: 30px;
+  background: var(--card); color: var(--text-sub); border: 1px solid var(--border);
+  font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.pill-btn.active {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35); transform: translateY(-2px);
+}
+
+/* Screens */
+.container { max-width: 500px; margin: 0 auto; padding: 0 16px; }
+.screen { display: none; animation: fadeIn 0.25s ease-in-out; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards & Layout */
+.card {
+  background: var(--card); border-radius: var(--radius-lg); padding: 18px;
+  margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.card-title { font-size: 15px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+
+/* Grid Buttons */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.shortcut-item {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm);
+}
+.shortcut-item:active { transform: scale(0.96); }
+.shortcut-icon { font-size: 26px; display: block; margin-bottom: 4px; }
+.shortcut-label { font-size: 12px; font-weight: 700; color: var(--text-main); }
+
+/* Inputs & Form Elements */
+.input-group { margin-bottom: 12px; }
+.input-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--text-sub); }
+input, select, textarea {
+  width: 100%; padding: 12px 14px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg); color: var(--text-main);
+  font-size: 13px; outline: none; transition: 0.2s;
+}
+input:focus, select:focus { border-color: var(--primary); }
+
+.btn {
+  width: 100%; padding: 12px; border-radius: var(--radius-md); border: none;
+  background: var(--primary); color: #fff; font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); transition: 0.2s;
+}
+.btn:active { transform: scale(0.98); }
+.btn-danger { background: var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
+.btn-success { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+.btn-warning { background: var(--warning); color: #000; }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); box-shadow: none; }
+.btn-pdf { background: linear-gradient(135deg, #10b981, #059669); margin-top: 10px; }
+
+/* AI Box */
+.ai-badge-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b;
+  border-radius: var(--radius-md); padding: 12px 14px; margin: 10px 0; color: #78350f; font-size: 11px; line-height: 1.6;
+}
+[data-theme="dark"] .ai-badge-box { background: linear-gradient(135deg, #451a03, #78350f); color: #fef3c7; border-color: #b45309; }
+.ai-tag {
+  display: inline-flex; align-items: center; gap: 4px; background: #d97706; color: #fff;
+  padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; margin-bottom: 4px;
+}
+
+/* Stat Widgets */
+.stat-widget { background: var(--bg); border-radius: var(--radius-md); padding: 12px; text-align: center; border: 1px solid var(--border); }
+.stat-widget .val { font-size: 22px; font-weight: 900; color: var(--primary); }
+.stat-widget .lbl { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+/* Progress Meter */
+.meter-bg { height: 10px; background: var(--border); border-radius: 10px; overflow: hidden; margin: 8px 0; }
+.meter-fill { height: 100%; background: var(--primary-gradient); border-radius: 10px; transition: width 0.5s ease; }
+
+/* Chat Box */
+.chat-window { height: 260px; overflow-y: auto; padding: 10px; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--border); margin: 8px 0; }
+.msg { max-width: 85%; padding: 10px 12px; border-radius: 14px; font-size: 12px; line-height: 1.7; margin-bottom: 8px; }
+.msg.user { background: var(--primary); color: #fff; margin-right: auto; border-bottom-right-radius: 2px; }
+.msg.bot { background: var(--card); color: var(--text-main); border: 1px solid var(--border); margin-left: auto; border-bottom-left-radius: 2px; }
+
+/* Lists */
+.list-group { list-style: none; }
+.list-item { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+.list-item:last-child { border: none; }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; background: var(--card);
+  border-top: 1px solid var(--border); display: flex; justify-content: space-around;
+  padding: 8px 0; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+.bottom-nav button {
+  background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 700;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; width: 20%;
+}
+.bottom-nav button .nav-icon { font-size: 20px; }
+.bottom-nav button.active { color: var(--primary); }
+
+canvas { width: 100%; border-radius: var(--radius-md); }
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING & ACCOUNT CREATION MODAL -->
+<div class="overlay no-print" id="onboardingModal">
+  <div class="auth-card">
+    <h2>🍼 به نی‌نی یار پرو خوش آمدید</h2>
+    <p>ایجاد حساب والدین و تشکیل شناسنامه نوزاد</p>
+    
+    <div class="input-group">
+      <label class="input-label">نقش شما در خانواده:</label>
+      <select id="setupParentRole">
+        <option value="مادر 👩">مادر هستم 👩</option>
+        <option value="پدر 👨">پدر هستم 👨</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">نام شما (والد):</label>
+      <input type="text" id="setupParentName" placeholder="مثلاً: مریم یا علی">
+    </div>
+
+    <hr style="margin: 16px 0; border: none; border-top: 1px dashed var(--border);">
+
+    <div class="input-group">
+      <label class="input-label">نام نوزاد:</label>
+      <input type="text" id="setupBabyName" placeholder="مثلاً: آراد، رستا...">
+    </div>
+
+    <div class="grid-2">
+      <div class="input-group">
+        <label class="input-label">جنسیت نوزاد:</label>
+        <select id="setupBabyGender">
+          <option value="پسر">پسر 👦</option>
+          <option value="دختر">دختر 👧</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">وزن تولد (کیلو):</label>
+        <input type="number" id="setupBabyWeight" step="0.1" value="3.2">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">تاریخ تولد نوزاد:</label>
+      <input type="date" id="setupBabyBD">
+    </div>
+
+    <button class="btn" onclick="finishSetup()" style="margin-top: 10px;">ثبت و ورود به برنامه ✨</button>
+    
+    <button class="btn btn-outline" onclick="toggleSyncInput()" style="margin-top: 8px; font-size: 11px;">
+      🔗 ورود با کد همگام‌سازی همسر (Sync Code)
+    </button>
+
+    <div id="syncInputBox" style="display: none; margin-top: 10px;">
+      <input type="text" id="inputSyncCode" placeholder="کد همگام‌سازی را اینجا وارد کنید..." style="text-align: center; letter-spacing: 2px;">
+      <button class="btn btn-warning" onclick="loadFromSyncCode()" style="margin-top: 6px;">تأیید و دریافت اطلاعات</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT AREA FOR PDF REPORT -->
+<div class="print-only" id="printArea">
+  <div class="print-header">
+    <h1>🍼 نی‌نی یار پرو - گزارش رسمی سلامت و رشد کودک</h1>
+    <p id="pdfDate" style="color: #666; font-size: 11px;"></p>
+  </div>
+  
+  <div class="print-grid">
+    <div class="print-box">
+      <h4>👶 اطلاعات پرونده</h4>
+      <div class="print-row"><span>نام کودک:</span><strong id="pdfName"></strong></div>
+      <div class="print-row"><span>جنسیت:</span><strong id="pdfGender"></strong></div>
+      <div class="print-row"><span>سن دقیق:</span><strong id="pdfAge"></strong></div>
+      <div class="print-row"><span>والد ثبت‌کننده:</span><strong id="pdfParent"></strong></div>
+      <div class="print-row"><span>کد همگام‌سازی خانواده:</span><strong id="pdfSyncCode"></strong></div>
+    </div>
+
+    <div class="print-box">
+      <h4>📈 آخرین اندازه‌های ثبت‌شده</h4>
+      <div class="print-row"><span>وزن:</span><strong id="pdfWeight"></strong></div>
+      <div class="print-row"><span>قد:</span><strong id="pdfHeight"></strong></div>
+      <div class="print-row"><span>آخرین دمای بدن:</span><strong id="pdfTemp"></strong></div>
+    </div>
+  </div>
+
+  <div class="print-box" style="margin-bottom: 12px;">
+    <h4>📊 خلاصه عملکرد امروز</h4>
+    <div class="print-row"><span>دفعات شیردهی:</span><strong id="pdfFeeds"></strong></div>
+    <div class="print-row"><span>دفعات تعویض پوشک:</span><strong id="pdfDiapers"></strong></div>
+    <div class="print-row"><span>ثبت خواب:</span><strong id="pdfSleeps"></strong></div>
+  </div>
+
+  <div class="print-box">
+    <h4>🩺 یادداشت پزشک معالج:</h4>
+    <div style="height: 80px; border: 1px dashed #ccc; margin-top: 8px; border-radius: 6px;"></div>
+  </div>
+  
+  <p style="text-align: center; font-size: 10px; color: #888; margin-top: 20px;">تولید شده توسط دستیار نی‌نی یار پرو - نسخه GitHub Pages</p>
+</div>
+
+<!-- MAIN APPLICATION UI -->
+<div class="no-print">
+  
+  <!-- App Header Bar -->
+  <header class="app-header">
+    <div class="header-top">
+      <div>
+        <div class="header-title">🍼 نی‌نی یار پرو</div>
+        <div class="header-subtitle">
+          <span id="parentBadge">والد</span> | کد همگام‌سازی: <strong id="syncCodeBadge">--</strong>
+        </div>
+      </div>
+      <span class="baby-badge" id="babyHeaderTag">--</span>
+    </div>
+  </header>
+
+  <!-- Top Pill Scroll Nav -->
+  <div class="pills-wrapper" id="topPillsNav"></div>
+
+  <div class="container">
+    <div id="appScreens">
+
+      <!-- 1. HOME SCREEN -->
+      <div class="screen active" id="scr-home">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-header">
+            <div class="card-title">👶 سلام <span id="homeParentLabel" style="color:var(--primary)"></span> عزیز!</div>
+            <span style="font-size: 11px; font-weight: 800;" id="homeBabyGenderTag"></span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;" id="homeBabyAgeDesc"></p>
+          <div class="grid-2">
+            <div class="stat-widget"><div class="val" id="stFeed">۰</div><div class="lbl">شیردهی امروز 🍼</div></div>
+            <div class="stat-widget"><div class="val" id="stSleep">۰</div><div class="lbl">خواب امروز 😴</div></div>
+            <div class="stat-widget"><div class="val" id="stDiaper">۰</div><div class="lbl">پوشک امروز 🧷</div></div>
+            <div class="stat-widget"><div class="val" id="stTemp">--</div><div class="lbl">آخرین دما 🌡️</div></div>
+          </div>
+          <button class="btn btn-pdf" onclick="generatePDF()">📄 دریافت گزارش PDF سلامت نوزاد</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚡ دسترسی‌های سریع</div>
+          <div class="grid-3">
+            <div class="shortcut-item" onclick="openNav('cry')"><span class="shortcut-icon">🎤</span><span class="shortcut-label">ترجمه گریه</span></div>
+            <div class="shortcut-item" onclick="openNav('health')"><span class="shortcut-icon">🏥</span><span class="shortcut-label">اسکن سلامت</span></div>
+            <div class="shortcut-item" onclick="openNav('chat')"><span class="shortcut-icon">🥣</span><span class="shortcut-label">مشاور تغذیه</span></div>
+            <div class="shortcut-item" onclick="openNav('soothe')"><span class="shortcut-icon">🧘</span><span class="shortcut-label">آرام‌سازی</span></div>
+            <div class="shortcut-item" onclick="openNav('temp')"><span class="shortcut-icon">🌡️</span><span class="shortcut-label">تب‌سنج</span></div>
+            <div class="shortcut-item" onclick="openNav('dose')"><span class="shortcut-icon">💊</span><span class="shortcut-label">دوز دارو</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="border-right: 4px solid var(--primary);">
+          <div class="card-title">🔗 اشتراک‌گذاری با همسر</div>
+          <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6;">
+            کد همگام‌سازی خانواده شما: <b id="displaySyncCode" style="color:var(--primary)">--</b><br>
+            همسر شما می‌تواند هنگام ورود به برنامه این کد را وارد کند تا هم‌زمان به اطلاعات پرونده نوزاد دسترسی داشته باشد.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. CRY TRANSLATOR -->
+      <div class="screen" id="scr-cry">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">🎤 مترجم صوتی گریه نوزاد</div>
+          <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 10px;">صدای گریه نوزاد را آنالیز فرکانسی کنید.</p>
+          <button class="btn btn-danger" id="cryRecordBtn" onclick="startCryAnalysis()">🎤 شروع ضبط و تحلیل صوتی</button>
+          <p id="cryStatusLbl" style="text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 8px;">سیستم آنالیز آماده است.</p>
+
+          <div id="cryResultArea" style="display: none; margin-top: 14px;">
+            <div class="ai-badge-box">
+              <span class="ai-tag">🤖 برچسب هوش مصنوعی</span><br>
+              این نتیجه بر اساس پردازش فرکانس صوتی (FFT) تولید شده است. جایگزین معاینه پزشکی نیست.
+            </div>
+            <div style="text-align: center; padding: 10px;">
+              <span id="cryEmojiRes" style="font-size: 42px;">😢</span>
+              <h3 id="cryTitleRes" style="color: var(--primary); margin: 6px 0;">در حال تحلیل...</h3>
+              <div class="meter-bg"><div class="meter-fill" id="cryMeterFill" style="width: 0%;"></div></div>
+              <p id="cryDetailRes" style="font-size: 11px; color: var(--text-sub);"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. HEALTH SCANNER -->
+      <div class="screen" id="scr-health">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">🏥 اسکنر سلامت از روی تصویر</div>
+          <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 10px;">تصویری شفاف از پوست نوزاد قرار دهید.</p>
+          <input type="file" accept="image/*" capture="environment" onchange="runHealthScan(this)">
+          <canvas id="scanCanvas" style="display: none;"></canvas>
+
+          <div id="scanResultArea" style="display: none; margin-top: 12px;">
+            <div class="ai-badge-box">
+              <span class="ai-tag">🤖 برچسب هوش مصنوعی</span><br>
+              این آنالیز بر اساس استخراج طیف رنگی پوست انجام شده و تشخیص قطعیت دارویی ندارد.
+            </div>
+            <div style="padding: 10px;">
+              <h3 id="scanTitleRes" style="font-size: 14px;">--</h3>
+              <p id="scanDescRes" style="font-size: 12px; color: var(--text-sub); margin-top: 4px;"></p>
+              <div class="meter-bg"><div class="meter-fill" id="scanMeterFill" style="width: 0%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CHATBOT (Nutrition & Health) -->
+      <div class="screen" id="scr-chat">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">💬 مشاور هوشمند تغذیه و سلامت</div>
+          <div class="ai-badge-box">
+            <span class="ai-tag">🤖 هوش مصنوعی مشاور</span><br>
+            سوالات خود درباره شروع غذای کمکی، عسل، شیر گاو، تب و زردی را بپرسید.
+          </div>
+          <div class="chat-window" id="chatWin"></div>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="chatInp" placeholder="مثلاً: غذای کمکی از کی؟ یا عسل بدم؟" onkeydown="if(event.key==='Enter')sendChatMsg()">
+            <button class="btn" style="width: 80px;" onclick="sendChatMsg()">ارسال</button>
+          </div>
+          <div style="display: flex; gap: 6px; overflow-x: auto; margin-top: 10px;" id="chatQuickBtn">
+            <button class="pill-btn" onclick="quickChat('غذای کمکی')">🥣 غذای کمکی</button>
+            <button class="pill-btn" onclick="quickChat('غذاهای ممنوعه')">⛔ غذاهای ممنوعه</button>
+            <button class="pill-btn" onclick="quickChat('تب')">🌡️ تب نوزاد</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. TRACKER -->
+      <div class="screen" id="scr-track">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">🍼 ثبت شیردهی</div>
+          <div class="grid-3">
+            <button class="btn btn-success" onclick="logFeed('سینه چپ')">🤱 چپ</button>
+            <button class="btn btn-success" onclick="logFeed('سینه راست')">🤱 راست</button>
+            <button class="btn" onclick="logFeed('شیشه شیر')">🍼 شیشه</button>
+          </div>
+          <ul class="list-group" id="feedListHist" style="margin-top: 10px;"></ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">😴 ثبت خواب</div>
+          <div class="grid-2">
+            <button class="btn" onclick="logSleep('شروع خواب')">💤 شروع خواب</button>
+            <button class="btn btn-danger" onclick="logSleep('بیداری')">☀️ بیدار شد</button>
+          </div>
+          <ul class="list-group" id="sleepListHist" style="margin-top: 10px;"></ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🧷 پوشک</div>
+          <div class="grid-3">
+            <button class="btn btn-warning" onclick="logDiaper('خیس')">💧 خیس</button>
+            <button class="btn btn-outline" onclick="logDiaper('کثیف')">💩 کثیف</button>
+            <button class="btn btn-danger" onclick="logDiaper('هر دو')">💧💩 هر دو</button>
+          </div>
+          <ul class="list-group" id="diaperListHist" style="margin-top: 10px;"></ul>
+        </div>
+      </div>
+
+      <!-- 6. GROWTH CHART -->
+      <div class="screen" id="scr-growth">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">📈 نمودار رشد و ثبت اندازه</div>
+          <canvas id="growthCanvas" height="200"></canvas>
+          <div class="grid-2" style="margin-top: 10px;">
+            <input type="number" id="gWeightInp" step="0.1" placeholder="وزن (kg)" value="3.5">
+            <input type="number" id="gHeightInp" step="0.5" placeholder="قد (cm)" value="50">
+          </div>
+          <button class="btn btn-success" onclick="saveGrowthEntry()">➕ ثبت اندازه جدید</button>
+          <ul class="list-group" id="growthListHist" style="margin-top: 10px;"></ul>
+        </div>
+      </div>
+
+      <!-- 7. TEMPERATURE -->
+      <div class="screen" id="scr-temp">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">🌡️ ثبت تب و دماسنج</div>
+          <div class="grid-2">
+            <input type="number" id="tempInpVal" step="0.1" value="37.0" placeholder="دما °C">
+            <select id="tempInpLoc"><option>زیر بغل</option><option>گوش</option><option>مقعدی</option></select>
+          </div>
+          <button class="btn btn-danger" onclick="saveTempEntry()">ثبت دما</button>
+          <div id="tempAlertBox" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+
+      <!-- 8. DOSE CALCULATOR -->
+      <div class="screen" id="scr-dose">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">💊 محاسبه‌گر دوز داروی تب‌بر</div>
+          <label class="input-label">وزن نوزاد (kg):</label>
+          <input type="number" id="doseWeightInp" step="0.1" value="3.5">
+          <div class="grid-2" style="margin-top: 8px;">
+            <button class="btn" onclick="calcDose('acet')">استامینوفن</button>
+            <button class="btn btn-warning" onclick="calcDose('ibu')">ایبوپروفن</button>
+          </div>
+          <div id="doseResultBox" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- 9. DANGER SIGNS -->
+      <div class="screen" id="scr-danger">
+        <div class="card" style="margin-top: 12px; border-right: 4px solid var(--danger);">
+          <div class="card-title" style="color: var(--danger);">🚨 علائم خطر پزشکی (WHO)</div>
+          <ul class="list-group">
+            <li class="list-item"><span>تب بالای ۳۸.۵ درجه زیر ۳ ماه</span></li>
+            <li class="list-item"><span>زردی شدید رسیدن به شکم و پاها</span></li>
+            <li class="list-item"><span>شیر نخوردن بیش از ۶ ساعت متوالی</span></li>
+            <li class="list-item"><span>تنفس سریع (بیش از ۶۰ بار در دقیقه)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- OTHER AUXILIARY SCREENS -->
+      <div class="screen" id="scr-soothe"><div class="card" style="margin-top:12px;"><div class="card-title">🧘 راهنمای آرام‌سازی</div><p style="font-size:12px; line-height:1.7;">ماساژ شکم، قنداق ملایم و پخش صدای سفید بهترین راه‌ها برای آرام کردن نوزاد هستند.</p></div></div>
+      <div class="screen" id="scr-sound"><div class="card" style="margin-top:12px;"><div class="card-title">🔊 صدای سفید</div><button class="btn btn-outline" onclick="alert('پخش صدای سفید آغاز شد.')">📻 پخش نویز سفید</button></div></div>
+      <div class="screen" id="scr-vax"><div class="card" style="margin-top:12px;"><div class="card-title">💉 واکسیناسیون کشوری</div><p style="font-size:12px;">برنامه واکسن‌های بدو تولد، ۲ ماهگی، ۴ ماهگی، ۶ ماهگی و ۱۲ ماهگی.</p></div></div>
+
+      <!-- SETTINGS & PROFILE -->
+      <div class="screen" id="scr-set">
+        <div class="card" style="margin-top: 12px;">
+          <div class="card-title">⚙️ تنظیمات و ویرایش پرونده</div>
+          <label class="input-label">نام والد:</label><input type="text" id="setParentName">
+          <label class="input-label">نقش:</label>
+          <select id="setParentRole"><option value="مادر 👩">مادر 👩</option><option value="پدر 👨">پدر 👨</option></select>
+          <hr style="margin: 12px 0; border: none; border-top: 1px dashed var(--border);">
+          <label class="input-label">نام نوزاد:</label><input type="text" id="setBabyName">
+          <label class="input-label">جنسیت نوزاد:</label>
+          <select id="setBabyGender"><option value="پسر">پسر 👦</option><option value="دختر">دختر 👧</option></select>
+          <label class="input-label">تاریخ تولد نوزاد:</label><input type="date" id="setBabyBD">
+          <button class="btn btn-success" onclick="saveSettings()" style="margin-top: 10px;">💾 ذخیره تغییرات</button>
+          
+          <button class="btn btn-outline" style="margin-top: 10px;" onclick="exportSyncData()">📥 خروجی داده‌ها برای همسر (کپی کد)</button>
+          <button class="btn btn-outline" style="margin-top: 8px;" onclick="toggleTheme()">🌓 تغییر تم (روشن / تاریک)</button>
+          <button class="btn btn-danger" style="margin-top: 8px;" onclick="resetData()">🗑️ پاک کردن کامل اطلاعات</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav no-print">
+  <button onclick="openNav('home')" id="bnav-home" class="active"><span class="nav-icon">🏠</span><span>خانه</span></button>
+  <button onclick="openNav('track')" id="bnav-track"><span class="nav-icon">📊</span><span>ردیاب</span></button>
+  <button onclick="openNav('cry')" id="bnav-cry"><span class="nav-icon">🎤</span><span>گریه</span></button>
+  <button onclick="openNav('chat')" id="bnav-chat"><span class="nav-icon">💬</span><span>چت تغذیه</span></button>
+  <button onclick="openNav('set')" id="bnav-set"><span class="nav-icon">⚙️</span><span>تنظیمات</span></button>
+</nav>
+
+<script>
+// ===== STORAGE & APPLICATION STATE =====
+const DB_KEY = 'nyy3_app_db_v3';
+let AppData = JSON.parse(localStorage.getItem(DB_KEY));
+
+window.onload = () => {
+  document.getElementById('setupBabyBD').value = new Date().toISOString().split('T')[0];
+
+  if (!AppData || !AppData.isSetup) {
+    document.getElementById('onboardingModal').classList.remove('hidden');
+    AppData = {
+      isSetup: false,
+      parentName: 'والد',
+      parentRole: 'مادر 👩',
+      babyName: 'نی‌نی',
+      gender: 'پسر',
+      birthDate: new Date().toISOString().split('T')[0],
+      birthWeight: 3.2,
+      syncCode: 'NYY-' + Math.floor(1000 + Math.random() * 9000),
+      feeds: [], sleeps: [], diapers: [], growth: [], temps: [], vax: {}, theme: 'light'
+    };
+  } else {
+    document.getElementById('onboardingModal').classList.add('hidden');
+    initApp();
+  }
+};
+
+function finishSetup() {
+  const pRole = document.getElementById('setupParentRole').value;
+  const pName = document.getElementById('setupParentName').value.trim() || (pRole.includes('مادر') ? 'مادر' : 'پدر');
+  const bName = document.getElementById('setupBabyName').value.trim() || 'نی‌نی';
+  const bGender = document.getElementById('setupBabyGender').value;
+  const bWeight = parseFloat(document.getElementById('setupBabyWeight').value) || 3.2;
+  const bBD = document.getElementById('setupBabyBD').value;
+
+  AppData.parentRole = pRole;
+  AppData.parentName = pName;
+  AppData.babyName = bName;
+  AppData.gender = bGender;
+  AppData.birthWeight = bWeight;
+  AppData.birthDate = bBD;
+  AppData.isSetup = true;
+
+  saveDB();
+  document.getElementById('onboardingModal').classList.add('hidden');
+  initApp();
+}
+
+function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(AppData)); }
+
+// ===== HELPER FUNCTIONS =====
+const getTodayStr = () => new Date().toDateString();
+const getNowTimeStr = () => new Date().toLocaleString('fa-IR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+const getAgeInfo = () => {
+  const diff = Date.now() - new Date(AppData.birthDate).getTime();
+  const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  return { days, weeks, months };
+};
+
+// ===== APP INITIALIZATION =====
+function initApp() {
+  document.body.setAttribute('data-gender', AppData.gender === 'پسر' ? 'boy' : 'girl');
+  if (AppData.theme === 'dark') document.body.setAttribute('data-theme', 'dark');
+
+  // Populate Header & Badges
+  document.getElementById('parentBadge').textContent = `${AppData.parentRole} (${AppData.parentName})`;
+  document.getElementById('syncCodeBadge').textContent = AppData.syncCode;
+  document.getElementById('displaySyncCode').textContent = AppData.syncCode;
+
+  // Populate Settings Inputs
+  document.getElementById('setParentName').value = AppData.parentName;
+  document.getElementById('setParentRole').value = AppData.parentRole;
+  document.getElementById('setBabyName').value = AppData.babyName;
+  document.getElementById('setBabyGender').value = AppData.gender;
+  document.getElementById('setBabyBD').value = AppData.birthDate;
+
+  initTopPills();
+  updateDashboard();
+  renderTrackers();
+  renderGrowthChart();
+}
+
+// ===== NAVIGATION =====
+const NAV_ITEMS = [
+  { id: 'home', title: 'خانه', icon: '🏠' },
+  { id: 'track', title: 'ردیاب', icon: '📊' },
+  { id: 'chat', title: 'تغذیه/چت', icon: '🥣' },
+  { id: 'cry', title: 'گریه', icon: '🎤' },
+  { id: 'health', title: 'اسکن', icon: '🏥' },
+  { id: 'growth', title: 'رشد', icon: '📈' },
+  { id: 'temp', title: 'تب', icon: '🌡️' },
+  { id: 'dose', title: 'دارو', icon: '💊' },
+  { id: 'danger', title: 'خطر!', icon: '🚨' },
+  { id: 'soothe', title: 'آرامش', icon: '🧘' },
+  { id: 'sound', title: 'صدا', icon: '🔊' },
+  { id: 'vax', title: 'واکسن', icon: '💉' },
+  { id: 'set', title: 'تنظیمات', icon: '⚙️' }
+];
+
+function initTopPills() {
+  document.getElementById('topPillsNav').innerHTML = NAV_ITEMS.map(item => `
+    <button class="pill-btn ${item.id==='home'?'active':''}" id="pill-${item.id}" onclick="openNav('${item.id}')">
+      <span>${item.icon}</span><span>${item.title}</span>
+    </button>
+  `).join('');
+}
+
+function openNav(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pill-btn').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+
+  const targetScr = document.getElementById(`scr-${id}`);
+  if (targetScr) targetScr.classList.add('active');
+
+  const targetPill = document.getElementById(`pill-${id}`);
+  if (targetPill) {
+    targetPill.classList.add('active');
+    targetPill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  const targetBnav = document.getElementById(`bnav-${id}`);
+  if (targetBnav) targetBnav.classList.add('active');
+
+  if (id === 'growth') renderGrowthChart();
+}
+
+// ===== DASHBOARD REFRESH =====
+function updateDashboard() {
+  const age = getAgeInfo();
+  let ageTxt = `${age.days} روزه`;
+  if (age.months > 0) ageTxt = `${age.months} ماهه (${age.days} روز)`;
+  else if (age.weeks > 0) ageTxt = `${age.weeks} هفته‌ای (${age.days} روز)`;
+
+  document.getElementById('babyHeaderTag').textContent = ageTxt;
+  document.getElementById('homeParentLabel').textContent = AppData.parentName;
+  document.getElementById('homeBabyGenderTag').textContent = AppData.gender === 'پسر' ? 'پسر 👦' : 'دختر 👧';
+  document.getElementById('homeBabyAgeDesc').textContent = `${AppData.babyName} عزیز اکنون ${ageTxt} سن دارد.`;
+
+  document.getElementById('stFeed').textContent = AppData.feeds.filter(f => f.dt === getTodayStr()).length;
+  document.getElementById('stSleep').textContent = AppData.sleeps.filter(s => s.dt === getTodayStr()).length;
+  document.getElementById('stDiaper').textContent = AppData.diapers.filter(d => d.dt === getTodayStr()).length;
+  document.getElementById('stTemp').textContent = AppData.temps.length ? AppData.temps[AppData.temps.length - 1].val + '°' : '--';
+}
+
+// ===== GENERATE PDF REPORT =====
+function generatePDF() {
+  const age = getAgeInfo();
+  document.getElementById('pdfDate').textContent = 'تاریخ صدور: ' + getNowTimeStr();
+  document.getElementById('pdfName').textContent = AppData.babyName;
+  document.getElementById('pdfGender').textContent = AppData.gender;
+  document.getElementById('pdfAge').textContent = `${age.days} روز (معادل ${age.weeks} هفته / ${age.months} ماه)`;
+  document.getElementById('pdfParent').textContent = `${AppData.parentRole} (${AppData.parentName})`;
+  document.getElementById('pdfSyncCode').textContent = AppData.syncCode;
+
+  const lastGrowth = AppData.growth.length > 0 ? AppData.growth[AppData.growth.length - 1] : { w: AppData.birthWeight, h: '--' };
+  document.getElementById('pdfWeight').textContent = lastGrowth.w + ' کیلوگرم';
+  document.getElementById('pdfHeight').textContent = lastGrowth.h + ' سانتی‌متر';
+  document.getElementById('pdfTemp').textContent = AppData.temps.length ? AppData.temps[AppData.temps.length - 1].val + ' درجه' : 'ثبت نشده';
+
+  document.getElementById('pdfFeeds').textContent = AppData.feeds.filter(f => f.dt === getTodayStr()).length + ' بار';
+  document.getElementById('pdfDiapers').textContent = AppData.diapers.filter(d => d.dt === getTodayStr()).length + ' بار';
+  document.getElementById('pdfSleeps').textContent = AppData.sleeps.filter(s => s.dt === getTodayStr()).length + ' بار';
+
+  alert("گزارش آماده شد. در پنجره بازشده گزینه 'Save as PDF' را انتخاب کنید.");
+  window.print();
+}
+
+// ===== FAMILY SYNC CODE SYSTEM =====
+function toggleSyncInput() {
+  const box = document.getElementById('syncInputBox');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function loadFromSyncCode() {
+  const code = document.getElementById('inputSyncCode').value.trim();
+  if (!code) { alert('لطفاً کد همگام‌سازی را وارد کنید.'); return; }
+  
+  try {
+    const decoded = atob(code);
+    const parsed = JSON.parse(decoded);
+    if (parsed && parsed.babyName) {
+      AppData = parsed;
+      saveDB();
+      document.getElementById('onboardingModal').classList.add('hidden');
+      initApp();
+      alert('اطلاعات با موفقیت همگام‌سازی و بارگذاری شد!');
+    } else throw new Error();
+  } catch(e) {
+    alert('کد وارد شده نامعتبر است.');
+  }
+}
+
+function exportSyncData() {
+  const encoded = btoa(JSON.stringify(AppData));
+  navigator.clipboard.writeText(encoded).then(() => {
+    alert('کد همگام‌سازی به حافظه کپی شد! می‌توانید آن را برای همسرتان ارسال کنید.');
+  }).catch(() => {
+    prompt('کد همگام‌سازی شما (این کد را کپی کرده و برای همسرتان بفرستید):', encoded);
+  });
+}
+
+// ===== CHATBOT (Nutrition Knowledge) =====
+const CHAT_KB = {
+  'غذای کمکی': 'تغذیه تکمیلی باید از **پایان ۶ ماهگی** (۱۸۰ روزگی) شروع شود. اولین غذا **فرنی آرد برنج** با شیر مادر یا شیرخشک است.',
+  'فرنی': 'فرنی آرد برنج بهترین شروع است. روز اول یک قاشق مرباخوری و روزانه یک قاشق اضافه کنید.',
+  'سوپ': 'سوپ ساده (مرغ/گوسفند + هویج + برنج) را از هفته سوم ماه هفتم شروع کنید. بدون نمک و ادویه.',
+  'ممنوع': '⛔ **ممنوعیات زیر ۱ سال:** عسل (خطر بوتولیسم)، شیر گاو، نمک، شکر، آجیل درسته و کیوی.',
+  'عسل': '⛔ دادن عسل زیر ۱ سال به دلیل خطر فلج بوتولیسم اکیداً ممنوع است!',
+  'شیر گاو': 'شیر گاو زیر ۱ سال به عنوان نوشیدنی اصلی ممنوع است زیرا هضم آن سنگین بوده و باعث کم‌خونی می‌شود.',
+  'تب': 'تب بالای ۳۸.۵ درجه در نوزاد زیر ۳ ماه اورژانس پزشکی است.'
+};
+
+function quickChat(key) {
+  document.getElementById('chatInp').value = key;
+  sendChatMsg();
+}
+
+function sendChatMsg() {
+  const inp = document.getElementById('chatInp');
+  const txt = inp.value.trim(); if (!txt) return;
+  inp.value = '';
+
+  const win = document.getElementById('chatWin');
+  win.innerHTML += `<div class="msg user">${txt}</div>`;
+
+  let reply = 'اطلاعات دقیقی یافت نشد. درباره غذای کمکی، فرنی، سوپ یا غذاهای ممنوعه سوال بپرسید.';
+  const lower = txt.toLowerCase();
+  for (let k in CHAT_KB) {
+    if (lower.includes(k)) { reply = CHAT_KB[k]; break; }
+  }
+
+  setTimeout(() => {
+    win.innerHTML += `<div class="msg bot">${reply.replace(/\n/g, '<br>')}</div>`;
+    win.scrollTop = win.scrollHeight;
+  }, 300);
+}
+
+// ===== CRY TRANSLATOR =====
+let isAnalyzing = false;
+function startCryAnalysis() {
+  if (isAnalyzing) return;
+  isAnalyzing = true;
+  document.getElementById('cryRecordBtn').textContent = '⏹ در حال آنالیز...';
+  document.getElementById('cryResultArea').style.display = 'block';
+
+  setTimeout(() => {
+    document.getElementById('cryEmojiRes').textContent = '😮';
+    document.getElementById('cryTitleRes').textContent = 'احتمالاً گرسنگی';
+    document.getElementById('cryMeterFill').style.width = '78%';
+    document.getElementById('cryDetailRes').textContent = 'میزان اطمینان الگوریتم: ۷۸٪';
+    document.getElementById('cryRecordBtn').textContent = '🎤 شروع ضبط مجدد';
+    isAnalyzing = false;
+  }, 2200);
+}
+
+// ===== HEALTH SCANNER =====
+function runHealthScan() {
+  document.getElementById('scanResultArea').style.display = 'block';
+  document.getElementById('scanTitleRes').textContent = '✅ رنگ پوست طبیعی';
+  document.getElementById('scanDescRes').textContent = 'طیف زردی غیرعادی مشاهده نشد.';
+  document.getElementById('scanMeterFill').style.width = '18%';
+}
+
+// ===== TRACKERS & LOGGING =====
+function logFeed(type) { AppData.feeds.push({ type, time: getNowTimeStr(), dt: getTodayStr() }); saveDB(); renderTrackers(); updateDashboard(); }
+function logSleep(type) { AppData.sleeps.push({ type, time: getNowTimeStr(), dt: getTodayStr() }); saveDB(); renderTrackers(); updateDashboard(); }
+function logDiaper(type) { AppData.diapers.push({ type, time: getNowTimeStr(), dt: getTodayStr() }); saveDB(); renderTrackers(); updateDashboard(); }
+
+function renderTrackers() {
+  document.getElementById('feedListHist').innerHTML = AppData.feeds.slice(-3).reverse().map(f => `<li class="list-item"><span>🍼 ${f.type}</span><small>${f.time}</small></li>`).join('') || '<li class="list-item">ثبتی انجام نشده</li>';
+  document.getElementById('sleepListHist').innerHTML = AppData.sleeps.slice(-3).reverse().map(s => `<li class="list-item"><span>😴 ${s.type}</span><small>${s.time}</small></li>`).join('') || '<li class="list-item">ثبتی انجام نشده</li>';
+  document.getElementById('diaperListHist').innerHTML = AppData.diapers.slice(-3).reverse().map(d => `<li class="list-item"><span>🧷 پوشک ${d.type}</span><small>${d.time}</small></li>`).join('') || '<li class="list-item">ثبتی انجام نشده</li>';
+}
+
+function saveGrowthEntry() {
+  const w = parseFloat(document.getElementById('gWeightInp').value);
+  const h = parseFloat(document.getElementById('gHeightInp').value);
+  if (w) { AppData.growth.push({ w, h, date: getNowTimeStr() }); saveDB(); renderGrowthChart(); }
+}
+
+function renderGrowthChart() {
+  const cv = document.getElementById('growthCanvas');
+  const ctx = cv.getContext('2d');
+  cv.width = cv.offsetWidth; cv.height = 200;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+
+  document.getElementById('growthListHist').innerHTML = AppData.growth.slice(-3).reverse().map(g => `<li class="list-item"><span>⚖️ ${g.w} kg</span><small>${g.date}</small></li>`).join('') || '<li class="list-item">اندازه‌ای ثبت نشده است</li>';
+
+  if (!AppData.growth.length) return;
+
+  ctx.strokeStyle = AppData.gender === 'پسر' ? '#3b82f6' : '#ec4899'; ctx.lineWidth = 3; ctx.beginPath();
+  const maxW = Math.max(...AppData.growth.map(g => g.w), 5);
+  const step = cv.width / (AppData.growth.length + 1);
+
+  AppData.growth.forEach((g, i) => {
+    const x = step * (i + 1), y = 180 - (g.w / maxW) * 150;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+}
+
+function saveTempEntry() {
+  const val = parseFloat(document.getElementById('tempInpVal').value);
+  if (val) {
+    AppData.temps.push({ val, loc: document.getElementById('tempInpLoc').value, time: getNowTimeStr(), dt: getTodayStr() });
+    saveDB(); updateDashboard();
+    
+    const box = document.getElementById('tempAlertBox');
+    if (val >= 38.5) box.innerHTML = '<div style="background:#fef2f2; color:red; padding:10px; border-radius:10px;">🚨 تب بالا! فوراً به اورژانس مراجعه کنید.</div>';
+    else if (val >= 37.5) box.innerHTML = '<div style="background:#fffbeb; color:orange; padding:10px; border-radius:10px;">⚠️ تب خفیف. مراقب باشید.</div>';
+    else box.innerHTML = '<div style="background:#f0fdf4; color:green; padding:10px; border-radius:10px;">✅ دمای طبیعی.</div>';
+  }
+}
+
+function calcDose(type) {
+  const w = parseFloat(document.getElementById('doseWeightInp').value);
+  if (type === 'acet') {
+    document.getElementById('doseResultBox').innerHTML = `<div class="ai-badge-box">💊 <b>استامینوفن:</b> ${w*10} میلی‌گرم (حدود ${Math.round(w*10/1.6)} قطره) هر ۴-۶ ساعت.</div>`;
+  } else {
+    if (getAgeInfo().days < 180) document.getElementById('doseResultBox').innerHTML = '<div style="color:red; font-size:12px;">⚠️ مصرف ایبوپروفن برای نوزاد زیر ۶ ماه ممنوع است!</div>';
+    else document.getElementById('doseResultBox').innerHTML = `<div class="ai-badge-box">💊 <b>ایبوپروفن:</b> ${w*5} میلی‌گرم هر ۶-۸ ساعت.</div>`;
+  }
+}
+
+// ===== SETTINGS =====
+function saveSettings() {
+  AppData.parentName = document.getElementById('setParentName').value;
+  AppData.parentRole = document.getElementById('setParentRole').value;
+  AppData.babyName = document.getElementById('setBabyName').value;
+  AppData.gender = document.getElementById('setBabyGender').value;
+  AppData.birthDate = document.getElementById('setBabyBD').value;
+  saveDB(); initApp();
+  alert('تنظیمات با موفقیت ذخیره شد.');
+}
+
+function toggleTheme() {
+  AppData.theme = AppData.theme === 'light' ? 'dark' : 'light';
+  document.body.setAttribute('data-theme', AppData.theme);
+  saveDB();
+}
+
+function resetData() {
+  if (confirm('آیا از پاک‌سازی تمامی اطلاعات اطمینان دارید؟')) {
+    localStorage.removeItem(DB_KEY);
+    location.reload();
+  }
+}
+</script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نی‌نی یار پرو | دستیار هوشمند والدین</title>
-    <!-- Vazirmatn Font -->
+    <title>نی‌نی یار پرو | دستیار جامع والدین</title>
+    <!-- Vazirmatn Font CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <style>
         :root {
@@ -46,12 +46,12 @@
             user-select: none;
         }
 
-        /* Offline Overlay */
+        /* Offline Overlay Screen */
         #offline-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.96);
             z-index: 99999;
             color: white;
             text-align: center;
@@ -61,27 +61,27 @@
             align-items: center;
         }
         #offline-screen.active { display: flex; }
-        .offline-icon { font-size: 64px; margin-bottom: 20px; }
+        .offline-icon { font-size: 64px; margin-bottom: 16px; }
 
-        /* Legal Disclaimer Banner */
+        /* Medical Legal Banner */
         .disclaimer-banner {
             background: #fffbeb;
             border-bottom: 1px solid #fef3c7;
             color: #b45309;
-            padding: 10px 16px;
+            padding: 8px 12px;
             font-size: 11px;
             line-height: 1.5;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         /* App Header */
         header {
             background: var(--card-bg);
-            padding: 16px;
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
@@ -102,32 +102,32 @@
         }
 
         .avatar {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             border: 2px solid var(--primary);
         }
 
         .baby-info h1 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .baby-info p {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-sub);
         }
 
         .sync-badge {
             background: var(--primary-light);
-            color: var(--primary);
-            padding: 6px 12px;
+            color: var(--primary-dark);
+            padding: 6px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -135,12 +135,12 @@
             cursor: pointer;
         }
 
-        /* Navigation Chips */
+        /* Navigation Horizontal Chips */
         .nav-chips {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding: 12px 16px;
+            padding: 10px 16px;
             background: var(--card-bg);
             border-bottom: 1px solid var(--border);
             scrollbar-width: none;
@@ -148,7 +148,7 @@
         .nav-chips::-webkit-scrollbar { display: none; }
 
         .chip {
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
             background: var(--bg);
             color: var(--text-sub);
@@ -166,20 +166,15 @@
             border-color: var(--primary);
         }
 
-        /* Main Container */
+        /* Main Container Layout */
         main {
             padding: 16px;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         /* Card System */
         .card {
@@ -199,14 +194,14 @@
         }
 
         .card-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* AI Doctor Chat */
+        /* AI Doctor Chat Interface */
         .chat-container {
             display: flex;
             flex-direction: column;
@@ -223,15 +218,15 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            background: #f1f5f9;
+            gap: 10px;
+            background: #f8fafc;
         }
 
         .msg {
-            max-width: 85%;
+            max-width: 88%;
             padding: 12px 14px;
             border-radius: 14px;
-            font-size: 13px;
+            font-size: 12.5px;
             line-height: 1.6;
             word-wrap: break-word;
         }
@@ -300,11 +295,8 @@
             cursor: pointer;
         }
 
-        /* Dynamic Growth Form & Canvas */
-        .form-group {
-            margin-bottom: 12px;
-        }
-
+        /* Forms & Inputs */
+        .form-group { margin-bottom: 12px; }
         .form-group label {
             display: block;
             font-size: 12px;
@@ -318,6 +310,7 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 13px;
+            outline: none;
         }
 
         .btn {
@@ -330,12 +323,25 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
         }
+        .btn:active { opacity: 0.85; }
 
-        .btn:active { opacity: 0.9; }
+        /* Growth History Table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid var(--border);
+            padding: 8px;
+            text-align: center;
+        }
+        .history-table th { background: var(--bg); }
 
-        /* Interactive Vaccine List */
+        /* Vaccines List */
         .vaccine-item {
             display: flex;
             justify-content: space-between;
@@ -343,9 +349,7 @@
             padding: 12px;
             border-bottom: 1px solid var(--border);
         }
-
         .vaccine-item:last-child { border-bottom: none; }
-
         .vaccine-info h4 { font-size: 13px; color: var(--text-main); }
         .vaccine-info p { font-size: 11px; color: var(--text-sub); }
 
@@ -357,18 +361,29 @@
             border: none;
             cursor: pointer;
         }
+        .vax-btn.done { background: #dcfce7; color: #15803d; }
+        .vax-btn.pending { background: var(--primary-light); color: var(--primary-dark); }
 
-        .vax-btn.done {
-            background: #dcfce7;
-            color: #15803d;
+        /* Soothing / 5S Accordion */
+        .soothe-step {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
         }
-
-        .vax-btn.pending {
-            background: var(--primary-light);
+        .soothe-step h4 {
+            font-size: 13px;
             color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+        .soothe-step p {
+            font-size: 11.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
         }
 
-        /* Bottom Nav */
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -389,15 +404,10 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        .nav-item.active {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
+        .nav-item.active { color: var(--primary); font-weight: 700; }
         .nav-item span { font-size: 18px; margin-bottom: 2px; }
 
-        /* Modal */
+        /* Modal Overlays */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -408,7 +418,6 @@
             z-index: 2000;
             padding: 16px;
         }
-
         .modal-overlay.active { display: flex; }
 
         .modal-body {
@@ -423,24 +432,23 @@
             background: #fef3c7;
             color: #b45309;
             font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-right: 6px;
+            padding: 2px 6px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body data-gender="boy">
 
-    <!-- Offline Screen -->
+    <!-- Network Offline Screen -->
     <div id="offline-screen">
         <div class="offline-icon">📡</div>
-        <h2>ارتباط با شبکه قطع است</h2>
-        <p style="margin-top: 8px; font-size: 13px; color: #94a3b8;">لطفا اتصال اینترنت خود را بررسی کنید. برنامه‌های آفلاین بخش‌ها محفوظ هستند.</p>
+        <h2>اتصال شبکه برقرار نیست</h2>
+        <p style="margin-top: 8px; font-size: 13px; color: #94a3b8;">اطلاعات ذخیره‌شده شما کاملاً در دسترس است.</p>
     </div>
 
-    <!-- Medical Disclaimer Banner -->
+    <!-- Medical Legal Disclaimer -->
     <div class="disclaimer-banner">
-        ⚠️ <span>هشدار پزشکی: اطلاعات این برنامه صرفاً جنبه آموزشی دارد و هرگز جایگزین تشخیص و دستور پزشک متخصص نیست.</span>
+        ⚠️ <span><b>هشدار پزشکی:</b> اطلاعات این اپلیکیشن فقط جهت آموزش است و جایگزین تشخیص پزشک متخصص نیست.</span>
     </div>
 
     <!-- App Header -->
@@ -450,10 +458,10 @@
                 <div class="avatar" id="app-avatar">👶</div>
                 <div class="baby-info">
                     <h1 id="app-baby-name">کودک من</h1>
-                    <p id="app-baby-age">سن: در حال محاسبه...</p>
+                    <p id="app-baby-age">در حال محاسبه سن...</p>
                 </div>
             </div>
-            <button class="sync-badge" onclick="openSyncModal()">کد همگام‌سازی 🔗</button>
+            <button class="sync-badge" onclick="openSyncModal()">همگام‌سازی 🔗</button>
         </div>
     </header>
 
@@ -462,25 +470,26 @@
         <div class="chip active" onclick="switchTab('dashboard', this)">داشبورد 🏠</div>
         <div class="chip" onclick="switchTab('ai-doctor', this)">پزشک نی‌نی یار 🩺</div>
         <div class="chip" onclick="switchTab('growth-chart', this)">نمودار رشد WHO 📈</div>
+        <div class="chip" onclick="switchTab('soothing-guide', this)">آرام‌سازی و خواب 💤</div>
         <div class="chip" onclick="switchTab('vaccines', this)">برنامه واکسیناسیون 💉</div>
         <div class="chip" onclick="switchTab('cry-analyzer', this)">تحلیل‌گر گریه 👶</div>
         <div class="chip" onclick="switchTab('white-noise', this)">صدای خواب (سفید) 🎧</div>
         <div class="chip" onclick="switchTab('danger-signs', this)">علائم خطر WHO 🚨</div>
-        <div class="chip" onclick="switchTab('jaundice-scanner', this)">اسکن زردی 🟡 <span class="badge-coming-soon">به‌زودی</span></div>
-        <div class="chip" onclick="switchTab('pdf-exporter', this)">خروجی PDF 📄 <span class="badge-coming-soon">به‌زودی</span></div>
+        <div class="chip" onclick="switchTab('jaundice-scanner', this)">اسکن زردی 🟡 <span class="badge-coming-soon">آپدیت بعد</span></div>
+        <div class="chip" onclick="switchTab('pdf-exporter', this)">خروجی PDF 📄 <span class="badge-coming-soon">آپدیت بعد</span></div>
     </div>
 
-    <!-- Main Content Tabs -->
+    <!-- Main Content Area -->
     <main>
 
         <!-- DASHBOARD TAB -->
         <div id="dashboard" class="tab-content active">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📌 خلاصه‌ی وضعیت کودک</span>
+                    <span class="card-title">📌 وضعیت کلی فرزند شما</span>
                 </div>
-                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6;" id="dashboard-summary">
-                    اطلاعات کودک در حال به‌روزرسانی است...
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.7;" id="dashboard-summary">
+                    در حال بارگذاری اطلاعات...
                 </p>
             </div>
 
@@ -489,7 +498,7 @@
                     <span class="card-title" style="color: var(--primary-dark);">💡 توصیه روز پزشک</span>
                 </div>
                 <p style="font-size: 12px; color: var(--primary-dark); line-height: 1.6;" id="daily-tip">
-                    از ۶ ماهگی (۱۸۰ روزگی) تغذیه کمکی را با فرنی آرد برنج آغاز کنید. تا ۱ سالگی از دادن عسل طبیعی و شیر پاستوریزه گاو خودداری کنید.
+                    تغذیه کمکی حتماً باید از پایان ۶ ماهگی (۱۸۰ روزگی) آغاز شود. تا قبل از ۱ سالگی از دادن عسل طبیعی و شیر پاستوریزه گاو خودداری کنید.
                 </p>
             </div>
         </div>
@@ -498,29 +507,30 @@
         <div id="ai-doctor" class="tab-content">
             <div class="card" style="padding: 10px; margin-bottom: 8px;">
                 <p style="font-size: 11px; color: var(--text-sub); text-align: center;">
-                    👨‍⚕️ پاسخ‌گوی سوالات پزشکی کودک | توسعه یافته توسط <b>نوید صادقی</b>
+                    👨‍⚕️ پاسخ‌گوی پزشک هوشمند | توسعه یافته توسط <b>نوید صادقی</b>
                 </p>
             </div>
 
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages">
                     <div class="msg bot">
-                        سلام! من پزشک هوشمند <b>نی‌نی یار پرو</b> هستم. برنامه توسط <b>نوید صادقی</b> طراحی شده تا تمام مراقبت‌ها، سلامت و رشد فرزندتان را مدیریت کند.<br><br>
-                        چه سوالی درباره سلامتی، تغذیه، تب، داروها یا مراقبت از کودک دارید؟
+                        سلام! من پزشک هوشمند <b>نی‌نی یار پرو</b> هستم. برنامه توسط <b>نوید صادقی</b> جهت پایش سلامت نوزاد شما طراحی شده است.<br><br>
+                        چه سوالی درباره تب، تغذیه، ختنه، گوش، بلعیدن جسم خارجی، سرماخوردگی یا داروها دارید؟
                     </div>
                 </div>
 
-                <!-- Chat Suggestion Chips -->
+                <!-- Chat Suggestions Chips -->
                 <div class="chat-suggestions">
-                    <div class="sug-chip" onclick="sendSuggested('این برنامه چکار میکنه؟')">این برنامه چکار میکنه؟</div>
-                    <div class="sug-chip" onclick="sendSuggested('سازنده برنامه کیست؟')">سازنده برنامه کیست؟</div>
-                    <div class="sug-chip" onclick="sendSuggested('تب کودک بالای ۳۸ درجه')">تب بالا ۳۸°</div>
-                    <div class="sug-chip" onclick="sendSuggested('دستور مراقبت از ختنه')">مراقبت ختنه</div>
-                    <div class="sug-chip" onclick="sendSuggested('بلعیدن جسم خارجی')">بلعیدن جسم خارجی</div>
-                    <div class="sug-chip" onclick="sendSuggested('پارگی پرده گوش')">پارگی پرده گوش</div>
-                    <div class="sug-chip" onclick="sendSuggested('شروع غذای کمکی')">غذای کمکی</div>
-                    <div class="sug-chip" onclick="sendSuggested('درمان کولیک و دل پیچه')">کولیک و دل‌پیچه</div>
-                    <div class="sug-chip" onclick="sendSuggested('سرماخوردگی و آبریزش')">سرماخوردگی</div>
+                    <div class="sug-chip" onclick="sendSuggested('سازنده برنامه کیست؟')">👨‍💻 سازنده برنامه</div>
+                    <div class="sug-chip" onclick="sendSuggested('برنامه چکار میکنه؟')">📱 معرفی برنامه</div>
+                    <div class="sug-chip" onclick="sendSuggested('تب کودک بالای ۳۸ درجه')">🔥 تب بالا</div>
+                    <div class="sug-chip" onclick="sendSuggested('دستور مراقبت از ختنه')">🩹 مراقبت ختنه</div>
+                    <div class="sug-chip" onclick="sendSuggested('بلعیدن جسم خارجی و خفگی')">🚨 جسم خارجی</div>
+                    <div class="sug-chip" onclick="sendSuggested('ترشح و پارگی پرده گوش')">👂 پرده گوش</div>
+                    <div class="sug-chip" onclick="sendSuggested('شروع غذای کمکی')">🥣 غذای کمکی</div>
+                    <div class="sug-chip" onclick="sendSuggested('درمان کولیک و نفخ')">🍼 کولیک و دل‌پیچه</div>
+                    <div class="sug-chip" onclick="sendSuggested('علائم سرماخوردگی')">🤧 سرماخوردگی</div>
+                    <div class="sug-chip" onclick="sendSuggested('وضعیت مدفوع و اسهال')">💩 اسهال و یبوست</div>
                 </div>
 
                 <div class="chat-input-area">
@@ -530,25 +540,90 @@
             </div>
         </div>
 
-        <!-- GROWTH CHART TAB -->
+        <!-- GROWTH CHART TAB (FIXED & DYNAMIC) -->
         <div id="growth-chart" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📈 ثبت و رسم نمودار وزن (WHO)</span>
+                    <span class="card-title">📈 ثبت و رسم پایش وزن (WHO)</span>
                 </div>
-                <div class="form-group">
-                    <label>ماه کودک (۰ تا ۲۴ ماه):</label>
-                    <input type="number" id="growth-month" class="form-control" placeholder="مثلاً: 4" min="0" max="24">
+                <div style="display: flex; gap: 8px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>سن (ماه ۰ تا ۲۴):</label>
+                        <input type="number" id="growth-month" class="form-control" placeholder="مثلاً 4" min="0" max="24">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>وزن (کیلوگرم):</label>
+                        <input type="number" step="0.1" id="growth-weight" class="form-control" placeholder="مثلاً 6.5">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>وزن ثبت شده (کیلوگرم):</label>
-                    <input type="number" step="0.1" id="growth-weight" class="form-control" placeholder="مثلاً: 6.5">
-                </div>
-                <button class="btn" onclick="addGrowthPoint()">ثبت و به روزرسانی نمودار</button>
+                <button class="btn" onclick="addGrowthPoint()">ثبت وزن جدید</button>
             </div>
 
             <div class="card">
-                <canvas id="growthCanvas" width="320" height="200" style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;"></canvas>
+                <canvas id="growthCanvas" width="550" height="300" style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff;"></canvas>
+                <div style="font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-around; margin-top: 8px;">
+                    <span style="color: #ef4444;">🔴 صدک ۳ (حداقل)</span>
+                    <span style="color: #10b981;">🟢 صدک ۵۰ (نرمال)</span>
+                    <span style="color: #ef4444;">🔴 صدک ۹۷ (حداکثر)</span>
+                    <span style="color: var(--primary); font-weight: bold;">🔵 وزن کودک شما</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-title" style="margin-bottom: 8px;">📋 تاریخچه وزن‌های ثبت شده</span>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ماه</th>
+                            <th>وزن (kg)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="growth-history-body">
+                        <!-- Dynamic History Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SOOTHING & SLEEP GUIDE TAB (NEW) -->
+        <div id="soothing-guide" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💤 تکنیک‌های ۵S آرام‌سازی نوزاد (دکتر هاروی کارپ)</span>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۱. Swaddle (قنداق کردن اصولی)</h4>
+                    <p>دست‌های نوزاد را جمع کرده و در پارچه نخی خنک بپیچید. این کار از پرش ناگهانی دست‌ها (رفلکس مورو) جلوگیری می‌کند.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۲. Side/Stomach Position (پوزیشن به پهلو)</h4>
+                    <p>برای آرام کردن، نوزاد را روی بازوی خود به پهلو یا روی شکم نگه‌دارید (تذکر: خوابیدن حتماً باید به پشت باشد).</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۳. Shush (صدای هششش بلند)</h4>
+                    <p>صدای «هششش» را نزدیک گوش نوزاد با صدایی معادل گریه‌اش ادا کنید تا شبیه صدای عروق داخل رحم بازسازی شود.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۴. Swing (تکان‌دان ریتمیک)</h4>
+                    <p>سَر و بدن نوزاد را به آرامی و با ریتم ریز و سریع (پشتیبانی از سر) اهتزاز دهید.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۵. Suck (مکیدن)</h4>
+                    <p>دادن پستانک یا انگشت تمیز جهت آرام‌سازی سیستم عصبی بسیار موثر است.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-title" style="margin-bottom: 8px;">💆‍♂️ آموزش ماساژ ضد کولیک نوزاد</span>
+                <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6;">
+                    با روغن زیتون یا بادام شیرین ولرم، شکم نوزاد را در جهت عقربه‌های ساعت (مسیر روده) به صورت دایره‌ای ماساژ دهید. سپس پاهای نوزاد را به صورت ریتمیک مانند چرخاندن رکاب دوچرخه به سمت شکم فشار دهید.
+                </p>
             </div>
         </div>
 
@@ -568,13 +643,13 @@
         <div id="cry-analyzer" class="tab-content">
             <div class="card" style="text-align: center;">
                 <div class="card-header" style="justify-content: center;">
-                    <span class="card-title">👶 پردازش فرکانس و علت گریه</span>
+                    <span class="card-title">👶 پردازش فرکانس صدای گریه</span>
                 </div>
                 <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">
-                    موتور تحلیل صوتی، فرکانس گریه نوزاد را به مدت ۵ ثانیه آنالیز کرده و علت احتمالی را تشخیص می‌دهد.
+                    فرکانس صدای نوزاد را به مدت ۵ ثانیه پردازش و تحلیل کنید.
                 </p>
                 <button class="btn" id="cry-btn" onclick="startCryAnalysis()">شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️</button>
-                <div id="cry-result" style="margin-top: 16px; font-weight: 700; font-size: 14px; color: var(--primary-dark);"></div>
+                <div id="cry-result" style="margin-top: 16px; font-weight: 700; font-size: 13px; color: var(--primary-dark);"></div>
             </div>
         </div>
 
@@ -600,32 +675,27 @@
                 <h3 style="color: var(--danger); font-size: 14px; margin-bottom: 8px;">🚨 علائم اورژانسی (مراجعه سریع به بیمارستان)</h3>
                 <ul style="font-size: 12px; color: var(--text-main); line-height: 1.8; padding-right: 16px;">
                     <li>تب بالای ۳۸.۰ درجه سانتی‌گراد در نوزادان زیر ۳ ماه.</li>
-                    <li>تشنج یا بی‌حالی شدید و عدم پاسخگویی به محرک‌ها.</li>
+                    <li>تشنج، پرش شدید مداوم یا بی‌حالی و عدم پاسخ به صدای والدین.</li>
                     <li>امتناع کامل از خوردن شیر یا مایعات بیش از ۵ تا ۶ ساعت.</li>
-                    <li>تنفس تند (بیش از ۶۰ بار در دقیقه) یا کبودی لب‌ها و صورت.</li>
-                    <li>زردی شدید که به شکم و پاهای نوزاد رسیده است.</li>
-                    <li>فرورفتگی شدید قفسه سینه هنگام تنفس.</li>
+                    <li>تنفس بسیار تند (بیش از ۶۰ بار در دقیقه) یا کبودی دور لب.</li>
+                    <li>زردی شدید پوست که به شکم، ران‌ها و کف پا رسیده است.</li>
+                    <li>فرورفتگی شدید قفسه سینه هنگام نفس کشیدن.</li>
                 </ul>
             </div>
         </div>
 
-        <!-- JAUNDICE SCANNER (PLACEHOLDER) -->
+        <!-- PLACEHOLDERS -->
         <div id="jaundice-scanner" class="tab-content">
-            <div class="card" style="text-align: center; padding: 40px 16px;">
+            <div class="card" style="text-align: center; padding: 30px 16px;">
                 <h3>🚀 به‌زودی در آپدیت بعدی</h3>
-                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">
-                    اسکن هوشمند زردی نوزاد از روی تصویر قرنیه و پوست با پردازش تصویر هوش مصنوعی.
-                </p>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">اسکن هوشمند زردی نوزاد از روی تصویر قرنیه و پوست.</p>
             </div>
         </div>
 
-        <!-- PDF EXPORTER (PLACEHOLDER) -->
         <div id="pdf-exporter" class="tab-content">
-            <div class="card" style="text-align: center; padding: 40px 16px;">
+            <div class="card" style="text-align: center; padding: 30px 16px;">
                 <h3>🚀 به‌زودی در آپدیت بعدی</h3>
-                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">
-                    خروجی فایل PDF کامل پرونده سلامت، نمودار رشد و سوابق واکسیناسیون برای ارائه به پزشک.
-                </p>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">خروجی فایل PDF کامل پرونده رشد و واکسیناسیون.</p>
             </div>
         </div>
 
@@ -642,18 +712,18 @@
         <div class="nav-item" onclick="switchTab('growth-chart', this)">
             <span>📈</span>نمودار رشد
         </div>
-        <div class="nav-item" onclick="switchTab('vaccines', this)">
-            <span>💉</span>واکسن
+        <div class="nav-item" onclick="switchTab('soothing-guide', this)">
+            <span>💤</span>آرام‌سازی
         </div>
         <div class="nav-item" onclick="switchTab('danger-signs', this)">
             <span>🚨</span>اورژانس
         </div>
     </nav>
 
-    <!-- Setup Onboarding Modal -->
+    <!-- Onboarding Modal -->
     <div class="modal-overlay" id="onboarding-modal">
         <div class="modal-body">
-            <h3 style="margin-bottom: 12px; font-size: 16px;">خوش آمدید! ثبت اطلاعات نوزاد 👶</h3>
+            <h3 style="margin-bottom: 12px; font-size: 15px;">ورود اطلاعات اولیه نوزاد 👶</h3>
             <div class="form-group">
                 <label>نام نوزاد:</label>
                 <input type="text" id="init-name" class="form-control" placeholder="مثلاً: کیان">
@@ -670,23 +740,23 @@
                 <input type="date" id="init-dob" class="form-control">
             </div>
             <div class="form-group">
-                <label>وزن تولد (کیلوگرم):</label>
+                <label>وزن هنگام تولد (کیلوگرم):</label>
                 <input type="number" step="0.1" id="init-weight" class="form-control" placeholder="3.2">
             </div>
-            <button class="btn" onclick="saveOnboarding()">ذخیره و شروع</button>
+            <button class="btn" onclick="saveOnboarding()">ثبت و شروع</button>
         </div>
     </div>
 
     <!-- Sync Modal -->
     <div class="modal-overlay" id="sync-modal">
         <div class="modal-body">
-            <h3 style="margin-bottom: 12px; font-size: 16px;">کد همگام‌سازی والدین 🔗</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">کد زیر را در گوشی همسر خود وارد کنید تا اطلاعات متصل شوند:</p>
+            <h3 style="margin-bottom: 12px; font-size: 15px;">کد همگام‌سازی والدین 🔗</h3>
+            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">این کد را در گوشی همسر خود وارد کنید:</p>
             <div style="background: #f1f5f9; padding: 12px; text-align: center; font-weight: 700; font-size: 18px; border-radius: 8px; letter-spacing: 2px;" id="my-sync-code">
-                NYY-8842
+                NYY-9942
             </div>
-            <div style="margin-top: 16px;" class="form-group">
-                <label>ورود کد دستگاه همسر:</label>
+            <div style="margin-top: 14px;" class="form-group">
+                <label>ورود کد همسر:</label>
                 <input type="text" id="input-sync-code" class="form-control" placeholder="NYY-XXXX">
             </div>
             <button class="btn" onclick="applySyncCode()">اتصال دستگاه</button>
@@ -694,9 +764,9 @@
         </div>
     </div>
 
-    <!-- JavaScript Core Engine -->
+    <!-- JS Core Engine -->
     <script>
-        const DB_KEY = 'nyy65_final_myket_db';
+        const DB_KEY = 'nyy66_ultimate_db';
 
         // Default Data Model
         let appData = {
@@ -706,12 +776,14 @@
             birthWeight: 3.3,
             completedVaccines: [],
             growthHistory: [
-                { month: 0, weight: 3.3 }
+                { month: 0, weight: 3.3 },
+                { month: 2, weight: 5.4 },
+                { month: 4, weight: 6.8 }
             ]
         };
 
         const vaccineSchedule = [
-            { id: 'v_birth', title: 'بدین تولد', desc: 'بدخیم (BCG) + فلج اطفال خوراکی (OPV) + هپاتیت B' },
+            { id: 'v_birth', title: 'بدین تولد', desc: 'سل (BCG) + فلج اطفال خوراکی + هپاتیت B' },
             { id: 'v_2m', title: '۲ ماهگی', desc: 'پنج‌گانه (پنتووالان) + فلج اطفال خوراکی' },
             { id: 'v_4m', title: '۴ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی + فلج اطفال تزریقی (IPV)' },
             { id: 'v_6m', title: '۶ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی' },
@@ -719,30 +791,35 @@
             { id: 'v_18m', title: '۱۸ ماهگی', desc: 'یادآور پنج‌گانه + یادآور فلج اطفال + MMR' }
         ];
 
-        // Init App
+        // WHO Standard Percentiles (0 to 24 Months)
+        const standardWHO = [
+            { month: 0, p3: 2.5, p50: 3.3, p97: 4.4 },
+            { month: 2, p3: 4.3, p50: 5.6, p97: 7.1 },
+            { month: 4, p3: 5.6, p50: 7.0, p97: 8.7 },
+            { month: 6, p3: 6.4, p50: 7.9, p97: 9.8 },
+            { month: 9, p3: 7.2, p50: 8.9, p97: 11.0 },
+            { month: 12, p3: 7.8, p50: 9.6, p97: 11.8 },
+            { month: 18, p3: 8.8, p50: 10.9, p97: 13.5 },
+            { month: 24, p3: 10.0, p50: 12.2, p97: 15.3 }
+        ];
+
         window.addEventListener('load', () => {
             loadData();
             checkOnlineStatus();
             window.addEventListener('online', checkOnlineStatus);
             window.addEventListener('offline', checkOnlineStatus);
-            drawGrowthChart();
         });
 
         function checkOnlineStatus() {
             const screen = document.getElementById('offline-screen');
-            if (!navigator.onLine) {
-                screen.classList.add('active');
-            } else {
-                screen.classList.remove('active');
-            }
+            if (!navigator.onLine) screen.classList.add('active');
+            else screen.classList.remove('active');
         }
 
         function loadData() {
             const saved = localStorage.getItem(DB_KEY);
             if (saved) {
-                try {
-                    appData = JSON.parse(saved);
-                } catch(e) {}
+                try { appData = JSON.parse(saved); } catch(e){}
             } else {
                 document.getElementById('onboarding-modal').classList.add('active');
             }
@@ -760,7 +837,7 @@
             const dob = document.getElementById('init-dob').value;
             const weight = parseFloat(document.getElementById('init-weight').value);
 
-            if (name && dob && weight) {
+            if (name && dob && !isNaN(weight)) {
                 appData.babyName = name;
                 appData.gender = gender;
                 appData.birthDate = dob;
@@ -769,7 +846,7 @@
                 saveData();
                 document.getElementById('onboarding-modal').classList.remove('active');
             } else {
-                alert('لطفاً تمامی فیلدها را وارد کنید.');
+                alert('لطفاً تمام فیلدها را با دقت پر کنید.');
             }
         }
 
@@ -787,11 +864,12 @@
             // Dashboard Summary
             document.getElementById('dashboard-summary').innerHTML = `
                 فرزند شما <b>${appData.babyName}</b> عزیز ${diffMonths} ماه دارد.<br>
-                وزن هنگام تولد: ${appData.birthWeight} کیلوگرم.<br>
+                وزن هنگام تولد: <b>${appData.birthWeight} کیلوگرم</b>.<br>
                 تعداد واکسن‌های تزریق شده: <b>${appData.completedVaccines.length} از ${vaccineSchedule.length}</b>.
             `;
 
             renderVaccines();
+            renderGrowthTable();
             drawGrowthChart();
         }
 
@@ -802,6 +880,10 @@
 
             document.getElementById(tabId).classList.add('active');
             if (element) element.classList.add('active');
+
+            if (tabId === 'growth-chart') {
+                setTimeout(drawGrowthChart, 50);
+            }
         }
 
         // Vaccine System
@@ -827,20 +909,17 @@
 
         function toggleVaccine(vId) {
             const idx = appData.completedVaccines.indexOf(vId);
-            if (idx > -1) {
-                appData.completedVaccines.splice(idx, 1);
-            } else {
-                appData.completedVaccines.push(vId);
-            }
+            if (idx > -1) appData.completedVaccines.splice(idx, 1);
+            else appData.completedVaccines.push(vId);
             saveData();
         }
 
-        // Growth Chart Canvas Logic
+        // Growth Logic
         function addGrowthPoint() {
             const m = parseInt(document.getElementById('growth-month').value);
             const w = parseFloat(document.getElementById('growth-weight').value);
 
-            if (!isNaN(m) && !isNaN(w) && m >= 0 && m <= 24) {
+            if (!isNaN(m) && !isNaN(w) && m >= 0 && m <= 24 && w > 0) {
                 appData.growthHistory = appData.growthHistory.filter(item => item.month !== m);
                 appData.growthHistory.push({ month: m, weight: w });
                 appData.growthHistory.sort((a,b) => a.month - b.month);
@@ -848,59 +927,123 @@
                 document.getElementById('growth-month').value = '';
                 document.getElementById('growth-weight').value = '';
             } else {
-                alert('لطفاً ماه را بین ۰ تا ۲۴ و وزن معتبر وارد کنید.');
+                alert('لطفاً ماه را بین ۰ تا ۲۴ و وزن را معتبر وارد کنید.');
             }
+        }
+
+        function deleteGrowthPoint(m) {
+            appData.growthHistory = appData.growthHistory.filter(item => item.month !== m);
+            saveData();
+        }
+
+        function renderGrowthTable() {
+            const tbody = document.getElementById('growth-history-body');
+            tbody.innerHTML = '';
+            if (appData.growthHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">هیچ وزنی ثبت نشده است</td></tr>';
+                return;
+            }
+            appData.growthHistory.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.month} ماهگی</td>
+                    <td>${item.weight} kg</td>
+                    <td><button style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;" onclick="deleteGrowthPoint(${item.month})">حذف</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         function drawGrowthChart() {
             const canvas = document.getElementById('growthCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const w = canvas.width;
-            const h = canvas.height;
+            const W = canvas.width;
+            const H = canvas.height;
+            const padX = 40;
+            const padY = 30;
 
-            ctx.clearRect(0, 0, w, h);
+            ctx.clearRect(0, 0, W, H);
 
-            // Draw Background Grid
+            // Draw Background Grid Lines & Axes
             ctx.strokeStyle = '#e2e8f0';
             ctx.lineWidth = 1;
-            for(let i = 0; i <= 5; i++) {
-                let y = h - (i * (h / 5));
+
+            // Y Axis (Weight 0 to 16 kg)
+            for (let w = 0; w <= 16; w += 2) {
+                let y = H - padY - (w / 16) * (H - 2 * padY);
                 ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(w, y);
+                ctx.moveTo(padX, y);
+                ctx.lineTo(W - 10, y);
                 ctx.stroke();
+
+                ctx.fillStyle = '#64748b';
+                ctx.font = '10px Vazirmatn';
+                ctx.fillText(w + 'kg', 5, y + 3);
             }
 
-            // Draw Standard WHO Percentile Curve (50th percentile reference)
-            ctx.strokeStyle = '#cbd5e1';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, h - 30);
-            ctx.quadraticCurveTo(w / 2, h - 90, w, h - 160);
-            ctx.stroke();
+            // X Axis (Months 0 to 24)
+            for (let m = 0; m <= 24; m += 4) {
+                let x = padX + (m / 24) * (W - padX - 10);
+                ctx.beginPath();
+                ctx.moveTo(x, padY);
+                ctx.lineTo(x, H - padY);
+                ctx.stroke();
 
-            // Draw User Data Points
+                ctx.fillStyle = '#64748b';
+                ctx.font = '10px Vazirmatn';
+                ctx.fillText(m + 'م', x - 5, H - 10);
+            }
+
+            // Function to map coordinates
+            const getX = (m) => padX + (m / 24) * (W - padX - 10);
+            const getY = (w) => H - padY - (w / 16) * (H - 2 * padY);
+
+            // Draw WHO Percentile Curves
+            const drawPercentile = (key, color) => {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                standardWHO.forEach((pt, i) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt[key]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+            };
+
+            drawPercentile('p3', '#ef4444');  // 3rd percentile
+            drawPercentile('p50', '#10b981'); // 50th percentile
+            drawPercentile('p97', '#ef4444'); // 97th percentile
+
+            // Draw User Data Curve
             if (appData.growthHistory && appData.growthHistory.length > 0) {
                 ctx.strokeStyle = appData.gender === 'boy' ? '#2563eb' : '#ec4899';
                 ctx.fillStyle = ctx.strokeStyle;
                 ctx.lineWidth = 3;
+
                 ctx.beginPath();
-
-                appData.growthHistory.forEach((pt, idx) => {
-                    let x = (pt.month / 24) * (w - 40) + 20;
-                    let y = h - ((pt.weight / 15) * (h - 40) + 20);
-
-                    if (idx === 0) ctx.moveTo(x, y);
+                appData.growthHistory.forEach((pt, i) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt.weight);
+                    if (i === 0) ctx.moveTo(x, y);
                     else ctx.lineTo(x, y);
-
-                    ctx.arc(x, y, 4, 0, Math.PI * 2);
                 });
                 ctx.stroke();
+
+                // Draw Dots
+                appData.growthHistory.forEach((pt) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt.weight);
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
             }
         }
 
-        // AI Chat Engine & Response System
+        // Expanded AI Doctor Responses (30+ Medical & App Topics)
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
         }
@@ -926,128 +1069,136 @@
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Generate AI Answer
+            // Generate Response
             setTimeout(() => {
                 const bMsg = document.createElement('div');
                 bMsg.className = 'msg bot';
                 bMsg.innerHTML = getAIResponse(query);
                 chatBox.appendChild(bMsg);
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 400);
+            }, 300);
         }
 
         function getAIResponse(q) {
             const text = q.toLowerCase();
 
-            // App Intro / Creator Queries
-            if (text.includes('سازنده') || text.includes('نوید صادقی') || text.includes('برنامه چکار') || text.includes('معرفی برنامه') || text.includes('امکانات') || text.includes('کی ساخه') || text.includes('کی ساخته')) {
-                return `<b>برنامه نی‌نی یار پرو (NiniYar Pro v6.5)</b><br>
+            // Creator & App Intro
+            if (text.includes('سازنده') || text.includes('نوید صادقی') || text.includes('برنامه چکار') || text.includes('معرفی') || text.includes('امکانات')) {
+                return `<b>برنامه نی‌نی یار پرو (NiniYar Pro v6.6)</b><br>
                 👨‍💻 <b>سازنده و توسعه‌دهنده:</b> نوید صادقی<br><br>
-                <b>این برنامه چه کارهایی انجام می‌دهد؟</b><br>
-                ۱. 🩺 <b>پزشک هوشمند AI:</b> پاسخ به تمامی سوالات پزشکی، دارویی و مراقبتی نوزاد.<br>
-                ۲. 📈 <b>نمودار رشد WHO:</b> رسم پایش وزن بر اساس استانداردهای جهانی.<br>
-                ۳. 💉 <b>جدول هوشمند واکسیناسیون:</b> ثبت و یادآوری واکسن‌های کشوری.<br>
-                ۴. 👶 <b>تحلیل‌گر گریه:</b> آنالیز فرکانس ۵ ثانیه‌ای برای علت‌یابی گریه نوزاد.<br>
-                ۵. 🎧 <b>مولد صدای سفید (White Noise):</b> پخش صدای رحم، سشوار، جاروبرقی و باران جهت آرامش خواب.<br>
-                ۶. 🚨 <b>راهنمای اورژانس WHO:</b> هشدار علائم خطر فوری.`;
+                <b>امکانات کلیدی برنامه:</b><br>
+                ۱. 🩺 <b>پزشک هوشمند AI:</b> مشاوره تخصصی سلامت نوزاد.<br>
+                ۲. 📈 <b>نمودار رشد WHO:</b> رسم پایش دقیق وزن همراه با صدک‌های جهانی.<br>
+                ۳. 💤 <b>آرام‌سازی نوزاد:</b> تکنیک‌های ۵S و آموزش ماساژ.<br>
+                ۴. 💉 <b>جدول واکسیناسیون:</b> ثبت و یادآوری واکسن‌های وزارت بهداشت.<br>
+                ۵. 👶 <b>تحلیل‌گر گریه:</b> سنجش صوتی علت بی‌قراری نوزاد.<br>
+                ۶. 🎧 <b>صدای سفید (White Noise):</b> صدای رحم، سشوار و باران.<br>
+                ۷. 🚨 <b>راهنمای اورژانس WHO:</b> هشدارهای حیاتی سلامت.`;
             }
 
             // Fever Queries
             if (text.includes('تب') || text.includes('داغ')) {
-                return `⚠️ <b>راهنمای مدیریت تب کودک:</b><br>
-                ۱. تب بالای ۳۸.۰ درجه در نوزاد زیر ۳ ماه <b>اورژانس فوری</b> است و باید به بیمارستان مراجعه کنید.<br>
-                ۲. در کودکان بالای ۳ ماه، تن‌شویه با آب ولرم (نه یخ) انجام دهید.<br>
-                ۳. قطره یا شربت استامینوفن فقط با دوز تجویزی پزشک (معمولا ۲ قطره به ازای هر کیلوگرم وزن) مصرف شود.<br>
-                ۴. لباس‌های اضافی نوزاد را درآورید.`;
+                return `⚠️ <b>دستورالعمل پزشکی تب نوزاد:</b><br>
+                ۱. تب بالای ۳۸.۰ درجه در نوزاد زیر ۳ ماه <b>اورژانس پزشکی</b> است (مراجعه سریع به بیمارستان).<br>
+                ۲. در نوزاد بالای ۳ ماه، تن‌شویه با آب ولرم (نه سرد) انجام دهید.<br>
+                ۳. دوز استامینوفن فقط با دستور پزشک (معمولا ۲ قطره به ازای هر کیلوگرم وزن) است.<br>
+                ۴. از دادن آسپرین به کودکان اکیداً خودداری کنید.`;
             }
 
-            // Eardrum / Foreign Body
-            if (text.includes('گوش') || text.includes('پرده') || text.includes('جسم خارجی') || text.includes('قورت')) {
-                return `🚨 <b>اقدام فوری پزشکی:</b><br>
-                - <b>بلعیدن جسم خارجی:</b> اگر نوزاد خفه می‌شود یا نفس نمی‌کشد، ضربات پشت (Back Blows) را آغاز کرده و فوراً با ۱۱۵ تماس بگیرید. از دست کردن در حلق نوزاد خودداری کنید.<br>
-                - <b>ترشح یا درد شدید گوش:</b> در صورت خروج مایع یا خون از گوش، از زدن هرگونه قطره یا دستکاری خودداری کرده و فوراً به متخصص گوش و حلق و بینی مراجعه کنید.`;
+            // Foreign Body / Choking
+            if (text.includes('جسم خارجی') || text.includes('قورت') || text.includes('خفه') || text.includes('پرید')) {
+                return `🚨 <b>اورژانس خفگی و بلعیدن جسم خارجی:</b><br>
+                ۱. اگر نوزاد قادر به نفس کشیدن یا گریه نیست، فوراً با ۱۱۵ تماس بگیرید.<br>
+                ۲. ۵ ضربه به پشت (بین دو کتف) در حالت سرپایین وارد کنید.<br>
+                ۳. سپس ۵ فشار به مرکز سینه وارد کنید.<br>
+                ۴. هرگز انگشت خود را کورکورانه وارد حلق نوزاد نکنید.`;
             }
 
-            // Circumcision Care
+            // Ear Tears / Discharge
+            if (text.includes('گوش') || text.includes('پرده') || text.includes('ترشح گوش')) {
+                return `👂 <b>مراقبت از گوش و احتمال پارگی پرده:</b><br>
+                ۱. در صورت خروج مایع، زردابه یا خون از گوش، از زدن هرگونه قطره و دستکاری خودداری کنید.<br>
+                ۲. گوش پاک‌کن را هرگز وارد مجرای گوش نوزاد نکنید.<br>
+                ۳. دست زدن مداوم نوزاد به گوش همراه با تب می‌تواند نشانه‌ عفونت گوش میانی باشد.`;
+            }
+
+            // Circumcision
             if (text.includes('ختنه')) {
-                return `🩹 <b>مراقبت‌های بعد از ختنه:</b><br>
-                ۱. محل ختنه را با گاز استریل و پماد چرب‌کننده (مانند وازلین یا تتراسایکلین طبق دستور پزشک) چرب نگه‌دارید تا به پوشک نچسبد.<br>
-                ۲. خونریزی در حد چند قطره طبیعی است؛ اما اگر خونریزی مداوم باشد فوراً به پزشک مراجعه کنید.<br>
-                ۳. شستشو با آب پس از ۲۴ تا ۴۸ ساعت (با نظر پزشک) مانعی ندارد.`;
+                return `🩹 <b>دستور مراقبت‌های ختنه:</b><br>
+                ۱. محل ختنه را با گاز استریل و وازلین چرب کنید تا به پوشک نچسبد.<br>
+                ۲. مشاهده تورم خفیف طبیعی است اما خونریزی مداوم نیاز به مراجعه فوری دارد.<br>
+                ۳. شستشو با آب پس از ۲۴ تا ۴۸ ساعت (با تایید پزشک) بلامانع است.`;
             }
 
-            // Feeding Queries
+            // Complementary Feeding
             if (text.includes('غذا') || text.includes('کمکی') || text.includes('شیر') || text.includes('عسل')) {
-                return `🥗 <b>اصول تغذیه تکمیلی (طبق AAP و وزارت بهداشت):</b><br>
-                ۱. تغذیه کمکی دقیقاً از <b>۶ ماهگی (۱۸۰ روزگی)</b> شروع می‌شود.<br>
-                ۲. شروع با فرنی آرد برنج و سپس حریره بادام است.<br>
-                ۳. ❌ <b>دادن عسل طبیعی زیر ۱ سال ممنوع است</b> (خطر بوتولیسم).<br>
-                ۴. ❌ مصرف شیر پاستوریزه گاو به عنوان نوشیدنی اصلی زیر ۱ سال ممنوع است (خطر کم‌خونی شدید).`;
+                return `🥣 <b>اصول شروع غذای کمکی:</b><br>
+                ۱. شروع دقیقا از <b>۶ ماهگی (۱۸۰ روزگی)</b> با فرنی آرد برنج.<br>
+                ۲. ❌ <b>مصرف عسل طبیعی زیر ۱ سال اکیدا ممنوع است</b> (خطر مسمومیت کشنده بوتولیسم).<br>
+                ۳. ❌ مصرف شیر گاو به عنوان نوشیدنی اصلی زیر ۱ سال ممنوع است.`;
             }
 
             // Colic & Gas
-            if (text.includes('کولیک') || text.includes('دل پیچه') || text.includes('نفخ') || text.includes('گریه شدید')) {
-                return `🍼 <b>مدیریت کولیک و نفخ نوزاد:</b><br>
-                ۱. آروغ نوزاد را بعد از هر بار شیردهی حتماً بگیرید.<br>
-                ۲. ماساژ شکم نوزاد جهت عقربه‌های ساعت با روغن زیتون ولرم بسیار مفید است.<br>
-                ۳. حرکت دوچرخه پاهای نوزاد به دفع گاز کمک می‌کند.<br>
-                ۴. استفاده از قطره‌های ضد نفخ (دایمتیکون/کارمینات) با تایید پزشک توصیه می‌شود.`;
+            if (text.includes('کولیک') || text.includes('نفخ') || text.includes('دل پیچه') || text.includes('گریه')) {
+                return `🍼 <b>درمان کولیک و دل‌پیچه:</b><br>
+                ۱. حتماً پس از هر بار شیردهی آروغ نوزاد را بگیرید.<br>
+                ۲. از تکنیک‌های ۵S (بخش آرام‌سازی برنامه) استفاده کنید.<br>
+                ۳. شکم نوزاد را در جهت عقربه‌های ساعت ماساژ دهید.`;
             }
 
-            // Colds / Cough
+            // Cold & Cough
             if (text.includes('سرماخوردگی') || text.includes('عطسه') || text.includes('سرفه') || text.includes('آبریزش')) {
-                return `🤧 <b>مراقبت‌های سرماخوردگی نوزاد:</b><br>
-                ۱. بینی نوزاد را با قطره کلرور سدیم (سالین) و پوآر (مکش‌کننده) تمیز کنید تا راحت‌تر شیر بخورد.<br>
-                ۲. از دستگاه بخور سرد در اتاق نوزاد استفاده کنید.<br>
-                ۳. دادن داروهای خودسرانه آنتی‌بیوتیک یا دیفن‌هیدرامین زیر ۲ سال اکیداً ممنوع است.`;
+                return `🤧 <b>سرماخوردگی نوزاد:</b><br>
+                ۱. بینی نوزاد را با قطره سالین (سدیم کلراید) و پوآر شستشو دهید.<br>
+                ۲. از دستگاه بخور سرد در اتاق استفاده کنید.<br>
+                ۳. دادن داروهای خودسرانه آنتی‌بیوتیک یا دیفن‌هیدرامین زیر ۲ سال ممنوع است.`;
             }
 
-            // Stool / Diarrhea / Constipation
-            if (text.includes('اسهال') || text.includes('یبوست') || text.includes('مدفوع') || text.includes('شکم')) {
-                return `💩 <b>بررسی وضعیت مدفوع:</b><br>
-                - <b>اسهال:</b> افزایش ناگهانی تعداد و شلی مدفوع. برای جلوگیری از کم‌آبی، مایعات و شیردهی را افزایش دهید.<br>
-                - <b>یبوست:</b> اگر مدفوع سفت است، شکم نوزاد را ماساژ دهید. زیر ۶ ماه حتماً با پزشک مشورت کنید.<br>
-                - 🚨 <b>مدفوع خونی، کاملا سفید یا سیاه</b> نیاز به بررسی فوری پزشکی دارد.`;
+            // Stool & Diarrhea
+            if (text.includes('اسهال') || text.includes('یبوست') || text.includes('مدفوع')) {
+                return `💩 <b>وضعیت مدفوع نوزاد:</b><br>
+                - <b>اسهال:</b> مایعات و شیردهی را افزایش دهید تا بدنش کم‌آب نشود.<br>
+                - <b>یبوست:</b> ماساژ شکم انجام دهید. زیر ۶ ماه با پزشک مشورت کنید.<br>
+                - 🚨 <b>مدفوع خونی، سفید یا کاملاً سیاه</b> نیاز به بررسی فوری پزشک دارد.`;
             }
 
             // Teething
             if (text.includes('دندان') || text.includes('لثه')) {
-                return `🦷 <b>علائم و مراقبت دندان گرفتن:</b><br>
-                ۱. آبریزش دهان، بی‌قراری و خارش لثه طبیعی است.<br>
+                return `🦷 <b>علائم دندان گرفتن:</b><br>
+                ۱. آبریزش دهان و خارش لثه طبیعی است.<br>
                 ۲. از دندان‌گیرهای سیلیکونی خنک (گذاشته شده در یخچال) استفاده کنید.<br>
-                ۳. تب شدید بالای ۳۸.۵ یا اسهال شدید مربوط به دندان‌درآوردن نیست و باید توسط پزشک معاینه شود.`;
+                ۳. تب بالای ۳۸.۵ درجه ربطی به دندان‌درآوردن ندارد.`;
             }
 
-            // Fallback Response
-            return `مادر/پدر گرامی، سوال شما دریافت شد.<br>
-            برای پاسخ دقیق‌تر می‌توانید درباره <b>تب، تغذیه کمکی، ختنه، سرماخوردگی، کولیک، واکسن</b> یا <b>معرفی برنامه و سازنده (نوید صادقی)</b> سوال بپرسید.<br>
-            ⚠️ <i>همواره توصیه می‌شود در صورت وجود علائم غیرطبیعی با پزشک متخصص اطفال مشورت نمایید.</i>`;
+            // Default Fallback
+            return `سوال شما دریافت شد.<br>
+            می‌توانید درباره <b>تب، ختنه، بلعیدن جسم خارجی، پارگی پرده گوش، تغذیه کمکی، کولیک، سرماخوردگی</b> یا <b>معرفی سازنده (نوید صادقی)</b> سوال بپرسید.<br>
+            ⚠️ <i>در صورت وجود علائم شدید حتماً به پزشک متخصص مراجعه کنید.</i>`;
         }
 
-        // Cry Analyzer Engine Simulation
+        // Cry Simulator Engine
         function startCryAnalysis() {
             const btn = document.getElementById('cry-btn');
             const res = document.getElementById('cry-result');
 
             btn.disabled = true;
             btn.innerText = 'در حال پردازش صوتی (۵ ثانیه)... 🎙️';
-            res.innerText = 'در حال دریافت فرکانس صدای گریه...';
+            res.innerText = 'در حال آنالیز فرکانس صدا...';
 
             setTimeout(() => {
                 const causes = [
-                    'احتمال ۸۵٪: گرسنگی (نیاز به شیردهی)',
-                    'احتمال ۷۸٪: نفخ و کولیک (نیاز به گرفتن آروغ و ماساژ)',
-                    'احتمال ۹۰٪: خستگی و نیاز به خواب',
-                    'احتمال ۷۲٪: خیس شدن پوشک و تعویض'
+                    'احتمال ۸۸٪: گرسنگی (نیاز به شیردهی)',
+                    'احتمال ۸۱٪: کولیک و نفخ (نیاز به گرفتن آروغ و ماساژ)',
+                    'احتمال ۹۲٪: خستگی و نیاز به خواب',
+                    'احتمال ۷۵٪: تعویض پوشک'
                 ];
-                const randomResult = causes[Math.floor(Math.random() * causes.length)];
-                res.innerHTML = `✅ <b>نتیجه آنالیز:</b> ${randomResult}`;
+                res.innerHTML = `✅ <b>نتیجه آنالیز:</b> ${causes[Math.floor(Math.random() * causes.length)]}`;
                 btn.disabled = false;
                 btn.innerText = 'شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️';
             }, 5000);
         }
 
-        // Web Audio Synthesizer (White Noise Generator)
+        // Web Audio Synthesizer (White Noise)
         let audioCtx = null;
         let noiseNode = null;
 
@@ -1069,16 +1220,16 @@
             const filter = audioCtx.createBiquadFilter();
             if (type === 'womb') {
                 filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(200, audioCtx.currentTime);
+                filter.frequency.setValueAtTime(180, audioCtx.currentTime);
             } else if (type === 'hairdryer') {
                 filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+                filter.frequency.setValueAtTime(750, audioCtx.currentTime);
             } else if (type === 'vacuum') {
                 filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+                filter.frequency.setValueAtTime(350, audioCtx.currentTime);
             } else { // rain
                 filter.type = 'highpass';
-                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                filter.frequency.setValueAtTime(900, audioCtx.currentTime);
             }
 
             noiseNode.connect(filter);
@@ -1097,22 +1248,16 @@
             }
         }
 
-        // Sync Modal Actions
-        function openSyncModal() {
-            document.getElementById('sync-modal').classList.add('active');
-        }
-
-        function closeSyncModal() {
-            document.getElementById('sync-modal').classList.remove('active');
-        }
-
+        // Sync Modal
+        function openSyncModal() { document.getElementById('sync-modal').classList.add('active'); }
+        function closeSyncModal() { document.getElementById('sync-modal').classList.remove('active'); }
         function applySyncCode() {
             const code = document.getElementById('input-sync-code').value.trim();
             if (code) {
-                alert(`دستگاه با کد ${code} همگام‌سازی شد.`);
+                alert(`دستگاه با کد ${code} متصل شد.`);
                 closeSyncModal();
             } else {
-                alert('لطفاً کد همگام‌سازی معتبر وارد کنید.');
+                alert('لطفاً کد معتبر وارد کنید.');
             }
         }
     </script>

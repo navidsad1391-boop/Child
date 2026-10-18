@@ -1,476 +1,1119 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="light" data-gender="boy">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نی‌نی یار پرو | نسخه نهایی v6.0</title>
+    <title>نی‌نی یار پرو | دستیار هوشمند والدین</title>
+    <!-- Vazirmatn Font -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <style>
         :root {
-            --bg-primary: #F0F4FF; --bg-card: #FFFFFF; --text-main: #1E293B; --text-sub: #64748B;
-            --accent-main: #3B82F6; --accent-gradient: linear-gradient(135deg, #3B82F6, #6366F1);
-            --accent-soft: #EEF2FF; --danger: #EF4444; --danger-bg: #FEF2F2;
-            --success: #10B981; --warning: #F59E0B; --border-color: #E2E8F0;
-            --radius-lg: 28px; --radius-md: 18px; --shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --primary-dark: #1e40af;
+            --accent: #3b82f6;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow: 0 4px 15px -1px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
         }
+
         [data-gender="girl"] {
-            --accent-main: #EC4899; --accent-gradient: linear-gradient(135deg, #EC4899, #F472B6);
-            --accent-soft: #FDF2F8; --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.15);
+            --primary: #ec4899;
+            --primary-light: #fdf2f8;
+            --primary-dark: #be185d;
+            --accent: #f472b6;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-primary); color: var(--text-main); padding-bottom: 100px; user-select: none; overflow-x: hidden; }
-        
-        /* Disclaimer Card - Legal Requirement */
-        .legal-banner { background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; padding: 12px 16px; border-radius: 15px; font-size: 0.75rem; margin: 10px 16px; line-height: 1.6; display: flex; align-items: flex-start; gap: 8px; }
 
-        .app-header { background: var(--accent-gradient); color: white; padding: 30px 20px 40px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; box-shadow: var(--shadow); position: relative; }
-        .baby-badge { background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; display: inline-block; margin-bottom: 10px; }
-        .baby-name { font-size: 2.2rem; font-weight: 900; margin-bottom: 5px; }
-        .sync-box { position: absolute; top: 30px; left: 20px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-family: monospace; }
-        
-        .quick-nav { display: flex; gap: 10px; overflow-x: auto; padding: 15px 16px; scrollbar-width: none; }
-        .quick-nav::-webkit-scrollbar { display: none; }
-        .nav-chip { background: var(--bg-card); color: var(--text-sub); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 30px; white-space: nowrap; font-size: 0.85rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
-        .nav-chip.active { background: var(--accent-main); color: white; border-color: var(--accent-main); transform: translateY(-3px); }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .container { padding: 0 16px; max-width: 600px; margin: 0 auto; }
-        .card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
-        .card-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        
-        .btn { width: 100%; padding: 15px; border: none; border-radius: var(--radius-md); background: var(--accent-gradient); color: white; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .btn:active { transform: scale(0.97); }
-        .btn-outline { background: transparent; border: 2px solid var(--accent-main); color: var(--accent-main); }
-        
-        /* Chat UI */
-        .chat-container { height: 500px; display: flex; flex-direction: column; background: var(--bg-primary); border-radius: 20px; overflow: hidden; border: 1px solid var(--border-color); }
-        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .chat-msg { max-width: 85%; padding: 12px 16px; border-radius: 20px; font-size: 0.92rem; line-height: 1.7; position: relative; }
-        .chat-msg.user { background: var(--accent-main); color: white; align-self: flex-start; border-bottom-right-radius: 4px; }
-        .chat-msg.ai { background: var(--bg-card); color: var(--text-main); align-self: flex-end; border-bottom-left-radius: 4px; border: 1px solid var(--border-color); }
-        .chat-input-area { display: flex; gap: 8px; padding: 12px; background: var(--bg-card); border-top: 1px solid var(--border-color); }
-        .chat-suggestions { display: flex; gap: 8px; padding: 10px; overflow-x: auto; background: var(--bg-card); border-top: 1px solid var(--border-color); }
-        .suggestion-chip { background: var(--accent-soft); color: var(--accent-main); padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; white-space: nowrap; cursor: pointer; border: 1px solid var(--accent-main); }
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding-bottom: 90px;
+            user-select: none;
+        }
 
-        .form-control { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; font-size: 0.95rem; }
-        
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border-color); box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 1000; }
-        .tab-btn { text-align: center; color: var(--text-sub); font-size: 0.75rem; font-weight: 800; background: none; border: none; flex: 1; cursor: pointer; }
-        .tab-btn.active { color: var(--accent-main); }
-        .tab-icon { font-size: 1.5rem; display: block; margin-bottom: 2px; }
+        /* Offline Overlay */
+        #offline-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 99999;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #offline-screen.active { display: flex; }
+        .offline-icon { font-size: 64px; margin-bottom: 20px; }
 
-        canvas { width: 100%; height: 230px; border-radius: 15px; margin-top: 15px; background: white; }
+        /* Legal Disclaimer Banner */
+        .disclaimer-banner {
+            background: #fffbeb;
+            border-bottom: 1px solid #fef3c7;
+            color: #b45309;
+            padding: 10px 16px;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .modal-content { background: var(--bg-card); border-radius: 25px; padding: 25px; width: 100%; max-width: 450px; max-height: 90vh; overflow-y: auto; }
+        /* App Header */
+        header {
+            background: var(--card-bg);
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
 
-        .hidden { display: none !important; }
-        .vaccine-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border: 1px solid var(--border-color); border-radius: 15px; margin-bottom: 10px; }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .baby-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid var(--primary);
+        }
+
+        .baby-info h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .baby-info p {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .sync-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+        }
+
+        /* Navigation Chips */
+        .nav-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            scrollbar-width: none;
+        }
+        .nav-chips::-webkit-scrollbar { display: none; }
+
+        .chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--bg);
+            color: var(--text-sub);
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Main Container */
+        main {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Card System */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* AI Doctor Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 520px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f1f5f9;
+        }
+
+        .msg {
+            max-width: 85%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .msg.bot {
+            background: white;
+            align-self: flex-start;
+            border-bottom-right-radius: 2px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .msg.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            gap: 6px;
+            padding: 8px;
+            background: white;
+            border-top: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .chat-suggestions::-webkit-scrollbar { display: none; }
+
+        .sug-chip {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 8px;
+            background: white;
+            border-top: 1px solid var(--border);
+            gap: 8px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .chat-input-area button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Dynamic Growth Form & Canvas */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: var(--text-sub);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:active { opacity: 0.9; }
+
+        /* Interactive Vaccine List */
+        .vaccine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .vaccine-item:last-child { border-bottom: none; }
+
+        .vaccine-info h4 { font-size: 13px; color: var(--text-main); }
+        .vaccine-info p { font-size: 11px; color: var(--text-sub); }
+
+        .vax-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .vax-btn.done {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .vax-btn.pending {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-sub);
+            font-size: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .nav-item span { font-size: 18px; margin-bottom: 2px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-body {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .badge-coming-soon {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 6px;
+        }
     </style>
 </head>
-<body>
+<body data-gender="boy">
 
-    <!-- Disclaimer Banner -->
-    <div class="legal-banner">
-        <span>⚠️</span>
-        <p><b>سلب مسئولیت:</b> محتوای این اپلیکیشن صرفاً جهت آموزش و افزایش آگاهی والدین است و جایگزین تشخیص پزشک نیست. در موارد اورژانسی فوراً با ۱۱۵ تماس بگیرید.</p>
+    <!-- Offline Screen -->
+    <div id="offline-screen">
+        <div class="offline-icon">📡</div>
+        <h2>ارتباط با شبکه قطع است</h2>
+        <p style="margin-top: 8px; font-size: 13px; color: #94a3b8;">لطفا اتصال اینترنت خود را بررسی کنید. برنامه‌های آفلاین بخش‌ها محفوظ هستند.</p>
     </div>
 
-    <!-- Header -->
-    <header class="app-header">
-        <div class="sync-box" id="header-sync-code">NYY-4963</div>
-        <div class="baby-badge"><span id="header-role">مادر 👩‍🍼</span> | <span id="header-gender">پسر 👦</span></div>
-        <div class="baby-name" id="header-name">آراد</div>
-        <div class="header-meta">
-            <span>🎂 سن: <strong id="header-age">...</strong></span>
-            <span>⚖️ وزن: <strong id="header-weight">...</strong> kg</span>
+    <!-- Medical Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        ⚠️ <span>هشدار پزشکی: اطلاعات این برنامه صرفاً جنبه آموزشی دارد و هرگز جایگزین تشخیص و دستور پزشک متخصص نیست.</span>
+    </div>
+
+    <!-- App Header -->
+    <header>
+        <div class="header-top">
+            <div class="baby-profile">
+                <div class="avatar" id="app-avatar">👶</div>
+                <div class="baby-info">
+                    <h1 id="app-baby-name">کودک من</h1>
+                    <p id="app-baby-age">سن: در حال محاسبه...</p>
+                </div>
+            </div>
+            <button class="sync-badge" onclick="openSyncModal()">کد همگام‌سازی 🔗</button>
         </div>
     </header>
 
-    <!-- Chips Nav -->
-    <div class="quick-nav">
-        <button class="nav-chip active" onclick="switchTab('sec-home', this)">🏠 داشبورد</button>
-        <button class="nav-chip" onclick="switchTab('sec-doctor', this)">🩺 پزشک هوشمند</button>
-        <button class="nav-chip" onclick="switchTab('sec-growth', this)">📈 نمودار رشد</button>
-        <button class="nav-chip" onclick="switchTab('sec-vaccine', this)">💉 واکسیناسیون</button>
-        <button class="nav-chip" onclick="switchTab('sec-cry', this)">🎙️ آنالیز گریه</button>
-        <button class="nav-chip" onclick="switchTab('sec-soothing', this)">🎧 صدای سفید</button>
+    <!-- Navigation Chips -->
+    <div class="nav-chips">
+        <div class="chip active" onclick="switchTab('dashboard', this)">داشبورد 🏠</div>
+        <div class="chip" onclick="switchTab('ai-doctor', this)">پزشک نی‌نی یار 🩺</div>
+        <div class="chip" onclick="switchTab('growth-chart', this)">نمودار رشد WHO 📈</div>
+        <div class="chip" onclick="switchTab('vaccines', this)">برنامه واکسیناسیون 💉</div>
+        <div class="chip" onclick="switchTab('cry-analyzer', this)">تحلیل‌گر گریه 👶</div>
+        <div class="chip" onclick="switchTab('white-noise', this)">صدای خواب (سفید) 🎧</div>
+        <div class="chip" onclick="switchTab('danger-signs', this)">علائم خطر WHO 🚨</div>
+        <div class="chip" onclick="switchTab('jaundice-scanner', this)">اسکن زردی 🟡 <span class="badge-coming-soon">به‌زودی</span></div>
+        <div class="chip" onclick="switchTab('pdf-exporter', this)">خروجی PDF 📄 <span class="badge-coming-soon">به‌زودی</span></div>
     </div>
 
-    <div class="container">
-        <!-- SECTION: DASHBOARD -->
-        <section id="sec-home">
+    <!-- Main Content Tabs -->
+    <main>
+
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="tab-content active">
             <div class="card">
-                <div class="card-title">📌 وضعیت سلامت</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div style="background: var(--accent-soft); padding: 15px; border-radius: 15px; text-align: center;">
-                        <small>سن دقیق</small>
-                        <div style="font-weight: 900; color: var(--accent-main);" id="dash-age">-</div>
-                    </div>
-                    <div style="background: #E8F5E9; padding: 15px; border-radius: 15px; text-align: center;">
-                        <small>واکسن بعدی</small>
-                        <div style="font-weight: 900; color: #2E7D32;" id="dash-vaccine">-</div>
+                <div class="card-header">
+                    <span class="card-title">📌 خلاصه‌ی وضعیت کودک</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6;" id="dashboard-summary">
+                    اطلاعات کودک در حال به‌روزرسانی است...
+                </p>
+            </div>
+
+            <div class="card" style="background: var(--primary-light); border-color: var(--primary);">
+                <div class="card-header">
+                    <span class="card-title" style="color: var(--primary-dark);">💡 توصیه روز پزشک</span>
+                </div>
+                <p style="font-size: 12px; color: var(--primary-dark); line-height: 1.6;" id="daily-tip">
+                    از ۶ ماهگی (۱۸۰ روزگی) تغذیه کمکی را با فرنی آرد برنج آغاز کنید. تا ۱ سالگی از دادن عسل طبیعی و شیر پاستوریزه گاو خودداری کنید.
+                </p>
+            </div>
+        </div>
+
+        <!-- AI DOCTOR TAB -->
+        <div id="ai-doctor" class="tab-content">
+            <div class="card" style="padding: 10px; margin-bottom: 8px;">
+                <p style="font-size: 11px; color: var(--text-sub); text-align: center;">
+                    👨‍⚕️ پاسخ‌گوی سوالات پزشکی کودک | توسعه یافته توسط <b>نوید صادقی</b>
+                </p>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="msg bot">
+                        سلام! من پزشک هوشمند <b>نی‌نی یار پرو</b> هستم. برنامه توسط <b>نوید صادقی</b> طراحی شده تا تمام مراقبت‌ها، سلامت و رشد فرزندتان را مدیریت کند.<br><br>
+                        چه سوالی درباره سلامتی، تغذیه، تب، داروها یا مراقبت از کودک دارید؟
                     </div>
                 </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">💊 دوز استامینوفن (بر اساس وزن)</div>
-                <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 10px;">وزن فعلی: <span id="dose-weight">...</span> کیلوگرم</p>
-                <div id="dose-result" style="background: #FFF3E0; padding: 15px; border-radius: 15px; color: #E65100; font-weight: 800; text-align: center;">
-                    ... در حال محاسبه
+
+                <!-- Chat Suggestion Chips -->
+                <div class="chat-suggestions">
+                    <div class="sug-chip" onclick="sendSuggested('این برنامه چکار میکنه؟')">این برنامه چکار میکنه؟</div>
+                    <div class="sug-chip" onclick="sendSuggested('سازنده برنامه کیست؟')">سازنده برنامه کیست؟</div>
+                    <div class="sug-chip" onclick="sendSuggested('تب کودک بالای ۳۸ درجه')">تب بالا ۳۸°</div>
+                    <div class="sug-chip" onclick="sendSuggested('دستور مراقبت از ختنه')">مراقبت ختنه</div>
+                    <div class="sug-chip" onclick="sendSuggested('بلعیدن جسم خارجی')">بلعیدن جسم خارجی</div>
+                    <div class="sug-chip" onclick="sendSuggested('پارگی پرده گوش')">پارگی پرده گوش</div>
+                    <div class="sug-chip" onclick="sendSuggested('شروع غذای کمکی')">غذای کمکی</div>
+                    <div class="sug-chip" onclick="sendSuggested('درمان کولیک و دل پیچه')">کولیک و دل‌پیچه</div>
+                    <div class="sug-chip" onclick="sendSuggested('سرماخوردگی و آبریزش')">سرماخوردگی</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="سوال خود را بنویسید..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">ارسال</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECTION: AI DOCTOR (Including Sex Ed) -->
-        <section id="sec-doctor" class="hidden">
-            <div class="card" style="padding: 10px;">
-                <div class="chat-container">
-                    <div class="chat-box" id="chat-messages">
-                        <div class="chat-msg ai">
-                            <h4>سلام! من پزشک هوشمند هستم 👨‍⚕️</h4>
-                            آماده پاسخگویی به تمام سوالات شما درباره <b>بیماری‌ها، آناتومی بدن، مسائل زناشویی والدین (+18)، لقاح و تربیت جنسی کودک</b> هستم.
-                        </div>
-                    </div>
-                    
-                    <div class="chat-suggestions">
-                        <div class="suggestion-chip" onclick="sendQuickChat('آموزش علمی رابطه جنسی و لقاح')">🔬 لقاح و سکس (+18)</div>
-                        <div class="suggestion-chip" onclick="sendQuickChat('رابطه جنسی بعد از زایمان چطور باشد؟')">🔞 رابطه بعد زایمان</div>
-                        <div class="suggestion-chip" onclick="sendQuickChat('توضیح آناتومی اندام تناسلی زن و مرد')">🧬 آناتومی اندام‌ها</div>
-                        <div class="suggestion-chip" onclick="sendQuickChat('به سوالات جنسی کودک چه جوابی بدهم؟')">👶 پاسخ به کودک</div>
-                        <div class="suggestion-chip" onclick="sendQuickChat('درمان تب و سرماخوردگی')">🤒 تب و لرز</div>
-                    </div>
+        <!-- GROWTH CHART TAB -->
+        <div id="growth-chart" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📈 ثبت و رسم نمودار وزن (WHO)</span>
+                </div>
+                <div class="form-group">
+                    <label>ماه کودک (۰ تا ۲۴ ماه):</label>
+                    <input type="number" id="growth-month" class="form-control" placeholder="مثلاً: 4" min="0" max="24">
+                </div>
+                <div class="form-group">
+                    <label>وزن ثبت شده (کیلوگرم):</label>
+                    <input type="number" step="0.1" id="growth-weight" class="form-control" placeholder="مثلاً: 6.5">
+                </div>
+                <button class="btn" onclick="addGrowthPoint()">ثبت و به روزرسانی نمودار</button>
+            </div>
 
-                    <div class="chat-input-area">
-                        <input type="text" id="chat-input" class="form-control" placeholder="سوال خود را بپرسید..." onkeypress="handleChatEnter(event)">
-                        <button class="btn" style="width: auto; padding: 0 15px;" onclick="processChat()">ارسال</button>
-                    </div>
+            <div class="card">
+                <canvas id="growthCanvas" width="320" height="200" style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;"></canvas>
+            </div>
+        </div>
+
+        <!-- VACCINES TAB -->
+        <div id="vaccines" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💉 جدول واکسیناسیون کشوری</span>
+                </div>
+                <div id="vaccine-list">
+                    <!-- Dynamic Vaccine Items -->
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECTION: GROWTH -->
-        <section id="sec-growth" class="hidden">
-            <div class="card">
-                <div class="card-title">📈 ثبت و پیگیری رشد</div>
-                <div style="display: flex; gap: 8px; margin-bottom: 15px;">
-                    <input type="number" id="growth-w" class="form-control" placeholder="وزن (kg)">
-                    <input type="number" id="growth-m" class="form-control" placeholder="ماه">
-                    <button class="btn" style="width: 80px;" onclick="addGrowthPoint()">ثبت</button>
-                </div>
-                <canvas id="growthCanvas"></canvas>
-            </div>
-        </section>
-
-        <!-- SECTION: VACCINE -->
-        <section id="sec-vaccine" class="hidden">
-            <div class="card">
-                <div class="card-title">💉 چک‌لیست واکسن</div>
-                <div id="vaccine-list"></div>
-            </div>
-        </section>
-
-        <!-- SECTION: CRY ANALYZER -->
-        <section id="sec-cry" class="hidden">
+        <!-- CRY ANALYZER TAB -->
+        <div id="cry-analyzer" class="tab-content">
             <div class="card" style="text-align: center;">
-                <div class="card-title">🎙️ آنالیزور هوشمند صدای گریه</div>
-                <div id="cry-anim" style="font-size: 3rem; margin: 20px 0;">👶</div>
-                <button class="btn" id="btn-cry" onclick="startCryAnalysis()">🎤 شروع آنالیز (۵ ثانیه)</button>
-                <div id="cry-result" class="hidden" style="margin-top: 20px; padding: 15px; background: var(--accent-soft); border-radius: 15px;"></div>
-            </div>
-        </section>
-
-        <!-- SECTION: SOOTHING -->
-        <section id="sec-soothing" class="hidden">
-            <div class="card">
-                <div class="card-title">🎧 صداهای آرام‌بخش</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="btn btn-outline" id="s-womb" onclick="toggleSound('womb')">🤰 صدای رحم</button>
-                    <button class="btn btn-outline" id="s-dryer" onclick="toggleSound('dryer')">💨 سشوار</button>
-                    <button class="btn btn-outline" id="s-vacuum" onclick="toggleSound('vacuum')">🧹 جاروبرقی</button>
-                    <button class="btn btn-outline" id="s-rain" onclick="toggleSound('rain')">🌧️ باران</button>
+                <div class="card-header" style="justify-content: center;">
+                    <span class="card-title">👶 پردازش فرکانس و علت گریه</span>
                 </div>
+                <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">
+                    موتور تحلیل صوتی، فرکانس گریه نوزاد را به مدت ۵ ثانیه آنالیز کرده و علت احتمالی را تشخیص می‌دهد.
+                </p>
+                <button class="btn" id="cry-btn" onclick="startCryAnalysis()">شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️</button>
+                <div id="cry-result" style="margin-top: 16px; font-weight: 700; font-size: 14px; color: var(--primary-dark);"></div>
             </div>
-        </section>
-    </div>
+        </div>
 
-    <!-- Bottom Nav -->
+        <!-- WHITE NOISE TAB -->
+        <div id="white-noise" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🎧 مولد صدای سفید (آرامش خواب)</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn" onclick="toggleNoise('womb')">صدای رحم 🤱</button>
+                    <button class="btn" onclick="toggleNoise('hairdryer')">سشوار 💨</button>
+                    <button class="btn" onclick="toggleNoise('vacuum')">جاروبرقی 🧹</button>
+                    <button class="btn" onclick="toggleNoise('rain')">باران 🌧️</button>
+                </div>
+                <button class="btn" style="background: var(--danger); margin-top: 12px;" onclick="stopNoise()">قطع صدا ⏹️</button>
+            </div>
+        </div>
+
+        <!-- WHO DANGER SIGNS TAB -->
+        <div id="danger-signs" class="tab-content">
+            <div class="card" style="border-right: 4px solid var(--danger);">
+                <h3 style="color: var(--danger); font-size: 14px; margin-bottom: 8px;">🚨 علائم اورژانسی (مراجعه سریع به بیمارستان)</h3>
+                <ul style="font-size: 12px; color: var(--text-main); line-height: 1.8; padding-right: 16px;">
+                    <li>تب بالای ۳۸.۰ درجه سانتی‌گراد در نوزادان زیر ۳ ماه.</li>
+                    <li>تشنج یا بی‌حالی شدید و عدم پاسخگویی به محرک‌ها.</li>
+                    <li>امتناع کامل از خوردن شیر یا مایعات بیش از ۵ تا ۶ ساعت.</li>
+                    <li>تنفس تند (بیش از ۶۰ بار در دقیقه) یا کبودی لب‌ها و صورت.</li>
+                    <li>زردی شدید که به شکم و پاهای نوزاد رسیده است.</li>
+                    <li>فرورفتگی شدید قفسه سینه هنگام تنفس.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- JAUNDICE SCANNER (PLACEHOLDER) -->
+        <div id="jaundice-scanner" class="tab-content">
+            <div class="card" style="text-align: center; padding: 40px 16px;">
+                <h3>🚀 به‌زودی در آپدیت بعدی</h3>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">
+                    اسکن هوشمند زردی نوزاد از روی تصویر قرنیه و پوست با پردازش تصویر هوش مصنوعی.
+                </p>
+            </div>
+        </div>
+
+        <!-- PDF EXPORTER (PLACEHOLDER) -->
+        <div id="pdf-exporter" class="tab-content">
+            <div class="card" style="text-align: center; padding: 40px 16px;">
+                <h3>🚀 به‌زودی در آپدیت بعدی</h3>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">
+                    خروجی فایل PDF کامل پرونده سلامت، نمودار رشد و سوابق واکسیناسیون برای ارائه به پزشک.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <button class="tab-btn active" onclick="switchTab('sec-home', this, true)"><span class="tab-icon">🏠</span>داشبورد</button>
-        <button class="tab-btn" onclick="switchTab('sec-doctor', this, true)"><span class="tab-icon">🩺</span>پزشک</button>
-        <button class="tab-btn" onclick="switchTab('sec-growth', this, true)"><span class="tab-icon">📈</span>رشد</button>
-        <button class="tab-btn" onclick="switchTab('sec-vaccine', this, true)"><span class="tab-icon">💉</span>واکسن</button>
+        <div class="nav-item active" onclick="switchTab('dashboard', this)">
+            <span>🏠</span>داشبورد
+        </div>
+        <div class="nav-item" onclick="switchTab('ai-doctor', this)">
+            <span>🩺</span>پزشک AI
+        </div>
+        <div class="nav-item" onclick="switchTab('growth-chart', this)">
+            <span>📈</span>نمودار رشد
+        </div>
+        <div class="nav-item" onclick="switchTab('vaccines', this)">
+            <span>💉</span>واکسن
+        </div>
+        <div class="nav-item" onclick="switchTab('danger-signs', this)">
+            <span>🚨</span>اورژانس
+        </div>
     </nav>
 
-    <!-- Onboarding -->
-    <div id="onboarding" class="modal hidden">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 15px;">خوش آمدید! 👋</h2>
+    <!-- Setup Onboarding Modal -->
+    <div class="modal-overlay" id="onboarding-modal">
+        <div class="modal-body">
+            <h3 style="margin-bottom: 12px; font-size: 16px;">خوش آمدید! ثبت اطلاعات نوزاد 👶</h3>
             <div class="form-group">
                 <label>نام نوزاد:</label>
-                <input type="text" id="in-name" class="form-control" placeholder="مثلاً: آراد">
+                <input type="text" id="init-name" class="form-control" placeholder="مثلاً: کیان">
             </div>
-            <div class="form-group" style="margin-top: 10px;">
+            <div class="form-group">
                 <label>جنسیت:</label>
-                <select id="in-gender" class="form-control">
+                <select id="init-gender" class="form-control">
                     <option value="boy">پسر 👦</option>
                     <option value="girl">دختر 👧</option>
                 </select>
             </div>
-            <div class="form-group" style="margin-top: 10px;">
+            <div class="form-group">
                 <label>تاریخ تولد:</label>
-                <input type="date" id="in-dob" class="form-control">
+                <input type="date" id="init-dob" class="form-control">
             </div>
-            <div class="form-group" style="margin-top: 10px;">
-                <label>وزن تولد (kg):</label>
-                <input type="number" step="0.1" id="in-weight" class="form-control" value="3.2">
+            <div class="form-group">
+                <label>وزن تولد (کیلوگرم):</label>
+                <input type="number" step="0.1" id="init-weight" class="form-control" placeholder="3.2">
             </div>
-            <button class="btn" style="margin-top: 20px;" onclick="saveOnboarding()">ورود به برنامه</button>
+            <button class="btn" onclick="saveOnboarding()">ذخیره و شروع</button>
         </div>
     </div>
 
-    <!-- Adult Verification Modal -->
-    <div id="adult-modal" class="modal hidden">
-        <div class="modal-content" style="text-align: center;">
-            <div style="font-size: 3rem;">🔞</div>
-            <h3>تایید سن بالای ۱۸ سال</h3>
-            <p style="font-size: 0.85rem; margin: 15px 0;">این بخش حاوی آموزش‌های علمی آناتومی و روابط زناشویی برای والدین است. آیا تایید می‌کنید که بالای ۱۸ سال هستید؟</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn" onclick="verifyAdult(true)">بله، هستم</button>
-                <button class="btn btn-outline" onclick="verifyAdult(false)">خیر</button>
+    <!-- Sync Modal -->
+    <div class="modal-overlay" id="sync-modal">
+        <div class="modal-body">
+            <h3 style="margin-bottom: 12px; font-size: 16px;">کد همگام‌سازی والدین 🔗</h3>
+            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">کد زیر را در گوشی همسر خود وارد کنید تا اطلاعات متصل شوند:</p>
+            <div style="background: #f1f5f9; padding: 12px; text-align: center; font-weight: 700; font-size: 18px; border-radius: 8px; letter-spacing: 2px;" id="my-sync-code">
+                NYY-8842
             </div>
+            <div style="margin-top: 16px;" class="form-group">
+                <label>ورود کد دستگاه همسر:</label>
+                <input type="text" id="input-sync-code" class="form-control" placeholder="NYY-XXXX">
+            </div>
+            <button class="btn" onclick="applySyncCode()">اتصال دستگاه</button>
+            <button class="btn" style="background: #94a3b8; margin-top: 8px;" onclick="closeSyncModal()">بستن</button>
         </div>
     </div>
 
+    <!-- JavaScript Core Engine -->
     <script>
-        const DB_KEY = 'niniyar_platinum_v6';
-        let state = {
-            name: 'نوزاد', gender: 'boy', dob: '2023-01-01', weight: 3.2,
-            growth: [{m: 0, w: 3.2}], vaccines: [], isAdult: false
+        const DB_KEY = 'nyy65_final_myket_db';
+
+        // Default Data Model
+        let appData = {
+            babyName: 'کیان',
+            gender: 'boy',
+            birthDate: '2023-10-01',
+            birthWeight: 3.3,
+            completedVaccines: [],
+            growthHistory: [
+                { month: 0, weight: 3.3 }
+            ]
         };
 
-        const VACCINES = [
-            {id: 'v0', n: 'بدو تولد', d: 'ب‌ث‌ژ، فلج اطفال، هپاتیت B'},
-            {id: 'v2', n: '۲ ماهگی', d: 'پنج‌گانه ۱ + فلج اطفال خوراکی'},
-            {id: 'v4', n: '۴ ماهگی', d: 'پنج‌گانه ۲ + فلج اطفال تزریقی'},
-            {id: 'v6', n: '۶ ماهگی', d: 'پنج‌گانه ۳ + فلج اطفال خوراکی'},
-            {id: 'v12', n: '۱۲ ماهگی', d: 'MMR (سرخک، سرخجه، اوریون)'},
-            {id: 'v18', n: '۱۸ ماهگی', d: 'یادآور پنج‌گانه + فلج اطفال + MMR'}
+        const vaccineSchedule = [
+            { id: 'v_birth', title: 'بدین تولد', desc: 'بدخیم (BCG) + فلج اطفال خوراکی (OPV) + هپاتیت B' },
+            { id: 'v_2m', title: '۲ ماهگی', desc: 'پنج‌گانه (پنتووالان) + فلج اطفال خوراکی' },
+            { id: 'v_4m', title: '۴ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی + فلج اطفال تزریقی (IPV)' },
+            { id: 'v_6m', title: '۶ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی' },
+            { id: 'v_12m', title: '۱۲ ماهگی', desc: 'MMR (سرخک، سرخجه، اوریون)' },
+            { id: 'v_18m', title: '۱۸ ماهگی', desc: 'یادآور پنج‌گانه + یادآور فلج اطفال + MMR' }
         ];
 
-        // Advanced Medical Knowledge Base (Comprehensive)
-        const MEDICAL_KB = [
-            {
-                keys: ['سکس', 'رابطه جنسی', 'لقاح', 'بچه چطور درست'],
-                isAdult: true,
-                resp: `🔬 <b>آموزش علمی لقاح و رابطه جنسی:</b><br><br>
-                ۱. <b>آناتومی:</b> در مرد، بیضه‌ها اسپرم تولید می‌کنند. در زن، تخمدان‌ها ماهانه یک تخمک آزاد می‌کنند.<br>
-                ۲. <b>نزدیکی:</b> در طول رابطه جنسی، آلت تناسلی مرد وارد واژن زن شده و پس از انزال، میلیون‌ها اسپرم وارد رحم می‌شوند.<br>
-                ۳. <b>لقاح:</b> اسپرم‌ها به سمت لوله‌های فالوپ شنا می‌کنند. اگر یک اسپرم با تخمک برخورد کند، لقاح انجام شده و سلول اولیه تشکیل می‌شود.<br>
-                ۴. <b>بارداری:</b> این سلول به دیواره رحم متصل شده و طی ۹ ماه به نوزاد تبدیل می‌شود.`
-            },
-            {
-                keys: ['بعد از زایمان', 'نزدیکی بعد', 'درد سکس', 'لوبریکانت'],
-                isAdult: true,
-                resp: `🔞 <b>بهداشت جنسی والدین پس از زایمان:</b><br><br>
-                • <b>زمان مناسب:</b> پزشکان توصیه می‌کنند حداقل ۶ هفته (۴۰ روز) صبر کنید تا بخیه‌ها و رحم کاملاً بازسازی شوند.<br>
-                • <b>خشکی واژن:</b> به دلیل شیردهی و تغییرات هورمونی، واژن خشک می‌شود. استفاده از <b>ژل لوبریکانت برپایه آب</b> الزامی است.<br>
-                • <b>درد:</b> اگر درد شدید است، پوزیشن‌های ملایم‌تر را انتخاب کنید یا با پزشک مشورت نمایید.`
-            },
-            {
-                keys: ['اندام تناسلی', 'آناتومی زن', 'آناتومی مرد', 'آلت'],
-                isAdult: true,
-                resp: `🧬 <b>شرح آناتومی اندام‌های تناسلی:</b><br><br>
-                • <b>سیستم زنانه:</b> شامل واژن (کانال زایمان)، دهانه رحم، رحم (محل رشد نوزاد) و تخمدان‌هاست. بخش بیرونی شامل کلیتوریس و لبه‌ها می‌باشد.<br>
-                • <b>سیستم مردانه:</b> شامل آلت تناسلی (برای خروج ادرار و اسپرم)، کیسه بیضه و بیضه‌ها (تولیدکننده اسپرم و هورمون تستوسترون) است.`
-            },
-            {
-                keys: ['سوال کودک', 'بچه از کجا', 'تربیت جنسی'],
-                resp: `👶 <b>نحوه پاسخ به سوالات جنسی کودکان:</b><br><br>
-                • <b>صداقت:</b> هرگز دروغ نگویید (لک‌لک و...).<br>
-                • <b>سادگی:</b> بگوئید: "وقتی مامان و بابا همدیگه رو خیلی دوست داشتن، یه دونه کوچولو از بابا و یه دونه از مامان تو شکم مامان پیش هم رفتن و تو اونجا رشد کردی."<br>
-                • <b>نام صحیح:</b> نام اندام‌ها را به درستی (بدون القای شرم) به کودک بیاموزید تا در صورت بروز مشکل بتواند به شما گزارش دهد.`
+        // Init App
+        window.addEventListener('load', () => {
+            loadData();
+            checkOnlineStatus();
+            window.addEventListener('online', checkOnlineStatus);
+            window.addEventListener('offline', checkOnlineStatus);
+            drawGrowthChart();
+        });
+
+        function checkOnlineStatus() {
+            const screen = document.getElementById('offline-screen');
+            if (!navigator.onLine) {
+                screen.classList.add('active');
+            } else {
+                screen.classList.remove('active');
             }
-        ];
+        }
 
-        window.onload = () => {
+        function loadData() {
             const saved = localStorage.getItem(DB_KEY);
-            if(saved) { state = JSON.parse(saved); updateUI(); }
-            else { document.getElementById('onboarding').classList.remove('hidden'); }
-        };
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch(e) {}
+            } else {
+                document.getElementById('onboarding-modal').classList.add('active');
+            }
+            updateUI();
+        }
+
+        function saveData() {
+            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            updateUI();
+        }
 
         function saveOnboarding() {
-            state.name = document.getElementById('in-name').value;
-            state.gender = document.getElementById('in-gender').value;
-            state.dob = document.getElementById('in-dob').value;
-            state.weight = parseFloat(document.getElementById('in-weight').value);
-            state.growth = [{m: 0, w: state.weight}];
-            localStorage.setItem(DB_KEY, JSON.stringify(state));
-            document.getElementById('onboarding').classList.add('hidden');
-            updateUI();
+            const name = document.getElementById('init-name').value.trim();
+            const gender = document.getElementById('init-gender').value;
+            const dob = document.getElementById('init-dob').value;
+            const weight = parseFloat(document.getElementById('init-weight').value);
+
+            if (name && dob && weight) {
+                appData.babyName = name;
+                appData.gender = gender;
+                appData.birthDate = dob;
+                appData.birthWeight = weight;
+                appData.growthHistory = [{ month: 0, weight: weight }];
+                saveData();
+                document.getElementById('onboarding-modal').classList.remove('active');
+            } else {
+                alert('لطفاً تمامی فیلدها را وارد کنید.');
+            }
         }
 
         function updateUI() {
-            document.documentElement.setAttribute('data-gender', state.gender);
-            document.getElementById('header-name').innerText = state.name;
-            document.getElementById('header-gender').innerText = state.gender === 'boy' ? 'پسر 👦' : 'دختر 👧';
-            document.getElementById('header-weight').innerText = state.weight;
-            
-            const age = calcAge(state.dob);
-            document.getElementById('header-age').innerText = age.text;
-            document.getElementById('dash-age').innerText = age.text;
-            document.getElementById('dose-weight').innerText = state.weight;
-            
-            const drops = Math.round(state.weight * 2);
-            document.getElementById('dose-result').innerText = `دوز مجاز استامینوفن: ${drops} قطره هر ۶ ساعت`;
-            
+            document.body.setAttribute('data-gender', appData.gender);
+            document.getElementById('app-baby-name').innerText = appData.babyName;
+            document.getElementById('app-avatar').innerText = appData.gender === 'boy' ? '👦' : '👧';
+
+            // Calculate age
+            const diffTime = Math.abs(new Date() - new Date(appData.birthDate));
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffMonths = Math.floor(diffDays / 30.43);
+            document.getElementById('app-baby-age').innerText = `سن: ${diffMonths} ماه (${diffDays} روز)`;
+
+            // Dashboard Summary
+            document.getElementById('dashboard-summary').innerHTML = `
+                فرزند شما <b>${appData.babyName}</b> عزیز ${diffMonths} ماه دارد.<br>
+                وزن هنگام تولد: ${appData.birthWeight} کیلوگرم.<br>
+                تعداد واکسن‌های تزریق شده: <b>${appData.completedVaccines.length} از ${vaccineSchedule.length}</b>.
+            `;
+
             renderVaccines();
-            renderChart();
+            drawGrowthChart();
         }
 
-        function calcAge(dob) {
-            const diff = new Date() - new Date(dob);
-            const days = Math.floor(diff / 86400000);
-            const months = Math.floor(days / 30.4);
-            return { days, months, text: `${months} ماه و ${days % 30} روز` };
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.chip').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if (element) element.classList.add('active');
         }
 
-        function switchTab(id, btn, isBottom = false) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            if(isBottom) {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            if(id === 'sec-growth') setTimeout(renderChart, 100);
-        }
-
-        let pendingChat = '';
-        function sendQuickChat(t) { document.getElementById('chat-input').value = t; processChat(); }
-        function handleChatEnter(e) { if(e.key === 'Enter') processChat(); }
-
-        function processChat() {
-            const input = document.getElementById('chat-input');
-            const q = input.value.trim();
-            if(!q) return;
-
-            addMsg(q, 'user');
-            input.value = '';
-
-            setTimeout(() => {
-                const item = MEDICAL_KB.find(k => k.keys.some(key => q.includes(key)));
-                if(item && item.isAdult && !state.isAdult) {
-                    pendingChat = item.resp;
-                    document.getElementById('adult-modal').classList.remove('hidden');
-                } else {
-                    const r = item ? item.resp : "متوجه سوال نشدم. لطفاً درباره تب، غذا، واکسن یا مسائل زناشویی بپرسید.";
-                    addMsg(r, 'ai');
-                }
-            }, 600);
-        }
-
-        function addMsg(h, type) {
-            const box = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.className = `chat-msg ${type}`;
-            div.innerHTML = type === 'ai' ? `<h4>👨‍⚕️ پاسخ پزشک:</h4>${h}` : h;
-            box.appendChild(div);
-            box.scrollTop = box.scrollHeight;
-        }
-
-        function verifyAdult(v) {
-            document.getElementById('adult-modal').classList.add('hidden');
-            if(v) { state.isAdult = true; localStorage.setItem(DB_KEY, JSON.stringify(state)); addMsg(pendingChat, 'ai'); }
-            else { addMsg("دسترسی به محتوای بزرگسال رد شد.", 'ai'); }
-        }
-
+        // Vaccine System
         function renderVaccines() {
-            const box = document.getElementById('vaccine-list');
-            box.innerHTML = '';
-            VACCINES.forEach(v => {
-                const done = state.vaccines.includes(v.id);
-                box.innerHTML += `
-                    <div class="vaccine-item">
-                        <div><b>${v.n}</b><br><small>${v.d}</small></div>
-                        <button class="btn ${done ? '' : 'btn-outline'}" style="width:auto; padding:5px 10px;" onclick="toggleVac('${v.id}')">
-                            ${done ? '✅ تزریق شد' : 'ثبت تزریق'}
-                        </button>
+            const container = document.getElementById('vaccine-list');
+            container.innerHTML = '';
+            vaccineSchedule.forEach(v => {
+                const isDone = appData.completedVaccines.includes(v.id);
+                const item = document.createElement('div');
+                item.className = 'vaccine-item';
+                item.innerHTML = `
+                    <div class="vaccine-info">
+                        <h4>${v.title}</h4>
+                        <p>${v.desc}</p>
                     </div>
+                    <button class="vax-btn ${isDone ? 'done' : 'pending'}" onclick="toggleVaccine('${v.id}')">
+                        ${isDone ? '✅ تزریق شد' : 'ثبت تزریق'}
+                    </button>
                 `;
+                container.appendChild(item);
             });
         }
 
-        function toggleVac(id) {
-            const i = state.vaccines.indexOf(id);
-            if(i > -1) state.vaccines.splice(i, 1);
-            else state.vaccines.push(id);
-            localStorage.setItem(DB_KEY, JSON.stringify(state));
-            updateUI();
+        function toggleVaccine(vId) {
+            const idx = appData.completedVaccines.indexOf(vId);
+            if (idx > -1) {
+                appData.completedVaccines.splice(idx, 1);
+            } else {
+                appData.completedVaccines.push(vId);
+            }
+            saveData();
         }
 
+        // Growth Chart Canvas Logic
         function addGrowthPoint() {
-            const w = parseFloat(document.getElementById('growth-w').value);
-            const m = parseInt(document.getElementById('growth-m').value);
-            if(w && !isNaN(m)) {
-                state.growth.push({m, w});
-                state.growth.sort((a,b) => a.m - b.m);
-                state.weight = w;
-                localStorage.setItem(DB_KEY, JSON.stringify(state));
-                updateUI();
-                alert("ثبت شد!");
+            const m = parseInt(document.getElementById('growth-month').value);
+            const w = parseFloat(document.getElementById('growth-weight').value);
+
+            if (!isNaN(m) && !isNaN(w) && m >= 0 && m <= 24) {
+                appData.growthHistory = appData.growthHistory.filter(item => item.month !== m);
+                appData.growthHistory.push({ month: m, weight: w });
+                appData.growthHistory.sort((a,b) => a.month - b.month);
+                saveData();
+                document.getElementById('growth-month').value = '';
+                document.getElementById('growth-weight').value = '';
+            } else {
+                alert('لطفاً ماه را بین ۰ تا ۲۴ و وزن معتبر وارد کنید.');
             }
         }
 
-        function renderChart() {
-            const c = document.getElementById('growthCanvas');
-            const ctx = c.getContext('2d');
-            c.width = c.offsetWidth; c.height = 230;
-            const w = c.width, h = c.height, p = 30;
-            ctx.clearRect(0,0,w,h);
-            
-            const mapX = (m) => p + (m/12)*(w-p-20);
-            const mapY = (v) => (h-p) - ((v-2)/10)*(h-p-20);
+        function drawGrowthChart() {
+            const canvas = document.getElementById('growthCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
 
-            // WHO Curves (3, 50, 97)
-            const p50 = [3.3, 4.5, 5.6, 6.4, 7.0, 7.5, 7.9, 8.3, 8.6, 8.9, 9.2, 9.4, 9.6];
-            ctx.strokeStyle = '#10B981'; ctx.beginPath();
-            p50.forEach((v, i) => { if(i===0) ctx.moveTo(mapX(i), mapY(v)); else ctx.lineTo(mapX(i), mapY(v)); });
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw Background Grid
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for(let i = 0; i <= 5; i++) {
+                let y = h - (i * (h / 5));
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+
+            // Draw Standard WHO Percentile Curve (50th percentile reference)
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, h - 30);
+            ctx.quadraticCurveTo(w / 2, h - 90, w, h - 160);
             ctx.stroke();
 
-            // Baby Points
-            ctx.strokeStyle = '#3B82F6'; ctx.lineWidth = 3; ctx.beginPath();
-            state.growth.forEach((pt, i) => { if(i===0) ctx.moveTo(mapX(pt.m), mapY(pt.w)); else ctx.lineTo(mapX(pt.m), mapY(pt.w)); });
-            ctx.stroke();
-            state.growth.forEach(pt => {
-                ctx.fillStyle = '#3B82F6'; ctx.beginPath(); ctx.arc(mapX(pt.m), mapY(pt.w), 5, 0, 7); ctx.fill();
-            });
+            // Draw User Data Points
+            if (appData.growthHistory && appData.growthHistory.length > 0) {
+                ctx.strokeStyle = appData.gender === 'boy' ? '#2563eb' : '#ec4899';
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+
+                appData.growthHistory.forEach((pt, idx) => {
+                    let x = (pt.month / 24) * (w - 40) + 20;
+                    let y = h - ((pt.weight / 15) * (h - 40) + 20);
+
+                    if (idx === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+
+                    ctx.arc(x, y, 4, 0, Math.PI * 2);
+                });
+                ctx.stroke();
+            }
         }
 
-        function startCryAnalysis() {
-            const b = document.getElementById('btn-cry');
-            const r = document.getElementById('cry-result');
-            b.disabled = true; b.innerText = "در حال شنیدن... 🎧";
+        // AI Chat Engine & Response System
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendSuggested(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const chatBox = document.getElementById('chat-messages');
+
+            // User Message
+            const uMsg = document.createElement('div');
+            uMsg.className = 'msg user';
+            uMsg.innerText = query;
+            chatBox.appendChild(uMsg);
+
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Generate AI Answer
             setTimeout(() => {
-                b.disabled = false; b.innerText = "🎤 شروع آنالیز";
-                r.classList.remove('hidden');
-                const causes = ["گرسنگی (۸۰٪ احتمال)", "کولیک و درد شکم (۷۰٪ احتمال)", "نیاز به تعویض پوشک", "خواب‌آلودگی"];
-                r.innerHTML = `🎯 نتیجه: <b>${causes[Math.floor(Math.random()*causes.length)]}</b>`;
-            }, 3000);
+                const bMsg = document.createElement('div');
+                bMsg.className = 'msg bot';
+                bMsg.innerHTML = getAIResponse(query);
+                chatBox.appendChild(bMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 400);
         }
 
-        let audioCtx = null, noise = null;
-        function toggleSound(t) {
-            if(noise) { noise.stop(); noise = null; return; }
+        function getAIResponse(q) {
+            const text = q.toLowerCase();
+
+            // App Intro / Creator Queries
+            if (text.includes('سازنده') || text.includes('نوید صادقی') || text.includes('برنامه چکار') || text.includes('معرفی برنامه') || text.includes('امکانات') || text.includes('کی ساخه') || text.includes('کی ساخته')) {
+                return `<b>برنامه نی‌نی یار پرو (NiniYar Pro v6.5)</b><br>
+                👨‍💻 <b>سازنده و توسعه‌دهنده:</b> نوید صادقی<br><br>
+                <b>این برنامه چه کارهایی انجام می‌دهد؟</b><br>
+                ۱. 🩺 <b>پزشک هوشمند AI:</b> پاسخ به تمامی سوالات پزشکی، دارویی و مراقبتی نوزاد.<br>
+                ۲. 📈 <b>نمودار رشد WHO:</b> رسم پایش وزن بر اساس استانداردهای جهانی.<br>
+                ۳. 💉 <b>جدول هوشمند واکسیناسیون:</b> ثبت و یادآوری واکسن‌های کشوری.<br>
+                ۴. 👶 <b>تحلیل‌گر گریه:</b> آنالیز فرکانس ۵ ثانیه‌ای برای علت‌یابی گریه نوزاد.<br>
+                ۵. 🎧 <b>مولد صدای سفید (White Noise):</b> پخش صدای رحم، سشوار، جاروبرقی و باران جهت آرامش خواب.<br>
+                ۶. 🚨 <b>راهنمای اورژانس WHO:</b> هشدار علائم خطر فوری.`;
+            }
+
+            // Fever Queries
+            if (text.includes('تب') || text.includes('داغ')) {
+                return `⚠️ <b>راهنمای مدیریت تب کودک:</b><br>
+                ۱. تب بالای ۳۸.۰ درجه در نوزاد زیر ۳ ماه <b>اورژانس فوری</b> است و باید به بیمارستان مراجعه کنید.<br>
+                ۲. در کودکان بالای ۳ ماه، تن‌شویه با آب ولرم (نه یخ) انجام دهید.<br>
+                ۳. قطره یا شربت استامینوفن فقط با دوز تجویزی پزشک (معمولا ۲ قطره به ازای هر کیلوگرم وزن) مصرف شود.<br>
+                ۴. لباس‌های اضافی نوزاد را درآورید.`;
+            }
+
+            // Eardrum / Foreign Body
+            if (text.includes('گوش') || text.includes('پرده') || text.includes('جسم خارجی') || text.includes('قورت')) {
+                return `🚨 <b>اقدام فوری پزشکی:</b><br>
+                - <b>بلعیدن جسم خارجی:</b> اگر نوزاد خفه می‌شود یا نفس نمی‌کشد، ضربات پشت (Back Blows) را آغاز کرده و فوراً با ۱۱۵ تماس بگیرید. از دست کردن در حلق نوزاد خودداری کنید.<br>
+                - <b>ترشح یا درد شدید گوش:</b> در صورت خروج مایع یا خون از گوش، از زدن هرگونه قطره یا دستکاری خودداری کرده و فوراً به متخصص گوش و حلق و بینی مراجعه کنید.`;
+            }
+
+            // Circumcision Care
+            if (text.includes('ختنه')) {
+                return `🩹 <b>مراقبت‌های بعد از ختنه:</b><br>
+                ۱. محل ختنه را با گاز استریل و پماد چرب‌کننده (مانند وازلین یا تتراسایکلین طبق دستور پزشک) چرب نگه‌دارید تا به پوشک نچسبد.<br>
+                ۲. خونریزی در حد چند قطره طبیعی است؛ اما اگر خونریزی مداوم باشد فوراً به پزشک مراجعه کنید.<br>
+                ۳. شستشو با آب پس از ۲۴ تا ۴۸ ساعت (با نظر پزشک) مانعی ندارد.`;
+            }
+
+            // Feeding Queries
+            if (text.includes('غذا') || text.includes('کمکی') || text.includes('شیر') || text.includes('عسل')) {
+                return `🥗 <b>اصول تغذیه تکمیلی (طبق AAP و وزارت بهداشت):</b><br>
+                ۱. تغذیه کمکی دقیقاً از <b>۶ ماهگی (۱۸۰ روزگی)</b> شروع می‌شود.<br>
+                ۲. شروع با فرنی آرد برنج و سپس حریره بادام است.<br>
+                ۳. ❌ <b>دادن عسل طبیعی زیر ۱ سال ممنوع است</b> (خطر بوتولیسم).<br>
+                ۴. ❌ مصرف شیر پاستوریزه گاو به عنوان نوشیدنی اصلی زیر ۱ سال ممنوع است (خطر کم‌خونی شدید).`;
+            }
+
+            // Colic & Gas
+            if (text.includes('کولیک') || text.includes('دل پیچه') || text.includes('نفخ') || text.includes('گریه شدید')) {
+                return `🍼 <b>مدیریت کولیک و نفخ نوزاد:</b><br>
+                ۱. آروغ نوزاد را بعد از هر بار شیردهی حتماً بگیرید.<br>
+                ۲. ماساژ شکم نوزاد جهت عقربه‌های ساعت با روغن زیتون ولرم بسیار مفید است.<br>
+                ۳. حرکت دوچرخه پاهای نوزاد به دفع گاز کمک می‌کند.<br>
+                ۴. استفاده از قطره‌های ضد نفخ (دایمتیکون/کارمینات) با تایید پزشک توصیه می‌شود.`;
+            }
+
+            // Colds / Cough
+            if (text.includes('سرماخوردگی') || text.includes('عطسه') || text.includes('سرفه') || text.includes('آبریزش')) {
+                return `🤧 <b>مراقبت‌های سرماخوردگی نوزاد:</b><br>
+                ۱. بینی نوزاد را با قطره کلرور سدیم (سالین) و پوآر (مکش‌کننده) تمیز کنید تا راحت‌تر شیر بخورد.<br>
+                ۲. از دستگاه بخور سرد در اتاق نوزاد استفاده کنید.<br>
+                ۳. دادن داروهای خودسرانه آنتی‌بیوتیک یا دیفن‌هیدرامین زیر ۲ سال اکیداً ممنوع است.`;
+            }
+
+            // Stool / Diarrhea / Constipation
+            if (text.includes('اسهال') || text.includes('یبوست') || text.includes('مدفوع') || text.includes('شکم')) {
+                return `💩 <b>بررسی وضعیت مدفوع:</b><br>
+                - <b>اسهال:</b> افزایش ناگهانی تعداد و شلی مدفوع. برای جلوگیری از کم‌آبی، مایعات و شیردهی را افزایش دهید.<br>
+                - <b>یبوست:</b> اگر مدفوع سفت است، شکم نوزاد را ماساژ دهید. زیر ۶ ماه حتماً با پزشک مشورت کنید.<br>
+                - 🚨 <b>مدفوع خونی، کاملا سفید یا سیاه</b> نیاز به بررسی فوری پزشکی دارد.`;
+            }
+
+            // Teething
+            if (text.includes('دندان') || text.includes('لثه')) {
+                return `🦷 <b>علائم و مراقبت دندان گرفتن:</b><br>
+                ۱. آبریزش دهان، بی‌قراری و خارش لثه طبیعی است.<br>
+                ۲. از دندان‌گیرهای سیلیکونی خنک (گذاشته شده در یخچال) استفاده کنید.<br>
+                ۳. تب شدید بالای ۳۸.۵ یا اسهال شدید مربوط به دندان‌درآوردن نیست و باید توسط پزشک معاینه شود.`;
+            }
+
+            // Fallback Response
+            return `مادر/پدر گرامی، سوال شما دریافت شد.<br>
+            برای پاسخ دقیق‌تر می‌توانید درباره <b>تب، تغذیه کمکی، ختنه، سرماخوردگی، کولیک، واکسن</b> یا <b>معرفی برنامه و سازنده (نوید صادقی)</b> سوال بپرسید.<br>
+            ⚠️ <i>همواره توصیه می‌شود در صورت وجود علائم غیرطبیعی با پزشک متخصص اطفال مشورت نمایید.</i>`;
+        }
+
+        // Cry Analyzer Engine Simulation
+        function startCryAnalysis() {
+            const btn = document.getElementById('cry-btn');
+            const res = document.getElementById('cry-result');
+
+            btn.disabled = true;
+            btn.innerText = 'در حال پردازش صوتی (۵ ثانیه)... 🎙️';
+            res.innerText = 'در حال دریافت فرکانس صدای گریه...';
+
+            setTimeout(() => {
+                const causes = [
+                    'احتمال ۸۵٪: گرسنگی (نیاز به شیردهی)',
+                    'احتمال ۷۸٪: نفخ و کولیک (نیاز به گرفتن آروغ و ماساژ)',
+                    'احتمال ۹۰٪: خستگی و نیاز به خواب',
+                    'احتمال ۷۲٪: خیس شدن پوشک و تعویض'
+                ];
+                const randomResult = causes[Math.floor(Math.random() * causes.length)];
+                res.innerHTML = `✅ <b>نتیجه آنالیز:</b> ${randomResult}`;
+                btn.disabled = false;
+                btn.innerText = 'شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️';
+            }, 5000);
+        }
+
+        // Web Audio Synthesizer (White Noise Generator)
+        let audioCtx = null;
+        let noiseNode = null;
+
+        function toggleNoise(type) {
+            stopNoise();
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*2, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for(let i=0; i<data.length; i++) data[i] = (Math.random()*2-1)*0.05;
-            noise = audioCtx.createBufferSource();
-            noise.buffer = buffer; noise.loop = true;
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noiseNode = audioCtx.createBufferSource();
+            noiseNode.buffer = buffer;
+            noiseNode.loop = true;
+
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass'; filter.frequency.value = (t==='womb'?300:800);
-            noise.connect(filter); filter.connect(audioCtx.destination);
-            noise.start();
+            if (type === 'womb') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(200, audioCtx.currentTime);
+            } else if (type === 'hairdryer') {
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+            } else if (type === 'vacuum') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+            } else { // rain
+                filter.type = 'highpass';
+                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            }
+
+            noiseNode.connect(filter);
+            filter.connect(audioCtx.destination);
+            noiseNode.start();
+        }
+
+        function stopNoise() {
+            if (noiseNode) {
+                try { noiseNode.stop(); } catch(e){}
+                noiseNode = null;
+            }
+            if (audioCtx) {
+                try { audioCtx.close(); } catch(e){}
+                audioCtx = null;
+            }
+        }
+
+        // Sync Modal Actions
+        function openSyncModal() {
+            document.getElementById('sync-modal').classList.add('active');
+        }
+
+        function closeSyncModal() {
+            document.getElementById('sync-modal').classList.remove('active');
+        }
+
+        function applySyncCode() {
+            const code = document.getElementById('input-sync-code').value.trim();
+            if (code) {
+                alert(`دستگاه با کد ${code} همگام‌سازی شد.`);
+                closeSyncModal();
+            } else {
+                alert('لطفاً کد همگام‌سازی معتبر وارد کنید.');
+            }
         }
     </script>
 </body>

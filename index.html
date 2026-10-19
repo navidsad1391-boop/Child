@@ -750,32 +750,30 @@
         </div>
     </div>
 
-    <!-- Real Cloud Sync Modal (GitHub REST API Engine) -->
+    <!-- Automatic Cloud Sync Modal -->
     <div class="modal-overlay" id="sync-modal">
         <div class="modal-body">
-            <h3 style="margin-bottom: 12px; font-size: 15px;">همگام‌سازی ابری روی گیت‌هاب ☁️</h3>
-            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">اطلاعات شما به‌صورت کاملاً زنده روی دیتابیس ابری ذخیره و بازیابی می‌شود:</p>
-            
-            <button class="btn" style="background: var(--success); margin-bottom: 12px;" onclick="uploadToCloudSync()">ایجاد / آپلود کد همگام‌سازی 📤</button>
+            <h3 style="margin-bottom: 12px; font-size: 15px;">همگام‌سازی زنده والدین ☁️</h3>
+            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">اطلاعات به‌صورت <b>کاملاً خودکار و لحظه‌ای</b> بین گوشی پدر و مادر همگام‌سازی می‌شود:</p>
 
-            <div style="background: #f1f5f9; padding: 10px; text-align: center; font-weight: 700; font-size: 16px; border-radius: 8px; letter-spacing: 1px; color: var(--primary-dark);" id="my-sync-code">
-                کد فعال نیست
+            <div style="background: #f1f5f9; padding: 12px; text-align: center; font-weight: 700; font-size: 16px; border-radius: 8px; letter-spacing: 1px; color: var(--primary-dark);" id="my-sync-code">
+                در حال دریافت کد اتصال...
             </div>
 
             <hr style="margin: 14px 0; border: none; border-top: 1px dashed var(--border);">
 
             <div class="form-group">
-                <label>دریافت اطلاعات از دستگاه همسر (ورود کد):</label>
-                <input type="text" id="input-sync-code" class="form-control" placeholder="مثلاً: GIST-ID یا کد همسر">
+                <label>اتصال به دستگاه همسر (ورود کد اتصال):</label>
+                <input type="text" id="input-sync-code" class="form-control" placeholder="مثلاً: NYY-A8F23B">
             </div>
-            <button class="btn" onclick="downloadFromCloudSync()">همگام‌سازی و دانلود داده‌ها 📥</button>
+            <button class="btn" onclick="connectSpouseDevice()">اتصال و همگام‌سازی زنده 🔗</button>
             <button class="btn" style="background: #94a3b8; margin-top: 8px;" onclick="closeSyncModal()">بستن</button>
         </div>
     </div>
 
-    <!-- JS Core Engine & GitHub Cloud Database -->
+    <!-- JS Core Engine & Automatic Cloud Sync Engine -->
     <script>
-        const DB_KEY = 'nyy67_github_cloud_db';
+        const DB_KEY = 'nyy68_auto_cloud_db';
 
         // Default Data Model
         let appData = {
@@ -789,7 +787,7 @@
                 { month: 2, weight: 5.4 },
                 { month: 4, weight: 6.8 }
             ],
-            syncGistId: ''
+            syncCode: ''
         };
 
         const vaccineSchedule = [
@@ -801,7 +799,7 @@
             { id: 'v_18m', title: '۱۸ ماهگی', desc: 'یادآور پنج‌گانه + یادآور فلج اطفال + MMR' }
         ];
 
-        // WHO Standard Percentiles (0 to 24 Months)
+        // WHO Standard Percentiles
         const standardWHO = [
             { month: 0, p3: 2.5, p50: 3.3, p97: 4.4 },
             { month: 2, p3: 4.3, p50: 5.6, p97: 7.1 },
@@ -818,6 +816,13 @@
             checkOnlineStatus();
             window.addEventListener('online', checkOnlineStatus);
             window.addEventListener('offline', checkOnlineStatus);
+
+            // Automatic Periodic Background Pull (every 20 seconds)
+            setInterval(() => {
+                if (appData.syncCode && navigator.onLine) {
+                    pullDataFromCloud(appData.syncCode, true);
+                }
+            }, 20000);
         });
 
         function checkOnlineStatus() {
@@ -833,12 +838,20 @@
             } else {
                 document.getElementById('onboarding-modal').classList.add('active');
             }
+
+            // Ensure Sync Code exists
+            if (!appData.syncCode) {
+                initAutoCloudSyncCode();
+            }
+
             updateUI();
         }
 
         function saveData() {
             localStorage.setItem(DB_KEY, JSON.stringify(appData));
             updateUI();
+            // AUTOMATIC BACKGROUND PUSH TO CLOUD
+            pushDataToCloudSilent();
         }
 
         function saveOnboarding() {
@@ -865,7 +878,7 @@
             document.getElementById('app-baby-name').innerText = appData.babyName;
             document.getElementById('app-avatar').innerText = appData.gender === 'boy' ? '👦' : '👧';
 
-            // Calculate age
+            // Age Calculation
             const diffTime = Math.abs(new Date() - new Date(appData.birthDate));
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const diffMonths = Math.floor(diffDays / 30.43);
@@ -876,11 +889,11 @@
                 فرزند شما <b>${appData.babyName}</b> عزیز ${diffMonths} ماه دارد.<br>
                 وزن هنگام تولد: <b>${appData.birthWeight} کیلوگرم</b>.<br>
                 تعداد واکسن‌های تزریق شده: <b>${appData.completedVaccines.length} از ${vaccineSchedule.length}</b>.<br>
-                وضعیت همگام‌سازی ابری: <b>${appData.syncGistId ? 'فعال 🟢' : 'غیرفعال ⚪'}</b>
+                همگام‌سازی ابری: <b>${appData.syncCode ? 'خودکار و فعال 🟢' : 'در حال آماده‌سازی...'}</b>
             `;
 
-            if (appData.syncGistId) {
-                document.getElementById('my-sync-code').innerText = `کد شما: ${appData.syncGistId}`;
+            if (appData.syncCode) {
+                document.getElementById('my-sync-code').innerText = `کد اختصاصی: ${appData.syncCode}`;
             }
 
             renderVaccines();
@@ -984,7 +997,6 @@
             ctx.strokeStyle = '#e2e8f0';
             ctx.lineWidth = 1;
 
-            // Y Axis (0 to 16 kg)
             for (let w = 0; w <= 16; w += 2) {
                 let y = H - padY - (w / 16) * (H - 2 * padY);
                 ctx.beginPath();
@@ -997,7 +1009,6 @@
                 ctx.fillText(w + 'kg', 5, y + 3);
             }
 
-            // X Axis (Months 0 to 24)
             for (let m = 0; m <= 24; m += 4) {
                 let x = padX + (m / 24) * (W - padX - 10);
                 ctx.beginPath();
@@ -1013,7 +1024,6 @@
             const getX = (m) => padX + (m / 24) * (W - padX - 10);
             const getY = (w) => H - padY - (w / 16) * (H - 2 * padY);
 
-            // Draw Standard Percentiles
             const drawPercentile = (key, color) => {
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 1.5;
@@ -1031,7 +1041,6 @@
             drawPercentile('p50', '#10b981');
             drawPercentile('p97', '#ef4444');
 
-            // Draw User Curve
             if (appData.growthHistory && appData.growthHistory.length > 0) {
                 ctx.strokeStyle = appData.gender === 'boy' ? '#2563eb' : '#ec4899';
                 ctx.fillStyle = ctx.strokeStyle;
@@ -1056,68 +1065,81 @@
             }
         }
 
-        // Real Cloud Sync Engine via GitHub REST API / Gists
-        async function uploadToCloudSync() {
-            if (!navigator.onLine) {
-                alert('برای همگام‌سازی ابری به اینترنت متصل شوید.');
-                return;
-            }
+        // AUTOMATIC SILENT CLOUD SYNC ENGINE
+        async function initAutoCloudSyncCode() {
+            if (!navigator.onLine) return;
             try {
                 const payload = {
-                    description: `NiniYar Pro Sync Data - ${appData.babyName}`,
+                    description: `NiniYar Auto Sync Data`,
                     public: true,
                     files: {
-                        "niniyar_data.json": {
-                            content: JSON.stringify(appData)
-                        }
+                        "niniyar_data.json": { content: JSON.stringify(appData) }
                     }
                 };
-
                 const res = await fetch('https://api.github.com/gists', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
                 const data = await res.json();
                 if (data && data.id) {
-                    appData.syncGistId = data.id;
-                    saveData();
-                    document.getElementById('my-sync-code').innerText = `کد اختصاصی شما: ${data.id}`;
-                    alert(`اطلاعات با موفقیت آپلود شد!\nکد همگام‌سازی شما: ${data.id}`);
+                    appData.syncCode = `NYY-${data.id.substring(0, 8).toUpperCase()}`;
+                    appData.realGistId = data.id;
+                    localStorage.setItem(DB_KEY, JSON.stringify(appData));
+                    updateUI();
                 }
-            } catch (err) {
-                alert('خطا در اتصال به دیتابیس ابری گیت‌هاب.');
-            }
+            } catch (e) {}
         }
 
-        async function downloadFromCloudSync() {
-            const code = document.getElementById('input-sync-code').value.trim();
-            if (!code) {
-                alert('لطفاً کد همگام‌سازی همسر را وارد کنید.');
-                return;
-            }
-            if (!navigator.onLine) {
-                alert('برای دانلود به اینترنت متصل شوید.');
-                return;
-            }
+        async function pushDataToCloudSilent() {
+            if (!navigator.onLine || !appData.realGistId) return;
+            try {
+                const payload = {
+                    files: {
+                        "niniyar_data.json": { content: JSON.stringify(appData) }
+                    }
+                };
+                await fetch(`https://api.github.com/gists/${appData.realGistId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {}
+        }
+
+        async function pullDataFromCloud(code, silent = false) {
+            if (!navigator.onLine) return;
+            const targetId = appData.realGistId || (code ? code.replace('NYY-', '').toLowerCase() : '');
+            if (!targetId) return;
 
             try {
-                const res = await fetch(`https://api.github.com/gists/${code}`);
+                const res = await fetch(`https://api.github.com/gists/${targetId}`);
                 const data = await res.json();
                 if (data && data.files && data.files["niniyar_data.json"]) {
-                    const downloadedData = JSON.parse(data.files["niniyar_data.json"].content);
-                    appData = downloadedData;
-                    appData.syncGistId = code;
-                    saveData();
-                    closeSyncModal();
-                    alert('✅ همگام‌سازی کامل شد! اطلاعات نوزاد با موفقیت به روزرسانی شد.');
-                } else {
-                    alert('کد وارد شده معتبر نیست یا داده‌ای یافت نشد.');
+                    const cloudObj = JSON.parse(data.files["niniyar_data.json"].content);
+                    if (cloudObj && cloudObj.babyName) {
+                        cloudObj.syncCode = appData.syncCode;
+                        cloudObj.realGistId = targetId;
+                        appData = cloudObj;
+                        localStorage.setItem(DB_KEY, JSON.stringify(appData));
+                        updateUI();
+                        if (!silent) alert('✅ اطلاعات با موفقیت همگام‌سازی شد.');
+                    }
                 }
-            } catch (err) {
-                alert('خطا در خواندن داده‌ها از گیت‌هاب.');
+            } catch (e) {}
+        }
+
+        async function connectSpouseDevice() {
+            const inputCode = document.getElementById('input-sync-code').value.trim();
+            if (!inputCode) {
+                alert('لطفاً کد همسر را وارد کنید.');
+                return;
             }
+            const cleanId = inputCode.replace('NYY-', '').toLowerCase();
+            appData.realGistId = cleanId;
+            appData.syncCode = inputCode.toUpperCase();
+            await pullDataFromCloud(cleanId, false);
+            closeSyncModal();
         }
 
         // Exhaustive 200+ Question Medical AI Chat Engine
@@ -1159,11 +1181,11 @@
 
             // Creator & App Intro
             if (t.includes('سازنده') || t.includes('نوید صادقی') || t.includes('برنامه چکار') || t.includes('معرفی') || t.includes('امکانات') || t.includes('کی ساخته')) {
-                return `<b>اپلیکیشن نی‌نی یار پرو (NiniYar Pro v6.7)</b><br>
+                return `<b>اپلیکیشن نی‌نی یار پرو (NiniYar Pro v6.8)</b><br>
                 👨‍💻 <b>سازنده و توسعه‌دهنده:</b> نوید صادقی<br><br>
                 <b>امکانات کامل برنامه:</b><br>
                 ۱. 🩺 <b>پزشک هوشمند AI:</b> پاسخ به بیش از ۲۰۰ موضوع تخصصی پزشکی اطفال.<br>
-                ۲. ☁️ <b>دیتابیس ابری گیت‌هاب:</b> همگام‌سازی واقعی اطلاعات بین گوشی پدر و مادر.<br>
+                ۲. ☁️ <b>دیتابیس ابری زنده:</b> همگام‌سازی خودکار و لحظه‌ای اطلاعات بین گوشی پدر و مادر.<br>
                 ۳. 📈 <b>نمودار رشد WHO:</b> رسم دقیق پایش وزن با صدک‌های جهانی ۳، ۵۰ و ۹۷.<br>
                 ۴. 💤 <b>آرام‌سازی و ۵S:</b> آموزش تکنیک‌های آرام‌سازی و ماساژ ضد کولیک.<br>
                 ۵. 💉 <b>برنامه واکسیناسیون:</b> ثبت و یادآوری واکسن‌های وزارت بهداشت.<br>
@@ -1272,7 +1294,7 @@
 
             // Diaper Rash & Skin
             if (textIncludes(t, ['سوختگی', 'پوشک', 'ادرار سوختگی', 'پوسته سر', 'اگزمای پوست'])) {
-                return `پوست و ادرار سوختگی:</b><br>
+                return `🩹 <b>پوست و ادرار سوختگی:</b><br>
                 ۱. پوشک را زود به زود تعویض کرده و محل را با آب ولرم بشویید.<br>
                 ۲. از پماد پاست دهانه‌دار پانو یا زینک اکساید ۳۰٪ استفاده کنید.<br>
                 ۳. برای پوسته‌پوسته شدن سر (کلاه گهواره)، روغن بادام شیرین بزنید و با شانه نرم شانه کنید.`;

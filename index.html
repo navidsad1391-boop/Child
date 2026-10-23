@@ -754,10 +754,10 @@
     <div class="modal-overlay" id="sync-modal">
         <div class="modal-body">
             <h3 style="margin-bottom: 12px; font-size: 15px;">همگام‌سازی زنده والدین ☁️</h3>
-            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">اطلاعات به‌صورت <b>کاملاً خودکار و لحظه‌ای</b> بین گوشی پدر و مادر همگام‌سازی می‌شود:</p>
+            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">اطلاعات به‌صورت <b>خودکار و لحظه‌ای</b> بین گوشی پدر و مادر همگام می‌شود:</p>
 
-            <div style="background: #f1f5f9; padding: 12px; text-align: center; font-weight: 700; font-size: 16px; border-radius: 8px; letter-spacing: 1px; color: var(--primary-dark);" id="my-sync-code">
-                در حال دریافت کد اتصال...
+            <div style="background: #eff6ff; border: 1px solid var(--primary); padding: 12px; text-align: center; font-weight: 700; font-size: 16px; border-radius: 8px; letter-spacing: 1px; color: var(--primary-dark);" id="my-sync-code">
+                کد اختصاصی شما: NYY-XXXXXX
             </div>
 
             <hr style="margin: 14px 0; border: none; border-top: 1px dashed var(--border);">
@@ -766,14 +766,14 @@
                 <label>اتصال به دستگاه همسر (ورود کد اتصال):</label>
                 <input type="text" id="input-sync-code" class="form-control" placeholder="مثلاً: NYY-A8F23B">
             </div>
-            <button class="btn" onclick="connectSpouseDevice()">اتصال و همگام‌سازی زنده 🔗</button>
+            <button class="btn" id="btn-connect-spouse" onclick="connectSpouseDevice()">اتصال و همگام‌سازی زنده 🔗</button>
             <button class="btn" style="background: #94a3b8; margin-top: 8px;" onclick="closeSyncModal()">بستن</button>
         </div>
     </div>
 
-    <!-- JS Core Engine & Automatic Cloud Sync Engine -->
+    <!-- JS Core Engine & Cloud Sync Fixes (v6.9) -->
     <script>
-        const DB_KEY = 'nyy68_auto_cloud_db';
+        const DB_KEY = 'nyy69_cloud_sync_db';
 
         // Default Data Model
         let appData = {
@@ -787,7 +787,8 @@
                 { month: 2, weight: 5.4 },
                 { month: 4, weight: 6.8 }
             ],
-            syncCode: ''
+            syncCode: '',
+            realGistId: ''
         };
 
         const vaccineSchedule = [
@@ -825,6 +826,15 @@
             }, 20000);
         });
 
+        function generateSyncCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = 'NYY-';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
         function checkOnlineStatus() {
             const screen = document.getElementById('offline-screen');
             if (!navigator.onLine) screen.classList.add('active');
@@ -839,9 +849,10 @@
                 document.getElementById('onboarding-modal').classList.add('active');
             }
 
-            // Ensure Sync Code exists
+            // GUARANTEED INSTANT CODE GENERATION (Fix 1)
             if (!appData.syncCode) {
-                initAutoCloudSyncCode();
+                appData.syncCode = generateSyncCode();
+                localStorage.setItem(DB_KEY, JSON.stringify(appData));
             }
 
             updateUI();
@@ -850,7 +861,6 @@
         function saveData() {
             localStorage.setItem(DB_KEY, JSON.stringify(appData));
             updateUI();
-            // AUTOMATIC BACKGROUND PUSH TO CLOUD
             pushDataToCloudSilent();
         }
 
@@ -866,6 +876,7 @@
                 appData.birthDate = dob;
                 appData.birthWeight = weight;
                 appData.growthHistory = [{ month: 0, weight: weight }];
+                if (!appData.syncCode) appData.syncCode = generateSyncCode();
                 saveData();
                 document.getElementById('onboarding-modal').classList.remove('active');
             } else {
@@ -889,12 +900,10 @@
                 فرزند شما <b>${appData.babyName}</b> عزیز ${diffMonths} ماه دارد.<br>
                 وزن هنگام تولد: <b>${appData.birthWeight} کیلوگرم</b>.<br>
                 تعداد واکسن‌های تزریق شده: <b>${appData.completedVaccines.length} از ${vaccineSchedule.length}</b>.<br>
-                همگام‌سازی ابری: <b>${appData.syncCode ? 'خودکار و فعال 🟢' : 'در حال آماده‌سازی...'}</b>
+                کد اختصاصی همگام‌سازی: <b>${appData.syncCode}</b>
             `;
 
-            if (appData.syncCode) {
-                document.getElementById('my-sync-code').innerText = `کد اختصاصی: ${appData.syncCode}`;
-            }
+            document.getElementById('my-sync-code').innerText = `کد اختصاصی شما: ${appData.syncCode}`;
 
             renderVaccines();
             renderGrowthTable();
@@ -1066,80 +1075,114 @@
         }
 
         // AUTOMATIC SILENT CLOUD SYNC ENGINE
-        async function initAutoCloudSyncCode() {
+        async function pushDataToCloudSilent() {
             if (!navigator.onLine) return;
             try {
-                const payload = {
-                    description: `NiniYar Auto Sync Data`,
-                    public: true,
-                    files: {
-                        "niniyar_data.json": { content: JSON.stringify(appData) }
+                if (appData.realGistId) {
+                    const payload = {
+                        files: {
+                            "niniyar_data.json": { content: JSON.stringify(appData) }
+                        }
+                    };
+                    await fetch(`https://api.github.com/gists/${appData.realGistId}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    const payload = {
+                        description: `NiniYar Auto Sync - ${appData.syncCode}`,
+                        public: true,
+                        files: {
+                            "niniyar_data.json": { content: JSON.stringify(appData) }
+                        }
+                    };
+                    const res = await fetch('https://api.github.com/gists', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.id) {
+                            appData.realGistId = data.id;
+                            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+                        }
                     }
-                };
-                const res = await fetch('https://api.github.com/gists', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if (data && data.id) {
-                    appData.syncCode = `NYY-${data.id.substring(0, 8).toUpperCase()}`;
-                    appData.realGistId = data.id;
-                    localStorage.setItem(DB_KEY, JSON.stringify(appData));
-                    updateUI();
                 }
             } catch (e) {}
         }
 
-        async function pushDataToCloudSilent() {
-            if (!navigator.onLine || !appData.realGistId) return;
-            try {
-                const payload = {
-                    files: {
-                        "niniyar_data.json": { content: JSON.stringify(appData) }
-                    }
-                };
-                await fetch(`https://api.github.com/gists/${appData.realGistId}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (e) {}
-        }
+        async function pullDataFromCloud(targetCode, silent = false) {
+            if (!navigator.onLine) {
+                if (!silent) alert('❌ برای همگام‌سازی به اینترنت متصل شوید.');
+                return false;
+            }
 
-        async function pullDataFromCloud(code, silent = false) {
-            if (!navigator.onLine) return;
-            const targetId = appData.realGistId || (code ? code.replace('NYY-', '').toLowerCase() : '');
-            if (!targetId) return;
+            let gistId = appData.realGistId;
+            if (targetCode) {
+                gistId = targetCode.trim().replace('NYY-', '').toLowerCase();
+            }
+
+            if (!gistId) {
+                if (!silent) alert('❌ کد وارد شده نامعتبر است.');
+                return false;
+            }
 
             try {
-                const res = await fetch(`https://api.github.com/gists/${targetId}`);
+                const res = await fetch(`https://api.github.com/gists/${gistId}`);
+                if (!res.ok) {
+                    if (!silent) alert('❌ کد وارد شده اشتباه است یا اطلاعاتی برای این کد یافت نشد.');
+                    return false;
+                }
+
                 const data = await res.json();
                 if (data && data.files && data.files["niniyar_data.json"]) {
                     const cloudObj = JSON.parse(data.files["niniyar_data.json"].content);
                     if (cloudObj && cloudObj.babyName) {
-                        cloudObj.syncCode = appData.syncCode;
-                        cloudObj.realGistId = targetId;
+                        const currentLocalCode = appData.syncCode;
                         appData = cloudObj;
-                        localStorage.setItem(DB_KEY, JSON.stringify(appData));
+                        appData.realGistId = gistId;
+                        appData.syncCode = currentLocalCode;
+                        saveData();
                         updateUI();
-                        if (!silent) alert('✅ اطلاعات با موفقیت همگام‌سازی شد.');
+                        return true;
                     }
                 }
-            } catch (e) {}
+                if (!silent) alert('❌ فایل اطلاعات برای این کد معتبر نمی‌باشد.');
+                return false;
+            } catch (e) {
+                if (!silent) alert('❌ خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.');
+                return false;
+            }
         }
 
+        // VALIDATION & SPOUSE DEVICE CONNECTION (Fix 2)
         async function connectSpouseDevice() {
-            const inputCode = document.getElementById('input-sync-code').value.trim();
+            const inputField = document.getElementById('input-sync-code');
+            const inputCode = inputField.value.trim();
+            const btn = document.getElementById('btn-connect-spouse');
+
             if (!inputCode) {
-                alert('لطفاً کد همسر را وارد کنید.');
+                alert('⚠️ لطفاً کد اختصاصی همسر را وارد کنید.');
                 return;
             }
-            const cleanId = inputCode.replace('NYY-', '').toLowerCase();
-            appData.realGistId = cleanId;
-            appData.syncCode = inputCode.toUpperCase();
-            await pullDataFromCloud(cleanId, false);
-            closeSyncModal();
+
+            btn.disabled = true;
+            btn.innerText = 'در حال بررسی و دریافت اطلاعات... ⏳';
+
+            const success = await pullDataFromCloud(inputCode, false);
+
+            btn.disabled = false;
+            btn.innerText = 'اتصال و همگام‌سازی زنده 🔗';
+
+            if (success) {
+                alert('✅ همگام‌سازی با موفقیت انجام شد! تمامی اطلاعات فرزند به‌روزرسانی گردید.');
+                inputField.value = '';
+                closeSyncModal();
+            } else {
+                // Modal remains open so user can correct the typo!
+            }
         }
 
         // Exhaustive 200+ Question Medical AI Chat Engine
@@ -1181,7 +1224,7 @@
 
             // Creator & App Intro
             if (t.includes('سازنده') || t.includes('نوید صادقی') || t.includes('برنامه چکار') || t.includes('معرفی') || t.includes('امکانات') || t.includes('کی ساخته')) {
-                return `<b>اپلیکیشن نی‌نی یار پرو (NiniYar Pro v6.8)</b><br>
+                return `<b>اپلیکیشن نی‌نی یار پرو (NiniYar Pro v6.9)</b><br>
                 👨‍💻 <b>سازنده و توسعه‌دهنده:</b> نوید صادقی<br><br>
                 <b>امکانات کامل برنامه:</b><br>
                 ۱. 🩺 <b>پزشک هوشمند AI:</b> پاسخ به بیش از ۲۰۰ موضوع تخصصی پزشکی اطفال.<br>
@@ -1401,7 +1444,10 @@
         }
 
         // Sync Modal Logic
-        function openSyncModal() { document.getElementById('sync-modal').classList.add('active'); }
+        function openSyncModal() { 
+            document.getElementById('my-sync-code').innerText = `کد اختصاصی شما: ${appData.syncCode}`;
+            document.getElementById('sync-modal').classList.add('active'); 
+        }
         function closeSyncModal() { document.getElementById('sync-modal').classList.remove('active'); }
     </script>
 </body>

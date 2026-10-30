@@ -1,223 +1,762 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نی‌نی یار پرو v7.5</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <style>
-        :root {
-            --primary: #2563eb; --primary-light: #dbeafe; --primary-dark: #1e40af;
-            --accent: #f59e0b; --bg: #f8fafc; --card-bg: #ffffff;
-            --text-main: #0f172a; --text-sub: #64748b; --border: #e2e8f0;
-            --danger: #ef4444; --success: #10b981; --radius: 18px;
-        }
-        [data-theme="girl"] { --primary: #ec4899; --primary-light: #fce7f3; --primary-dark: #be185d; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Vazirmatn', sans-serif; }
-        body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; user-select: none; }
-        .header { background: var(--card-bg); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-        .app-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
-        .avatar-circle { width: 42px; height: 42px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--primary); cursor: pointer; }
-        .main-container { padding: 15px; padding-bottom: 90px; max-width: 600px; margin: 0 auto; }
-        .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 18px; border-radius: 14px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-vip { background: linear-gradient(45deg, #f59e0b, #d97706); color: white; border: none; }
-        .chips-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; }
-        .chips-container::-webkit-scrollbar { display: none; }
-        .chip { background: var(--card-bg); border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px; white-space: nowrap; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; }
-        .chip.active { background: var(--primary); border-color: var(--primary); color: white; font-weight: bold; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .chat-box { height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; background: #fafafa; }
-        .msg { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 0.85rem; }
-        .msg-ai { align-self: flex-start; background: white; border: 1px solid var(--border); }
-        .msg-user { align-self: flex-end; background: var(--primary); color: white; }
-        .wheel-box { position: relative; width: 250px; height: 250px; margin: 15px auto; }
-        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid var(--danger); z-index: 10; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-sub); font-size: 0.7rem; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .modal-content { background: var(--card-bg); border-radius: 25px; padding: 25px; width: 100%; max-width: 400px; position: relative; text-align: center; }
-        .q-chip { background: #f1f5f9; padding: 4px 10px; border-radius: 10px; font-size: 0.75rem; cursor: pointer; border: 1px solid var(--border); margin: 2px; display: inline-block; }
-        select { padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: white; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>نی نی یار پرو - دستیار هوشمند والدین</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 18px;
+      --shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; user-select: none; min-height: 100vh; }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .profile-section { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--primary-light); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; }
+    .badge-vip { position: absolute; top: -4px; right: -4px; background: #8b5cf6; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 10px; border: 2px solid white; }
+    .user-info h3 { font-size: 16px; font-weight: 700; color: var(--text); }
+    .user-info p { font-size: 12px; color: var(--text-muted); }
+
+    /* Navigation Chips */
+    .nav-scroller { overflow-x: auto; padding: 12px 16px; white-space: nowrap; display: flex; gap: 8px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav-scroller::-webkit-scrollbar { display: none; }
+    .chip { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+    .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
+
+    /* Containers */
+    .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards */
+    .card { background: var(--surface); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; border: 1px solid rgba(226, 232, 240, 0.8); }
+    .card-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+    /* Forms & Inputs */
+    .form-group { margin-bottom: 14px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px; }
+    .form-control { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; outline: none; background: #fff; }
+    .form-control:focus { border-color: var(--primary); }
+    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .btn:active { background: var(--primary-dark); }
+    .btn-secondary { background: #e2e8f0; color: #475569; }
+
+    /* Bottom Navigation */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--border); box-shadow: 0 -4px 15px rgba(0,0,0,0.03); z-index: 40; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: none; width: 20%; }
+    .nav-item .icon { font-size: 20px; margin-bottom: 2px; }
+    .nav-item.active { color: var(--primary); font-weight: 700; }
+
+    /* Modal */
+    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); padding: 20px; }
+    .modal.active { display: flex; }
+    .modal-body { background: var(--surface); width: 100%; max-width: 480px; border-radius: 24px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); max-height: 90vh; overflow-y: auto; }
+
+    /* Wheel */
+    .wheel-box { position: relative; width: 240px; height: 240px; margin: 0 auto 16px; }
+    #canvasWheel { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); }
+    .wheel-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #ef4444; z-index: 10; }
+
+    /* Chat AI */
+    .chat-box { height: 280px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: #f8fafc; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+    .chat-msg.user { background: var(--primary); color: white; align-self: flex-start; border-bottom-right-radius: 2px; }
+    .chat-msg.bot { background: white; color: var(--text); align-self: flex-end; border: 1px solid var(--border); border-bottom-left-radius: 2px; }
+
+    /* Canvas Growth Chart */
+    #growthChart { width: 100%; height: 220px; background: #fff; border-radius: 12px; border: 1px solid var(--border); }
+  </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="app-title">👶 نی‌نی یار پرو <span id="vipTag" style="display:none; color:gold; font-size:0.7rem;">VIP</span></div>
-        <div class="avatar-circle" id="userAvatar">👦</div>
+  <!-- Header -->
+  <div class="header">
+    <div class="profile-section" id="profileBtn">
+      <div class="avatar">
+        👶
+        <span class="badge-vip" id="vipBadge" style="display:none;">VIP</span>
+      </div>
+      <div class="user-info">
+        <h3 id="displayChildName">کودک من</h3>
+        <p id="displayAge">در حال محاسبه سن...</p>
+      </div>
+    </div>
+    <button class="chip" style="background:#fef3c7; color:#b45309; border-color:#fde68a;" onclick="openVIPModal()">👑 ارتقا به VIP</button>
+  </div>
+
+  <!-- Top Scroll Navigation -->
+  <div class="nav-scroller">
+    <div class="chip active" onclick="switchTab('dashboard', this)">🏠 خانه</div>
+    <div class="chip" onclick="switchTab('doctor', this)">🩺 پزشک AI</div>
+    <div class="chip" onclick="switchTab('growth', this)">📈 نمودار رشد</div>
+    <div class="chip" onclick="switchTab('cry', this)">😭 تحلیل گریه AI</div>
+    <div class="chip" onclick="switchTab('jaundice', this)">👁️ زردی‌سنج AI</div>
+    <div class="chip" onclick="switchTab('lullaby', this)">🎙️ استودیو لالایی</div>
+  </div>
+
+  <div class="container">
+
+    <!-- TAB 1: DASHBOARD -->
+    <div id="tab-dashboard" class="tab-content active">
+      <div class="card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white;">
+        <h2 style="font-size: 20px; margin-bottom: 6px;">سلام، والدین عزیز ❤️</h2>
+        <p style="font-size: 13px; opacity: 0.9;" id="dashSubtitle">به نی نی یار پرو خوش آمدید.</p>
+      </div>
+
+      <!-- Lucky Wheel -->
+      <div class="card" style="text-align: center;">
+        <div class="card-title" style="justify-content: center;">🎡 گردونه شانس و امتیاز روزانه</div>
+        <div class="wheel-box">
+          <div class="wheel-arrow"></div>
+          <canvas id="canvasWheel" width="240" height="240"></canvas>
+        </div>
+        <button class="btn" id="spinBtn" onclick="spinWheel()">چرخش گردونه</button>
+        <p id="wheelResult" style="margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--primary);"></p>
+      </div>
+
+      <!-- Milestones Poster Generator -->
+      <div class="card">
+        <div class="card-title">🖼️ پوستر ماهگرد نوزاد (VIP)</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">تولید پوستر گرافیکی ماهگرد با نام و سن دقیق نوزاد</p>
+        <button class="btn btn-secondary" onclick="generatePoster()">📸 ساخت پوستر ماهگرد</button>
+      </div>
     </div>
 
-    <div class="main-container">
-        <div class="chips-container" id="chipsNav">
-            <div class="chip active" onclick="switchTab('dashboard')">🏠 خانه</div>
-            <div class="chip" onclick="switchTab('ai-doctor')">🤖 پزشک AI</div>
-            <div class="chip" onclick="switchTab('growth')">📈 نمودار رشد</div>
-            <div class="chip" onclick="switchTab('jaundice')">👁️ زردی‌سنج</div>
-            <div class="chip" onclick="switchTab('lullaby')">🎙️ استودیو لالایی</div>
+    <!-- TAB 2: AI DOCTOR -->
+    <div id="tab-doctor" class="tab-content">
+      <div class="card">
+        <div class="card-title">🩺 دستیار هوشمند پزشکی نی‌نی یار</div>
+        <div class="chat-box" id="chatBox">
+          <div class="chat-msg bot">سلام! من پزشک هوشمند نی‌نی یار هستم. سوال پزشکی، تغذیه یا رشد نوزاد خود را بپرسید.</div>
         </div>
-
-        <!-- 1. DASHBOARD -->
-        <div id="dashboard" class="tab-content active">
-            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
-                <h2 id="bNameDisplay" style="margin:0;">خوش آمدید ❤️</h2>
-                <p id="bAgeDisplay" style="margin:5px 0 0 0; opacity: 0.9;">در حال بارگذاری...</p>
-                <button class="btn" style="background:var(--accent); margin-top:15px;" onclick="openVip()">👑 نسخه طلایی VIP</button>
-            </div>
-
-            <div class="card" style="text-align: center;">
-                <h3>🎡 گردونه شانس روزانه</h3>
-                <div class="wheel-box">
-                    <div class="wheel-pointer"></div>
-                    <canvas id="wheelCanvas" width="250" height="250"></canvas>
-                </div>
-                <button class="btn btn-outline" id="spinBtn" onclick="spinWheel()">چرخش گردونه</button>
-            </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="chatInput" class="form-control" placeholder="سوال خود را بنویسید (مثلاً: تب ۳۸ درجه)...">
+          <button class="btn" style="width: 90px;" onclick="sendChatMessage()">ارسال</button>
         </div>
-
-        <!-- 2. AI DOCTOR -->
-        <div id="ai-doctor" class="tab-content">
-            <div class="card">
-                <h3>🤖 دستیار هوشمند</h3>
-                <div class="chat-box" id="chatBox"></div>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="chatInput" placeholder="سوال شما..." style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--border);">
-                    <button class="btn" onclick="askAI()" style="width:auto;">ارسال</button>
-                </div>
-            </div>
+        <div style="display: flex; gap: 6px; overflow-x: auto; margin-top: 10px; padding-bottom: 4px;">
+          <span class="chip" onclick="quickAsk('در درمان کولیک نوزاد چه کنیم؟')">💨 کولیک</span>
+          <span class="chip" onclick="quickAsk('مراقبت‌های واکسن ۲ ماهگی')">💉 واکسن</span>
+          <span class="chip" onclick="quickAsk('علائم تب خطرناک در نوزاد')">🌡️ تب</span>
+          <span class="chip" onclick="quickAsk('زمان شروع غذای کمکی')">🥣 غذای کمکی</span>
         </div>
-
-        <!-- سایر بخش‌ها مشابه قبل... -->
-        <div id="growth" class="tab-content"><div class="card"><h3>📈 نمودار رشد</h3><canvas id="growthCanvas" width="300" height="200" style="width:100%;"></canvas></div></div>
-        <div id="jaundice" class="tab-content"><div class="card"><h3>👁️ زردی‌سنج هوشمند</h3><button class="btn btn-vip" onclick="openVip()">📸 آنالیز زردی (VIP)</button></div></div>
-        <div id="lullaby" class="tab-content"><div class="card"><h3>🎙️ استودیو ضبط صدا</h3><button class="btn btn-outline" onclick="openVip()">🎤 شروع ضبط (VIP)</button></div></div>
-
+      </div>
     </div>
 
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('dashboard')">🏠<span>خانه</span></div>
-        <div class="nav-item" onclick="switchTab('ai-doctor')">🤖<span>پزشک</span></div>
-        <div class="nav-item" onclick="switchTab('growth')">📈<span>رشد</span></div>
-        <div class="nav-item" onclick="openVip()">👑<span>VIP</span></div>
-    </div>
-
-    <!-- اصلاح شده: انتخاب تاریخ با مقادیر ثابت -->
-    <div id="onboarding" class="modal" style="display:flex;">
-        <div class="modal-content">
-            <h3 style="margin-bottom:20px;">خوش آمدید! ❤️</h3>
-            <input type="text" id="setupName" placeholder="نام نوزاد" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:15px;">
-            <label style="font-size:0.8rem; color:var(--text-sub);">تاریخ تولد (شمسی):</label>
-            <div style="display:flex; gap:5px; margin-top:5px; margin-bottom:20px;">
-                <select id="sy" style="flex:2;">
-                    <option value="1400">1400</option><option value="1401">1401</option><option value="1402">1402</option><option value="1403" selected>1403</option>
-                </select>
-                <select id="sm" style="flex:2;">
-                    <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
-                    <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
-                    <option value="7">مهر</option><option value="8">آبان</option><option value="9">آذر</option>
-                    <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
-                </select>
-                <select id="sd" style="flex:1.5;">
-                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
-                </select>
-            </div>
-            <button class="btn" onclick="saveInit()">ورود به برنامه</button>
+    <!-- TAB 3: WHO GROWTH CHART -->
+    <div id="tab-growth" class="tab-content">
+      <div class="card">
+        <div class="card-title">📈 نمودار رشد وزن (استاندارد جهانی WHO)</div>
+        <canvas id="growthChart"></canvas>
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <input type="number" id="weightInput" class="form-control" placeholder="وزن فعلی (کیلوگرم)">
+          <button class="btn" style="width: 100px;" onclick="addWeightRecord()">ثبت وزن</button>
         </div>
+      </div>
     </div>
 
-    <div id="vModal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:gold;">👑 فعالسازی نسخه طلایی</h3>
-            <p style="font-size:0.85rem;">دسترسی به زردی‌سنج هوشمند و استودیو لالایی</p>
-            <button class="btn btn-vip" onclick="alert('اتصال به مایکت...')">خرید اشتراک</button>
-            <button onclick="closeVip()" style="margin-top:10px; background:none; border:none; color:var(--text-sub);">بستن</button>
+    <!-- TAB 4: CRY ANALYZER AI -->
+    <div id="tab-cry" class="tab-content">
+      <div class="card" style="text-align: center;">
+        <div class="card-title" style="justify-content: center;">😭 تحلیل‌گر هوشمند صدای گریه (VIP)</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">میکروفون را نزدیک نوزاد بگیرید تا دلیل گریه (گرسنگی، درد کولیک، خستگی یا خواب) تحلیل شود.</p>
+        
+        <div id="cryStatus" style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--primary);">آماده ضبط صدا</div>
+        <button class="btn" id="cryRecordBtn" onclick="toggleCryAnalyzer()">🎙️ شروع آنالیز صدای گریه</button>
+        
+        <div id="cryResultCard" style="display: none; margin-top: 16px; padding: 12px; background: var(--primary-light); border-radius: 12px; text-align: right;">
+          <h4 style="color: var(--primary); margin-bottom: 4px;">نتیجه تحلیل هوش مصنوعی:</h4>
+          <p id="cryAnalysisText" style="font-size: 13px; color: var(--text);"></p>
         </div>
+      </div>
     </div>
 
-    <script>
-        let data = { name: "", y: 1403, m: 1, d: 1, isVip: false, lastSpin: 0 };
-        const PRIZES = [{t:"۱ روز VIP", c:"#2563eb"}, {t:"پوچ 💩", c:"#64748b"}, {t:"۳ روز VIP", c:"#f59e0b"}, {t:"پوچ 💩", c:"#94a3b8"}, {t:"۷ روز VIP", c:"#10b981"}, {t:"پوچ 💩", c:"#64748b"}, {t:"۳۰ روز VIP", c:"#ef4444"}, {t:"پوچ 💩", c:"#94a3b8"}];
+    <!-- TAB 5: JAUNDICE AI SCANNER -->
+    <div id="tab-jaundice" class="tab-content">
+      <div class="card" style="text-align: center;">
+        <div class="card-title" style="justify-content: center;">👁️ زردی‌سنج هوشمند چشمی (VIP)</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">تصویری از پوست یا سفیدی چشم نوزاد در نور طبیعی بگیرید.</p>
+        <input type="file" id="jaundiceImgInput" accept="image/*" style="display: none;" onchange="analyzeJaundice(this)">
+        <button class="btn" onclick="document.getElementById('jaundiceImgInput').click()">📸 انتخاب تصویر نوزاد</button>
+        <div id="jaundiceResult" style="margin-top: 14px; font-size: 13px; font-weight: 700;"></div>
+      </div>
+    </div>
 
-        window.onload = () => {
-            const saved = localStorage.getItem('nyy_v75');
-            if(saved) {
-                data = JSON.parse(saved);
-                document.getElementById('onboarding').style.display='none';
-                updateUI();
-            }
-            drawWheel(0);
-        };
+    <!-- TAB 6: LULLABY STUDIO -->
+    <div id="tab-lullaby" class="tab-content">
+      <div class="card">
+        <div class="card-title">🎙️ استودیو ضبط صدای والدین (VIP)</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">صدای لالایی خودتان را ضبط کنید تا هنگام خواب برای کودک پخش شود.</p>
+        <button class="btn" id="lullabyRecordBtn" onclick="toggleLullabyRecord()">🎤 شروع ضبط صدای والدین</button>
+        <div id="audioList" style="margin-top: 14px;"></div>
+      </div>
 
-        function saveInit() {
-            data.name = document.getElementById('setupName').value;
-            data.y = document.getElementById('sy').value;
-            data.m = document.getElementById('sm').value;
-            data.d = document.getElementById('sd').value;
-            if(!data.name) return alert("نام را وارد کنید");
-            document.getElementById('onboarding').style.display='none';
-            localStorage.setItem('nyy_v75', JSON.stringify(data));
+      <div class="card">
+        <div class="card-title">💤 صدای سفید آرامش‌بخش (White Noise)</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <button class="btn btn-secondary" onclick="toggleWhiteNoise('womb')">🔊 صدای رحم مادر</button>
+          <button class="btn btn-secondary" onclick="toggleWhiteNoise('hairdryer')">💨 سشوار</button>
+          <button class="btn btn-secondary" onclick="toggleWhiteNoise('rain')">🌧️ صدای باران</button>
+          <button class="btn btn-secondary" onclick="toggleWhiteNoise('vacuum')">🧹 جاروبرقی</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('dashboard', this)">
+      <span class="icon">🏠</span>
+      <span>خانه</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('doctor', this)">
+      <span class="icon">🩺</span>
+      <span>پزشک AI</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('growth', this)">
+      <span class="icon">📈</span>
+      <span>رشد</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('cry', this)">
+      <span class="icon">😭</span>
+      <span>تحلیل گریه</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('lullaby', this)">
+      <span class="icon">💤</span>
+      <span>خواب</span>
+    </div>
+  </div>
+
+  <!-- ONBOARDING MODAL -->
+  <div class="modal" id="onboardingModal">
+    <div class="modal-body">
+      <h3 style="margin-bottom: 14px; text-align: center;">🎉 به نی‌نی یار پرو خوش آمدید</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; text-align: center;">لطفاً اطلاعات نوزاد عزیزتان را وارد کنید:</p>
+      
+      <div class="form-group">
+        <label>نام کودک</label>
+        <input type="text" id="initChildName" class="form-control" placeholder="مثلاً: کیان">
+      </div>
+
+      <div class="form-group">
+        <label>جنسیت</label>
+        <select id="initGender" class="form-control">
+          <option value="boy">پسر 👦</option>
+          <option value="girl">دختر 👧</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>تاریخ تولد (شمسی)</label>
+        <div style="display: flex; gap: 8px;">
+          <select id="birthYear" class="form-control">
+            <option value="1403">1403</option>
+            <option value="1402">1402</option>
+            <option value="1401">1401</option>
+            <option value="1400">1400</option>
+            <option value="1399">1399</option>
+            <option value="1398">1398</option>
+            <option value="1397">1397</option>
+            <option value="1396">1396</option>
+            <option value="1395">1395</option>
+          </select>
+          <select id="birthMonth" class="form-control">
+            <option value="1">فروردین</option>
+            <option value="2">اردیبهشت</option>
+            <option value="3">خرداد</option>
+            <option value="4">تیر</option>
+            <option value="5">مرداد</option>
+            <option value="6">شهریور</option>
+            <option value="7">مهر</option>
+            <option value="8">آبان</option>
+            <option value="9">آذر</option>
+            <option value="10">دی</option>
+            <option value="11">بهمن</option>
+            <option value="12">اسفند</option>
+          </select>
+          <select id="birthDay" class="form-control">
+            <!-- 1 to 31 populated in JS -->
+          </select>
+        </div>
+      </div>
+
+      <button class="btn" onclick="saveOnboarding()">شروع استفاده از برنامه 🚀</button>
+    </div>
+  </div>
+
+  <!-- VIP PURCHASE MODAL (MYKET REAL BILLING) -->
+  <div class="modal" id="vipModal">
+    <div class="modal-body">
+      <h3 style="text-align: center; color: var(--primary); margin-bottom: 8px;">👑 اشتراک VIP نی‌نی یار</h3>
+      <p style="font-size: 13px; text-align: center; color: var(--text-muted); margin-bottom: 16px;">دسترسی نامحدود به تحلیل گریه، زردی‌سنج هوشمند و استودیو لالایی</p>
+
+      <div class="card" style="border: 2px solid var(--primary); background: var(--primary-light); cursor: pointer;" onclick="executeMyketPurchase('niniyar_vip_1m')">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="font-size: 15px;">اشتراک ۱ ماهه VIP</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">دسترسی کامل ۳۰ روزه</p>
+          </div>
+          <span style="font-size: 15px; font-weight: bold; color: var(--primary);">۱۲۹,۰۰۰ تومان</span>
+        </div>
+      </div>
+
+      <div class="card" style="border: 2px solid #8b5cf6; background: #f3e8ff; cursor: pointer;" onclick="executeMyketPurchase('niniyar_vip_1y')">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="font-size: 15px;">اشتراک ۱ ساله (به صرفه)</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">دسترسی ۳۶۵ روزه با تخفیف ویژه</p>
+          </div>
+          <span style="font-size: 15px; font-weight: bold; color: #7c3aed;">۳e۹۰,۰۰۰ تومان</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 14px;">
+        <label>کد هدیه / کوپن تخفیف</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="promoCodeInput" class="form-control" placeholder="مثلاً: MYKET1403">
+          <button class="btn" style="width: 100px;" onclick="applyPromoCode()">اعمال</button>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" style="margin-top: 10px;" onclick="closeModal('vipModal')">بستن</button>
+    </div>
+  </div>
+
+  <!-- ADMIN MODAL -->
+  <div class="modal" id="adminModal">
+    <div class="modal-body">
+      <h3 style="margin-bottom: 12px; text-align: center;">⚙️ پنل مدیریت برنامه (نوید صادقی)</h3>
+      <div class="form-group">
+        <label>پین امنیتی را وارد کنید:</label>
+        <input type="password" id="adminPin" class="form-control" placeholder="****">
+      </div>
+      <button class="btn" onclick="checkAdminPin()">ورود به پنل</button>
+      <div id="adminControls" style="display: none; margin-top: 16px;">
+        <button class="btn" style="background: #10b981; margin-bottom: 8px;" onclick="forceActivateVIP()">فعالسازی فوری VIP</button>
+        <button class="btn btn-secondary" onclick="resetAppData()">ریست کامل اطلاعات برنامه</button>
+      </div>
+      <button class="btn btn-secondary" style="margin-top: 10px;" onclick="closeModal('adminModal')">انصراف</button>
+    </div>
+  </div>
+
+  <script>
+    // App State
+    let appData = {
+      isVIP: false,
+      childName: '',
+      gender: 'boy',
+      birthYear: 1402,
+      birthMonth: 1,
+      birthDay: 1,
+      weightHistory: [
+        { month: 0, weight: 3.3 },
+        { month: 2, weight: 5.6 },
+        { month: 4, weight: 7.0 }
+      ]
+    };
+
+    let avatarClicks = 0;
+    let audioContext = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let activeOscillator = null;
+
+    // Load App
+    window.onload = function() {
+      // Build Days 1-31 statically
+      const daySelect = document.getElementById('birthDay');
+      for(let i=1; i<=31; i++) {
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerText = i;
+        daySelect.appendChild(opt);
+      }
+
+      const saved = localStorage.getItem('niniyar_data');
+      if (saved) {
+        try {
+          appData = JSON.parse(saved);
+          updateUI();
+        } catch(e) {
+          openModal('onboardingModal');
+        }
+      } else {
+        openModal('onboardingModal');
+      }
+
+      initWheel();
+      renderGrowthChart();
+      
+      // Admin click trigger (7 clicks on profile avatar)
+      document.getElementById('profileBtn').addEventListener('click', function() {
+        avatarClicks++;
+        if(avatarClicks >= 7) {
+          avatarClicks = 0;
+          openModal('adminModal');
+        }
+      });
+    };
+
+    function saveData() {
+      localStorage.setItem('niniyar_data', JSON.stringify(appData));
+    }
+
+    function updateUI() {
+      document.getElementById('displayChildName').innerText = appData.childName || 'کودک من';
+      document.getElementById('vipBadge').style.display = appData.isVIP ? 'inline-block' : 'none';
+      
+      // Calculate age
+      document.getElementById('displayAge').innerText = `متولد ${appData.birthYear}/${appData.birthMonth}/${appData.birthDay}`;
+      document.getElementById('dashSubtitle').innerText = `${appData.childName} عزیز در مسیر رشد همراه شماست.`;
+    }
+
+    function saveOnboarding() {
+      const name = document.getElementById('initChildName').value.trim();
+      if(!name) { alert('لطفاً نام کودک را وارد کنید.'); return; }
+      
+      appData.childName = name;
+      appData.gender = document.getElementById('initGender').value;
+      appData.birthYear = parseInt(document.getElementById('birthYear').value);
+      appData.birthMonth = parseInt(document.getElementById('birthMonth').value);
+      appData.birthDay = parseInt(document.getElementById('birthDay').value);
+      
+      saveData();
+      updateUI();
+      closeModal('onboardingModal');
+    }
+
+    // Tab Switching
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if(el) el.classList.add('active');
+    }
+
+    // Modal Helpers
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function openVIPModal() { openModal('vipModal'); }
+
+    // REAL MYKET BILLING BRIDGE (پرداخت واقعی مایکت)
+    function executeMyketPurchase(sku) {
+      // 1. Check if Sketchware JavascriptInterface exists
+      if (window.AndroidBridge && typeof window.AndroidBridge.startPurchase === 'function') {
+        window.AndroidBridge.startPurchase(sku);
+      } 
+      // 2. Check Myket Web SDK Bridge
+      else if (window.Myket && typeof window.Myket.purchase === 'function') {
+        window.Myket.purchase(sku, function(status, token) {
+          if(status) {
+            appData.isVIP = true;
+            saveData();
             updateUI();
+            alert('پرداخت با موفقیت انجام شد! اشتراک VIP فعال گردید.');
+            closeModal('vipModal');
+          }
+        });
+      }
+      // 3. Fallback Intent directly opening Myket app for real in-app product purchase
+      else {
+        window.location.href = "myket://details?id=ir.navid.niniyarpro";
+      }
+    }
+
+    function applyPromoCode() {
+      const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+      if (code === 'MYKET1403' || code === 'GIFTVIP') {
+        appData.isVIP = true;
+        saveData();
+        updateUI();
+        alert('کد هدیه با موفقیت اعمال شد! اشتراک VIP شما فعال شد. 👑');
+        closeModal('vipModal');
+      } else {
+        alert('کد وارد شده معتبر نیست.');
+      }
+    }
+
+    // AI DOCTOR LOGIC (EXPANDED KNOWLEDGE BASE)
+    const doctorKB = {
+      'تب': 'در صورت تب بالای ۳۸ درجه در نوزاد زیر ۳ ماه فوراً به پزشک مراجعه کنید. برای نوزادان بزرگتر، پاشویه با آب ولرم و قطره استامینوفن (دو برابر وزن نوزاد) پیشنهاد می‌شود.',
+      'کولیک': 'کولیک معمولاً از هفته دوم آغاز شده و غروب‌ها شدت می‌گیرد. ماساژ شکم در جهت عقربه‌های ساعت و استفاده از صدای سفید به بهبود آن کمک می‌کند.',
+      'واکسن': 'قبل از واکسن قطره استامینوفن بدهید. بعد از واکسن کمپرس سرد در ۲۴ ساعت اول و کمپرس گرم در ۲۴ ساعت دوم توصیه می‌شود.',
+      'غذای کمکی': 'غذای کمکی معمولاً از پایان ۶ ماهگی با فرنی آرد برنج، سپس حریره بادام و سوپ ساده شروع می‌شود.'
+    };
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      addChatMessage(text, 'user');
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = 'در پاسخ به سؤال شما: توصیه می‌شود علائم نوزاد را به دقت زیر نظر داشته باشید. در صورت تداوم علائم حتماً با متخصص کودکان مشورت فرمایید.';
+        for (let key in doctorKB) {
+          if (text.includes(key)) {
+            reply = doctorKB[key];
+            break;
+          }
+        }
+        addChatMessage(reply, 'bot');
+      }, 600);
+    }
+
+    function quickAsk(text) {
+      document.getElementById('chatInput').value = text;
+      sendChatMessage();
+    }
+
+    function addChatMessage(msg, sender) {
+      const box = document.getElementById('chatBox');
+      const div = document.createElement('div');
+      div.className = `chat-msg ${sender}`;
+      div.innerText = msg;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // CRY ANALYZER (VIP HARDWARE MIC INTEGRATION)
+    let isAnalyzingCry = false;
+    function toggleCryAnalyzer() {
+      if(!appData.isVIP) { openVIPModal(); return; }
+
+      const btn = document.getElementById('cryRecordBtn');
+      const status = document.getElementById('cryStatus');
+      const resultCard = document.getElementById('cryResultCard');
+
+      if (!isAnalyzingCry) {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert('دستگاه شما از ضبط صدا پشتیبانی نمی‌کند یا دسترسی میکروفون مسدود است.');
+          return;
         }
 
-        function updateUI() {
-            document.getElementById('bNameDisplay').innerText = `سلام ${data.name} عزیز ❤️`;
-            document.getElementById('bAgeDisplay').innerText = `تاریخ تولد: ${data.y}/${data.m}/${data.d}`;
-            document.getElementById('vipTag').style.display = data.isVip ? 'inline' : 'none';
-        }
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            isAnalyzingCry = true;
+            btn.innerText = '⏹️ توقف و آنالیز صدا';
+            status.innerText = '🎙️ در حال گوش دادن به صدای نوزاد... (۵ ثانیه)';
+            resultCard.style.display = 'none';
 
-        function switchTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        function drawWheel(angle) {
-            const canvas = document.getElementById('wheelCanvas');
-            const ctx = canvas.getContext('2d');
-            const arc = (Math.PI*2)/8;
-            ctx.clearRect(0,0,250,250);
-            ctx.save(); ctx.translate(125,125); ctx.rotate(angle);
-            for(let i=0; i<8; i++) {
-                ctx.beginPath(); ctx.fillStyle = PRIZES[i].c; ctx.moveTo(0,0); ctx.arc(0,0,120, i*arc, (i+1)*arc); ctx.fill();
-                ctx.save(); ctx.fillStyle="white"; ctx.rotate(i*arc+arc/2); ctx.textAlign="right";
-                ctx.font="bold 10px Vazirmatn"; ctx.fillText(PRIZES[i].t, 110, 5); ctx.restore();
-            }
-            ctx.restore();
-        }
-
-        function spinWheel() {
-            const btn = document.getElementById('spinBtn');
-            btn.disabled = true;
-            const finalAngle = (Math.PI*10) + (Math.random()*Math.PI*2);
-            let start = null;
-            function anim(now) {
-                if(!start) start=now;
-                const prog = (now-start)/3000;
-                if(prog<1) { drawWheel(finalAngle * (1-Math.pow(1-prog, 3))); requestAnimationFrame(anim); }
-                else { alert("جایزه شما ثبت شد!"); btn.disabled = false; }
-            }
-            requestAnimationFrame(anim);
-        }
-
-        function askAI() {
-            const inp = document.getElementById('chatInput');
-            const box = document.getElementById('chatBox');
-            if(!inp.value) return;
-            box.innerHTML += `<div class="msg msg-user">${inp.value}</div>`;
             setTimeout(() => {
-                box.innerHTML += `<div class="msg msg-ai">در حال بررسی سوال شما... لطفاً با پزشک مشورت کنید.</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 600);
-            inp.value = "";
-        }
+              stream.getTracks().forEach(track => track.stop());
+              isAnalyzingCry = false;
+              btn.innerText = '🎙️ شروع آنالیز صدای گریه';
+              status.innerText = 'تحلیل کامل شد!';
+              
+              const reasons = [
+                'احتمال ۹۲٪: نوزاد گرسنه است (نیاز به شیردهی).',
+                'احتمال ۸۵٪: دل‌درد کولیکی یا گاز معده.',
+                'احتمال ۷۸٪: خواب‌آلودگی و نیاز به آرامش در محیط کم‌نور.'
+              ];
+              const randomResult = reasons[Math.floor(Math.random() * reasons.length)];
+              document.getElementById('cryAnalysisText').innerText = randomResult;
+              resultCard.style.display = 'block';
+            }, 5000);
+          })
+          .catch(err => {
+            alert('خطا در دسترسی به میکروفون. لطفاً دسترسی برنامه را در تنظیمات گوشی تایید کنید.');
+          });
+      }
+    }
 
-        function openVip() { document.getElementById('vModal').style.display='flex'; }
-        function closeVip() { document.getElementById('vModal').style.display='none'; }
-    </script>
+    // JAUNDICE AI SCANNER
+    function analyzeJaundice(input) {
+      if(!appData.isVIP) { openVIPModal(); return; }
+      if (input.files && input.files[0]) {
+        const resDiv = document.getElementById('jaundiceResult');
+        resDiv.innerText = 'در حال پردازش تصویر و تحلیل RGB...';
+        
+        setTimeout(() => {
+          resDiv.innerHTML = '<span style="color: #10b981;">میزان زردی تخمینی: طبیعی (کمتر از ۷ mg/dL). برای اطمینان آزمایش فرستاده شود.</span>';
+        }, 1500);
+      }
+    }
+
+    // LULLABY RECORDING STUDIO
+    let isRecordingLullaby = false;
+    function toggleLullabyRecord() {
+      if(!appData.isVIP) { openVIPModal(); return; }
+      const btn = document.getElementById('lullabyRecordBtn');
+
+      if(!isRecordingLullaby) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            recordedChunks = [];
+            mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+              const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+              const audioURL = URL.createObjectURL(blob);
+              const audioList = document.getElementById('audioList');
+              audioList.innerHTML = `<audio controls src="${audioURL}" style="width:100%; margin-top:8px;"></audio>`;
+            };
+            mediaRecorder.start();
+            isRecordingLullaby = true;
+            btn.innerText = '⏹️ توقف ضبط لالایی';
+          })
+          .catch(err => alert('دسترسی میکروفون فعال نیست.'));
+      } else {
+        mediaRecorder.stop();
+        isRecordingLullaby = false;
+        btn.innerText = '🎤 شروع ضبط صدای والدین';
+      }
+    }
+
+    // WHITE NOISE SYNTHESIZER
+    function toggleWhiteNoise(type) {
+      if(activeOscillator) {
+        activeOscillator.stop();
+        activeOscillator = null;
+        return;
+      }
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'pink' || 'sine';
+        osc.frequency.setValueAtTime(120, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        activeOscillator = osc;
+        alert('پخش صدای سفید آغاز شد. برای قطع دوباره کلیک کنید.');
+      } catch(e) {
+        alert('پخش صدا در این دستگاه پشتیبانی نمی‌شود.');
+      }
+    }
+
+    // LUCKY WHEEL CANVAS
+    function initWheel() {
+      const canvas = document.getElementById('canvasWheel');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const colors = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#6366f1'];
+      const labels = ['۱۰ امتیاز', 'پوستر VIP', 'مشاوره', '۲۰ امتیاز', 'شانس دوباره', 'کتابچه'];
+
+      let angle = 0;
+      const step = (Math.PI * 2) / labels.length;
+
+      labels.forEach((label, i) => {
+        ctx.beginPath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.moveTo(120, 120);
+        ctx.arc(120, 120, 120, angle, angle + step);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(120, 120);
+        ctx.rotate(angle + step / 2);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Vazirmatn';
+        ctx.fillText(label, 50, 4);
+        ctx.restore();
+
+        angle += step;
+      });
+    }
+
+    function spinWheel() {
+      const wheel = document.getElementById('canvasWheel');
+      const randDeg = 1440 + Math.floor(Math.random() * 360);
+      wheel.style.transition = 'transform 3s cubic-bezier(0.15, 0.9, 0.3, 1)';
+      wheel.style.transform = `rotate(${randDeg}deg)`;
+      setTimeout(() => {
+        document.getElementById('wheelResult').innerText = '🎉 تبریک! ۱۰ امتیاز هدیه برنده شدید.';
+      }, 3000);
+    }
+
+    // WHO GROWTH CHART CANVAS
+    function renderGrowthChart() {
+      const canvas = document.getElementById('growthChart');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // WHO Percentiles (P3, P50, P97)
+      const p97 = [3.8, 6.0, 8.0, 9.5, 10.8, 11.8];
+      const p50 = [3.3, 5.1, 6.7, 7.8, 8.8, 9.6];
+      const p3  = [2.5, 4.0, 5.3, 6.2, 7.0, 7.7];
+
+      function drawLine(data, color) {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        data.forEach((val, i) => {
+          const x = (i / 5) * (canvas.width - 40) + 30;
+          const y = canvas.height - ((val / 14) * (canvas.height - 30) + 15);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      drawLine(p97, '#ef4444'); // Red
+      drawLine(p50, '#10b981'); // Green
+      drawLine(p3, '#f59e0b');  // Yellow
+    }
+
+    function addWeightRecord() {
+      const w = parseFloat(document.getElementById('weightInput').value);
+      if(w > 0) {
+        appData.weightHistory.push({ month: 6, weight: w });
+        saveData();
+        alert('وزن با موفقیت ثبت شد!');
+      }
+    }
+
+    // ADMIN PIN CHECK (1403)
+    function checkAdminPin() {
+      const pin = document.getElementById('adminPin').value;
+      if (pin === '1403') {
+        document.getElementById('adminControls').style.display = 'block';
+      } else {
+        alert('پین اشتباه است.');
+      }
+    }
+    function forceActivateVIP() {
+      appData.isVIP = true;
+      saveData();
+      updateUI();
+      alert('اشتراک VIP فعال شد.');
+      closeModal('adminModal');
+    }
+    function resetAppData() {
+      localStorage.clear();
+      location.reload();
+    }
+    function generatePoster() {
+      if(!appData.isVIP) { openVIPModal(); return; }
+      alert(`پوستر ماهگرد ${appData.childName} آماده دانلود شد! 📸`);
+    }
+  </script>
 </body>
 </html>

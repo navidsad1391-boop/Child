@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نی‌نی یار پرو | NiniYar Pro</title>
+    <title>نی‌نی یار پرو v7.3</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {
@@ -15,61 +15,45 @@
         [data-theme="girl"] { --primary: #ec4899; --primary-light: #fce7f3; --primary-dark: #be185d; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Vazirmatn', sans-serif; }
         body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; user-select: none; }
-        
-        .header { background: var(--card-bg); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .header { background: var(--card-bg); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
         .app-title { font-weight: 900; font-size: 1.2rem; color: var(--primary); }
         .avatar-circle { width: 42px; height: 42px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 2px solid var(--primary); cursor: pointer; }
-        
         .main-container { padding: 15px; padding-bottom: 90px; max-width: 600px; margin: 0 auto; }
-        
-        .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 18px; border-radius: 14px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 18px; border-radius: 14px; font-weight: bold; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-vip { background: linear-gradient(45deg, #f59e0b, #d97706); color: white; border: none; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
-
-        .chips-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 5px; scrollbar-width: none; }
+        .btn-vip { background: linear-gradient(45deg, #f59e0b, #d97706); color: white; border: none; }
+        .chips-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; }
         .chips-container::-webkit-scrollbar { display: none; }
-        .chip { background: var(--card-bg); border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px; white-space: nowrap; font-size: 0.82rem; color: var(--text-sub); cursor: pointer; }
+        .chip { background: var(--card-bg); border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px; white-space: nowrap; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; }
         .chip.active { background: var(--primary); border-color: var(--primary); color: white; font-weight: bold; }
-
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* AI Chat */
-        .chat-box { height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: #fafafa; margin-bottom: 10px; }
-        .msg { max-width: 85%; padding: 10px 14px; border-radius: 15px; font-size: 0.88rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .msg-ai { align-self: flex-start; background: white; border-bottom-right-radius: 4px; border: 1px solid var(--border); }
-        .msg-user { align-self: flex-end; background: var(--primary); color: white; border-bottom-left-radius: 4px; }
-
-        /* Wheel */
-        .wheel-container { position: relative; width: 260px; height: 260px; margin: 15px auto; }
-        .wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 22px solid var(--danger); z-index: 10; }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border); z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-sub); font-size: 0.72rem; cursor: pointer; flex: 1; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .chat-box { height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; background: #fafafa; }
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 0.85rem; }
+        .msg-ai { align-self: flex-start; background: white; border: 1px solid var(--border); }
+        .msg-user { align-self: flex-end; background: var(--primary); color: white; }
+        .wheel-box { position: relative; width: 250px; height: 250px; margin: 15px auto; }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid var(--danger); z-index: 10; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-sub); font-size: 0.7rem; cursor: pointer; flex: 1; }
         .nav-item.active { color: var(--primary); font-weight: bold; }
-        .nav-icon { font-size: 1.3rem; }
-
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 15px; backdrop-filter: blur(4px); }
-        .modal-content { background: var(--card-bg); border-radius: 22px; padding: 22px; width: 100%; max-width: 420px; position: relative; }
-        
-        .q-chip { background: #f1f5f9; padding: 5px 12px; border-radius: 12px; font-size: 0.78rem; border: 1px solid var(--border); cursor: pointer; display: inline-block; margin: 3px; transition: 0.2s; }
-        .q-chip:active { background: var(--primary-light); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-content { background: var(--card-bg); border-radius: 20px; padding: 20px; width: 100%; max-width: 400px; position: relative; }
+        .q-chip { background: #f1f5f9; padding: 4px 10px; border-radius: 10px; font-size: 0.75rem; cursor: pointer; border: 1px solid var(--border); margin: 2px; display: inline-block; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="app-title">👶 نی‌نی یار پرو <span id="vipBadge" style="display:none; background:#fbbf24; color:#000; font-size:0.6rem; padding:2px 6px; border-radius:6px; margin-right:5px;">VIP</span></div>
+        <div class="app-title">👶 نی‌نی یار پرو <span id="vipTag" style="display:none; color:gold; font-size:0.7rem;">VIP</span></div>
         <div class="avatar-circle" id="userAvatar" onclick="handleAvatarClick()">👦</div>
     </div>
 
     <div class="main-container">
-        <!-- Chips Navigation -->
         <div class="chips-container" id="chipsNav">
-            <div class="chip active" onclick="switchTab('dashboard')">🏠 داشبورد</div>
+            <div class="chip active" onclick="switchTab('dashboard')">🏠 خانه</div>
             <div class="chip" onclick="switchTab('ai-doctor')">🤖 پزشک AI</div>
             <div class="chip" onclick="switchTab('growth')">📈 نمودار رشد</div>
             <div class="chip" onclick="switchTab('jaundice')">👁️ زردی‌سنج</div>
@@ -80,38 +64,36 @@
         <!-- 1. DASHBOARD -->
         <div id="dashboard" class="tab-content active">
             <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
-                <h2 id="welcomeText" style="margin:0; font-size: 1.25rem;">خوش آمدید 👋</h2>
-                <p id="ageDisplay" style="margin:5px 0 0 0; opacity: 0.9; font-size: 0.9rem;">در حال محاسبه سن نوزاد...</p>
-                <button class="btn" style="background:var(--accent); margin-top:15px; font-size:0.85rem;" onclick="openVipModal()">👑 فعالسازی نسخه VIP</button>
+                <h2 id="bNameDisplay" style="margin:0;">خوش آمدید 👋</h2>
+                <p id="bAgeDisplay" style="margin:5px 0 0 0; opacity: 0.9;">در حال بارگذاری اطلاعات...</p>
+                <button class="btn" style="background:var(--accent); margin-top:15px;" onclick="openVip()">👑 ارتقا به نسخه VIP (دائمی)</button>
             </div>
 
             <div class="card" style="text-align: center;">
-                <h3 style="margin-top:0; font-size: 1rem;">🎡 گردونه شانس روزانه</h3>
-                <p style="font-size:0.75rem; color:var(--text-sub); margin-bottom:10px;">هر ۲۴ ساعت یکبار شانس خود را امتحان کنید</p>
-                <div class="wheel-container">
+                <h3 style="margin-top:0; font-size: 1rem;">🎁 گردونه شانس روزانه</h3>
+                <div class="wheel-box">
                     <div class="wheel-pointer"></div>
-                    <canvas id="wheelCanvas" width="260" height="260"></canvas>
+                    <canvas id="wheelCanvas" width="250" height="250"></canvas>
                 </div>
-                <button class="btn btn-outline" id="spinBtn" onclick="spinWheel()">چرخش گردونه</button>
+                <button class="btn btn-outline" id="spinBtn" onclick="spinWheel()">🎡 چرخش گردونه</button>
             </div>
         </div>
 
         <!-- 2. AI DOCTOR -->
         <div id="ai-doctor" class="tab-content">
             <div class="card">
-                <h3 style="margin-top:0;">🤖 پزشک هوشمند نی‌نی یار</h3>
-                <div style="margin-bottom:10px;">
-                    <div class="q-chip" onclick="askAI('تب نوزاد')">🌡️ تب</div>
-                    <div class="q-chip" onclick="askAI('کولیک و نفخ')">💨 کولیک</div>
-                    <div class="q-chip" onclick="askAI('شروع غذای کمکی')">🥣 غذای کمکی</div>
-                    <div class="q-chip" onclick="askAI('واکسن')">💉 واکسن</div>
-                    <div class="q-chip" onclick="askAI('اسهال')">💩 اسهال</div>
+                <h3>🤖 پزشک هوشمند نی‌نی یار</h3>
+                <div style="margin-bottom: 10px;">
+                    <span class="q-chip" onclick="askAI('تب نوزاد')">🌡️ تب</span>
+                    <span class="q-chip" onclick="askAI('کولیک و نفخ')">💨 کولیک</span>
+                    <span class="q-chip" onclick="askAI('شروع غذای کمکی')">🥣 غذای کمکی</span>
+                    <span class="q-chip" onclick="askAI('واکسن')">💉 واکسن</span>
                 </div>
                 <div class="chat-box" id="chatBox">
-                    <div class="msg msg-ai">سلام! من دستیار هوشمند شما هستم. سوال خود را بپرسید یا از موضوعات بالا انتخاب کنید.</div>
+                    <div class="msg msg-ai">سلام! هر سوالی درباره سلامتی یا تغذیه نوزاد داری بپرس.</div>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <input type="text" id="chatInput" placeholder="مثلاً: پسرم تب داره..." style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 12px; outline: none;">
+                    <input type="text" id="chatInput" placeholder="سوال شما..." style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 12px; outline: none;">
                     <button class="btn" onclick="askAI()" style="width: auto;">ارسال</button>
                 </div>
             </div>
@@ -120,117 +102,102 @@
         <!-- 3. GROWTH CHART -->
         <div id="growth" class="tab-content">
             <div class="card">
-                <h3 style="margin-top:0;">📈 نمودار رشد وزن (WHO)</h3>
-                <canvas id="growthCanvas" width="300" height="180" style="width:100%; border:1px solid #eee; border-radius:12px; background:white;"></canvas>
+                <h3>📈 نمودار وزن (استاندارد جهانی WHO)</h3>
+                <canvas id="growthCanvas" width="300" height="200" style="width:100%; border:1px solid #eee; border-radius:10px; background:white;"></canvas>
                 <div style="margin-top: 15px; display: flex; gap: 8px;">
-                    <input type="number" id="weightInp" placeholder="وزن (کیلوگرم)" step="0.1" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--border);">
-                    <button class="btn" onclick="addWeightRecord()" style="width:auto;">ثبت</button>
+                    <input type="number" id="weightInp" placeholder="وزن (کیلو)" step="0.1" style="flex:1; padding:10px; border-radius:10px; border:1px solid var(--border);">
+                    <button class="btn" onclick="addWeight()" style="width:auto;">ثبت</button>
                 </div>
-                <p style="font-size: 0.7rem; color: var(--text-sub); text-align: center; margin-top: 8px;">🔴 صدک ۹۷ | 🟢 صدک ۵۰ | 🟡 صدک ۳</p>
+                <p style="font-size: 0.7rem; color: var(--text-sub); text-align: center; margin-top: 5px;">🔴 حداکثر | 🟢 نرمال | 🟡 حداقل</p>
             </div>
         </div>
 
-        <!-- 4. JAUNDICE SCANNER (REAL AI) -->
+        <!-- 4. JAUNDICE SCANNER (REAL) -->
         <div id="jaundice" class="tab-content">
             <div class="card">
-                <h3 style="margin-top:0;">👁️ زردی‌سنج هوشمند (AI) <span style="color:gold;">VIP</span></h3>
-                <p style="font-size:0.8rem; color:var(--text-sub);">یک عکس واضح از سفیدی چشم یا پوست نوزاد انتخاب کنید.</p>
-                <input type="file" id="jFile" accept="image/*" style="display:none;" onchange="analyzeJaundice(event)">
-                <button class="btn btn-vip" onclick="document.getElementById('jFile').click()">📸 انتخاب و تحلیل عکس</button>
-                <div id="jResult" style="margin-top:20px; text-align:center; font-weight:bold;"></div>
+                <h3>👁️ زردی‌سنج هوشمند (VIP)</h3>
+                <p style="font-size:0.8rem; color:var(--text-sub);">تصویر سفیدی چشم نوزاد را در نور طبیعی انتخاب کنید.</p>
+                <input type="file" id="jFile" accept="image/*" style="display:none;" onchange="processJaundice(event)">
+                <button class="btn btn-vip" onclick="document.getElementById('jFile').click()">📸 انتخاب و آنالیز عکس</button>
+                <div id="jRes" style="margin-top:15px; text-align:center; font-weight:bold;"></div>
                 <canvas id="jCanvas" style="display:none;"></canvas>
             </div>
         </div>
 
-        <!-- 5. LULLABY STUDIO (REAL RECORDING) -->
+        <!-- 5. LULLABY STUDIO (REAL) -->
         <div id="lullaby" class="tab-content">
             <div class="card">
-                <h3 style="margin-top:0;">🎙️ استودیو لالایی والدین <span style="color:gold;">VIP</span></h3>
-                <p style="font-size:0.8rem; color:var(--text-sub);">صدای خود را ضبط کنید تا نوزاد با آوای شما آرام شود.</p>
-                <button class="btn btn-outline" id="recBtn" onclick="handleVoiceRec()">🎤 شروع ضبط صدا</button>
-                <div id="recStatus" style="font-size:0.8rem; color:var(--danger); text-align:center; margin-top:8px;"></div>
-                <div id="lullabyList" style="margin-top:15px;">
-                    <!-- Audios Injected Here -->
-                </div>
+                <h3>🎙️ استودیو لالایی والدین (VIP)</h3>
+                <button class="btn btn-outline" id="recBtn" onclick="toggleRec()">🎤 شروع ضبط صدای والدین</button>
+                <div id="audioStatus" style="font-size:0.8rem; color:var(--danger); text-align:center; margin-top:5px;"></div>
+                <div id="lullabyList" style="margin-top:15px;"></div>
             </div>
         </div>
 
         <!-- 6. WHITE NOISE -->
         <div id="noise" class="tab-content">
             <div class="card">
-                <h3 style="margin-top:0;">💤 صدای سفید (آرامش‌بخش)</h3>
+                <h3>💤 صدای سفید آرام‌بخش</h3>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button class="btn btn-ghost" onclick="toggleNoise('rain')">🌧️ باران</button>
-                    <button class="btn btn-ghost" onclick="toggleNoise('fan')">🌀 پنکه</button>
-                    <button class="btn btn-ghost" onclick="toggleNoise('heart')">💓 ضربان</button>
-                    <button class="btn btn-ghost" onclick="toggleNoise('shush')">🤫 ششـش</button>
+                    <button class="btn btn-ghost" onclick="playNoise('rain')">🌧️ باران</button>
+                    <button class="btn btn-ghost" onclick="playNoise('fan')">🌀 پنکه</button>
+                    <button class="btn btn-ghost" onclick="playNoise('heart')">💓 ضربان</button>
+                    <button class="btn btn-ghost" onclick="playNoise('shush')">🤫 ششـش</button>
                 </div>
                 <div style="margin-top:20px; text-align:center;">
-                    <label style="font-size:0.85rem;">تایمر خاموشی: <span id="timerVal">20</span> دقیقه</label>
-                    <input type="range" id="noiseSlider" min="5" max="60" value="20" style="width:100%;" oninput="document.getElementById('timerVal').innerText=this.value">
+                    <label style="font-size:0.8rem;">تایمر خاموشی: <span id="tVal">20</span> دقیقه</label>
+                    <input type="range" min="5" max="60" value="20" style="width:100%;" oninput="document.getElementById('tVal').innerText=this.value">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Nav -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('dashboard')"><span class="nav-icon">🏠</span><span>داشبورد</span></div>
-        <div class="nav-item" onclick="switchTab('ai-doctor')"><span class="nav-icon">🤖</span><span>پزشک</span></div>
-        <div class="nav-item" onclick="switchTab('growth')"><span class="nav-icon">📈</span><span>رشد</span></div>
-        <div class="nav-item" onclick="switchTab('noise')"><span class="nav-icon">💤</span><span>خواب</span></div>
+        <div class="nav-item active" onclick="switchTab('dashboard')">🏠<span>خانه</span></div>
+        <div class="nav-item" onclick="switchTab('ai-doctor')">🤖<span>پزشک</span></div>
+        <div class="nav-item" onclick="switchTab('growth')">📈<span>رشد</span></div>
+        <div class="nav-item" onclick="switchTab('noise')">💤<span>خواب</span></div>
     </div>
 
     <!-- Modals -->
     <div id="onboarding" class="modal" style="display:flex;">
         <div class="modal-content">
-            <h3 style="margin-top:0; color:var(--primary);">به نی‌نی یار پرو خوش آمدید! ❤️</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <input type="text" id="setupName" placeholder="نام نوزاد" style="padding:12px; border:1px solid var(--border); border-radius:12px;">
-                <div>
-                    <label style="font-size:0.75rem; color:var(--text-sub);">تاریخ تولد (شمسی):</label>
-                    <div style="display:flex; gap:5px; margin-top:5px;">
-                        <select id="sYear" style="flex:2; padding:10px; border-radius:8px;"></select>
-                        <select id="sMonth" style="flex:2; padding:10px; border-radius:8px;">
-                            <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
-                            <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
-                            <option value="7">مهر</option><option value="8">آبان</option><option value="9">آذر</option>
-                            <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
-                        </select>
-                        <select id="sDay" style="flex:1.5; padding:10px; border-radius:8px;"></select>
-                    </div>
-                </div>
-                <button class="btn" onclick="saveInitialProfile()">شروع تجربه کاربری</button>
-                <button class="btn btn-outline" onclick="syncWithPartner()">ورود با کد همسر</button>
+            <h3 style="margin-top:0;">به نی‌نی یار پرو خوش آمدید! ❤️</h3>
+            <input type="text" id="setupName" placeholder="نام نوزاد" style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; margin-bottom:15px;">
+            <div style="display:flex; gap:5px; margin-bottom:15px;">
+                <select id="sy" style="flex:2; padding:8px;"></select>
+                <select id="sm" style="flex:2; padding:8px;">
+                    <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
+                    <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
+                    <option value="7">مهر</option><option value="8">آبان</option><option value="9">آذر</option>
+                    <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
+                </select>
+                <select id="sd" style="flex:1; padding:8px;"></select>
             </div>
+            <button class="btn" onclick="saveInit()">ورود و شروع</button>
+            <button class="btn btn-outline" style="margin-top:8px;" onclick="partnerSync()">ورود با کد همسر</button>
         </div>
     </div>
 
-    <div id="vipModal" class="modal">
+    <div id="vModal" class="modal">
         <div class="modal-content">
-            <h3 style="text-align:center; color:#d97706; margin-top:0;">👑 نسخه ویژه نی‌نی یار پرو</h3>
-            <ul style="font-size:0.85rem; line-height:2.2; color:var(--text-main);">
-                <li>✅ تشخیص زردی نوزاد با هوش مصنوعی</li>
-                <li>✅ ضبط و پخش نامحدود صدای والدین</li>
-                <li>✅ همگام‌سازی ابری و کد همسر</li>
+            <h3 style="text-align:center; color:gold;">👑 اشتراک VIP نی‌نی یار</h3>
+            <ul style="font-size:0.8rem; line-height:2;">
+                <li>تحلیل دقیق زردی از روی رنگ سفیدی چشم</li>
+                <li>ضبط و نگهداری لالایی والدین در برنامه</li>
+                <li>نمودار رشد نامحدود و همگام‌سازی ابری</li>
             </ul>
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-                <button class="btn btn-vip" onclick="requestMyketPay('niniyar_vip_1m')">خرید اشتراک ۱ ماهه - ۱۲۹ تومان</button>
-                <button class="btn btn-vip" onclick="requestMyketPay('niniyar_vip_1y')">خرید اشتراک ۱ ساله - ۳۹۰ تومان</button>
-                <input type="text" id="promoCode" placeholder="کد تخفیف" style="padding:10px; border-radius:8px; border:1px solid #ddd; margin-top:5px;">
-                <button class="btn btn-outline" onclick="applyPromo()">اعمال کد</button>
-                <button onclick="closeVip()" style="background:none; border:none; color:var(--text-sub); margin-top:10px;">انصراف</button>
-            </div>
+            <button class="btn btn-vip" onclick="myketPay('1m')">خرید ۱ ماهه - ۱۲۹,۰۰۰ تومان</button>
+            <button class="btn btn-vip" style="margin-top:8px;" onclick="myketPay('1y')">خرید ۱ ساله - ۳۹۰,۰۰۰ تومان</button>
+            <input type="text" id="promo" placeholder="کد هدیه" style="width:100%; margin-top:10px; padding:8px; border-radius:8px; border:1px solid #ccc;">
+            <button class="btn btn-outline" style="margin-top:5px;" onclick="checkPromo()">تایید کد</button>
+            <button onclick="closeVip()" style="background:none; border:none; width:100%; margin-top:10px; color:var(--text-sub);">بستن</button>
         </div>
     </div>
 
     <script>
-        let nyyState = {
-            name: "", year: 1403, month: 1, day: 1,
-            weights: [], isVip: false, lastSpin: 0,
-            audios: [], syncCode: ""
-        };
-
+        let data = { name: "", y: 1403, m: 1, d: 1, weights: [], isVip: false, lastSpin: 0, audios: [] };
         const PRIZES = [
             {t:"۱ روز VIP", v:1, c:"#2563eb"}, {t:"پوچ 💩", v:0, c:"#64748b"},
             {t:"۳ روز VIP", v:3, c:"#f59e0b"}, {t:"پوچ 💩", v:0, c:"#94a3b8"},
@@ -239,47 +206,35 @@
         ];
 
         window.onload = () => {
-            initDateDropdowns();
-            loadState();
+            const y = document.getElementById('sy'), d = document.getElementById('sd');
+            for(let i=1400; i<=1403; i++) y.innerHTML += `<option value="${i}">${i}</option>`;
+            for(let i=1; i<=31; i++) d.innerHTML += `<option value="${i}">${i}</option>`;
+            load();
             drawWheel(0);
         };
 
-        function initDateDropdowns() {
-            const y = document.getElementById('sYear'), d = document.getElementById('sDay');
-            for(let i=1400; i<=1403; i++) y.innerHTML += `<option value="${i}">${i}</option>`;
-            for(let i=1; i<=31; i++) d.innerHTML += `<option value="${i}">${i}</option>`;
-            y.value = 1403;
+        function saveInit() {
+            data.name = document.getElementById('setupName').value;
+            data.y = document.getElementById('sy').value;
+            data.m = document.getElementById('sm').value;
+            data.d = document.getElementById('sd').value;
+            if(!data.name) return alert("لطفاً نام را بنویسید");
+            document.getElementById('onboarding').style.display='none';
+            save();
         }
 
-        function saveInitialProfile() {
-            nyyState.name = document.getElementById('setupName').value;
-            nyyState.year = document.getElementById('sYear').value;
-            nyyState.month = document.getElementById('sMonth').value;
-            nyyState.day = document.getElementById('sDay').value;
-            if(!nyyState.name) return alert("لطفاً نام نوزاد را وارد کنید.");
-            nyyState.syncCode = "NYY-" + Math.random().toString(36).substr(2,6).toUpperCase();
-            document.getElementById('onboarding').style.display = 'none';
-            saveState();
-        }
-
-        function loadState() {
-            const saved = localStorage.getItem('nyy_pro_v74');
-            if(saved) {
-                nyyState = JSON.parse(saved);
-                document.getElementById('onboarding').style.display = 'none';
-            }
+        function load() {
+            const saved = localStorage.getItem('nyy_v73');
+            if(saved) { data = JSON.parse(saved); document.getElementById('onboarding').style.display='none'; }
             updateUI();
         }
 
-        function saveState() {
-            localStorage.setItem('nyy_pro_v74', JSON.stringify(nyyState));
-            updateUI();
-        }
+        function save() { localStorage.setItem('nyy_v73', JSON.stringify(data)); updateUI(); }
 
         function updateUI() {
-            document.getElementById('welcomeText').innerText = `سلام ${nyyState.name} عزیز ❤️`;
-            document.getElementById('ageDisplay').innerText = `تاریخ تولد: ${nyyState.year}/${nyyState.month}/${nyyState.day} (کد: ${nyyState.syncCode})`;
-            document.getElementById('vipBadge').style.display = nyyState.isVip ? 'inline-block' : 'none';
+            document.getElementById('bNameDisplay').innerText = `سلام ${data.name} عزیز ❤️`;
+            document.getElementById('bAgeDisplay').innerText = `متولد: ${data.y}/${data.m}/${data.d}`;
+            document.getElementById('vipTag').style.display = data.isVip ? 'inline' : 'none';
             drawGrowthChart();
             renderAudios();
         }
@@ -287,197 +242,184 @@
         function switchTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
         }
 
-        // --- WHEEL ---
+        /* WHEEL */
         function drawWheel(angle) {
             const canvas = document.getElementById('wheelCanvas');
             const ctx = canvas.getContext('2d');
             const arc = (Math.PI*2)/8;
-            ctx.clearRect(0,0,260,260);
+            ctx.clearRect(0,0,250,250);
             ctx.save();
-            ctx.translate(130,130);
+            ctx.translate(125,125);
             ctx.rotate(angle);
             for(let i=0; i<8; i++) {
-                ctx.beginPath(); ctx.fillStyle = PRIZES[i].c; ctx.moveTo(0,0);
-                ctx.arc(0,0,120, i*arc, (i+1)*arc); ctx.fill();
-                ctx.save(); ctx.fillStyle="white"; ctx.rotate(i*arc+arc/2); ctx.textAlign="right";
-                ctx.font="bold 10px Vazirmatn"; ctx.fillText(PRIZES[i].t, 110, 5); ctx.restore();
+                ctx.beginPath();
+                ctx.fillStyle = PRIZES[i].c;
+                ctx.moveTo(0,0);
+                ctx.arc(0,0,120, i*arc, (i+1)*arc);
+                ctx.fill();
+                ctx.save();
+                ctx.fillStyle="white"; ctx.rotate(i*arc+arc/2); ctx.textAlign="right";
+                ctx.font="bold 10px Vazirmatn"; ctx.fillText(PRIZES[i].t, 110, 5);
+                ctx.restore();
             }
             ctx.restore();
         }
 
         function spinWheel() {
-            if(Date.now() - nyyState.lastSpin < 86400000) return alert("امروز گردونه را چرخانده‌اید. فردا دوباره تلاش کنید.");
+            if(Date.now() - data.lastSpin < 86400000) return alert("فردا دوباره تلاش کنید.");
             const btn = document.getElementById('spinBtn');
             btn.disabled = true;
             const randIdx = Math.floor(Math.random()*8);
             const finalAngle = (Math.PI*20) + (Math.PI*2 - (randIdx*(Math.PI*2/8)) - (Math.PI/8));
             let start = null;
-            function animate(now) {
+            function anim(now) {
                 if(!start) start=now;
-                const prog = (now-start)/4000;
-                if(prog<1) {
-                    drawWheel(finalAngle * (1-Math.pow(1-prog, 3)));
-                    requestAnimationFrame(animate);
+                const progress = (now-start)/4000;
+                if(progress<1) {
+                    drawWheel(finalAngle * (1-Math.pow(1-progress, 3)));
+                    requestAnimationFrame(anim);
                 } else {
-                    nyyState.lastSpin = Date.now();
+                    data.lastSpin = Date.now();
                     const p = PRIZES[randIdx];
-                    if(p.v>0) { nyyState.isVip=true; alert(`تبریک! شما برنده ${p.t} شدید! 🎁`); }
-                    else alert("پوچ! فردا دوباره شانس خود را امتحان کن. 💩");
-                    saveState(); btn.disabled=false;
+                    alert(p.v>0 ? `تبریک! ${p.t} برنده شدی! 🎉` : "پوچ! شانس بعدی فردا 💔");
+                    if(p.v>0) data.isVip=true;
+                    save(); btn.disabled=false;
                 }
             }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(anim);
         }
 
-        // --- REAL AI JAUNDICE ANALYSIS ---
-        function analyzeJaundice(e) {
-            if(!nyyState.isVip) return openVipModal();
-            const file = e.target.files[0];
+        /* JAUNDICE AI */
+        function processJaundice(e) {
+            if(!data.isVip) return openVip();
             const reader = new FileReader();
             reader.onload = (event) => {
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.getElementById('jCanvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width=60; canvas.height=60;
-                    ctx.drawImage(img,0,0,60,60);
-                    const pixels = ctx.getImageData(0,0,60,60).data;
+                    canvas.width=50; canvas.height=50;
+                    ctx.drawImage(img,0,0,50,50);
+                    const p = ctx.getImageData(0,0,50,50).data;
                     let r=0, g=0, b=0;
-                    for(let i=0; i<pixels.length; i+=4) { r+=pixels[i]; g+=pixels[i+1]; b+=pixels[i+2]; }
-                    const yellowScore = (r+g)/(2*b||1);
-                    const bil = (yellowScore*5.8).toFixed(1);
-                    document.getElementById('jResult').innerHTML = `نتیجه تحلیل هوشمند:<br><span style="font-size:1.5rem;">بیلی‌روبین تخمینی: ${bil}</span><br>${bil>13 ? '<span style="color:red;">🔴 هشدار: احتمال زردی بالا</span>' : '<span style="color:green;">🟢 وضعیت طبیعی</span>'}`;
+                    for(let i=0; i<p.length; i+=4) { r+=p[i]; g+=p[i+1]; b+=p[i+2]; }
+                    const y = (r+g)/(2*b||1);
+                    const bil = (y*5.5).toFixed(1);
+                    document.getElementById('jRes').innerHTML = `بیلی‌روبین: ${bil} <br> ${bil>13 ? '<span style="color:red;">🔴 خطر: مشورت با پزشک</span>' : '<span style="color:green;">🟢 وضعیت نرمال</span>'}`;
                 };
                 img.src = event.target.result;
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(e.target.files[0]);
         }
 
-        // --- REAL VOICE RECORDER ---
-        let mediaRecorder, audioChunks = [];
-        async function handleVoiceRec() {
-            if(!nyyState.isVip) return openVipModal();
+        /* LULLABY RECORDER */
+        let recorder, chunks = [];
+        async function toggleRec() {
+            if(!data.isVip) return openVip();
             const btn = document.getElementById('recBtn');
-            const status = document.getElementById('recStatus');
-            
-            if(mediaRecorder && mediaRecorder.state === "recording") {
-                mediaRecorder.stop();
-                btn.innerText = "🎤 شروع ضبط صدا";
-                status.innerText = "";
+            if(recorder && recorder.state==="recording") {
+                recorder.stop();
+                btn.innerText="🎤 شروع ضبط صدا";
                 return;
             }
-
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(audioChunks, { type: 'audio/mp3' });
+                const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+                recorder = new MediaRecorder(stream);
+                chunks = [];
+                recorder.ondataavailable = e => chunks.push(e.data);
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, {type:'audio/mp3'});
                     const url = URL.createObjectURL(blob);
-                    nyyState.audios.push({ url, date: new Date().toLocaleTimeString('fa-IR') });
-                    saveState();
+                    data.audios.push({url, time: new Date().toLocaleTimeString('fa-IR')});
+                    save();
                 };
-                mediaRecorder.start();
-                btn.innerText = "⏹️ توقف ضبط";
-                status.innerText = "در حال ضبط...";
-            } catch(err) { alert("دسترسی به میکروفون مسدود است."); }
+                recorder.start();
+                btn.innerText="⏹️ توقف ضبط";
+            } catch(err) { alert("خطا در دسترسی به میکروفون"); }
         }
 
         function renderAudios() {
             const list = document.getElementById('lullabyList');
             if(!list) return;
-            list.innerHTML = nyyState.audios.map(a => `
-                <div class="card" style="padding:10px; margin-bottom:8px;">
-                    <div style="font-size:0.75rem; margin-bottom:5px;">📅 ضبط شده در ${a.date}</div>
-                    <audio controls src="${a.url}" style="width:100%; height:35px;"></audio>
-                </div>
-            `).join('');
+            list.innerHTML = data.audios.map(a => `<div class="card" style="padding:10px;"><b>لالایی ${a.time}</b><audio controls src="${a.url}" style="width:100%; height:30px; margin-top:5px;"></audio></div>`).join('');
         }
 
-        // --- AI DOCTOR ---
+        /* AI DOCTOR */
         function askAI(preset) {
             const input = document.getElementById('chatInput');
             const box = document.getElementById('chatBox');
             const q = preset || input.value;
             if(!q) return;
             box.innerHTML += `<div class="msg msg-user">${q}</div>`;
-            input.value = "";
+            input.value="";
             setTimeout(() => {
-                let ans = "این مورد نیاز به بررسی دقیق توسط پزشک اطفال دارد. اما به طور کلی آرامش نوزاد و تغذیه با شیر مادر توصیه می‌شود.";
-                if(q.includes("تب")) ans = "تب بالای ۳۸ درجه در نوزاد زیر ۳ ماه فوریت پزشکی است. در نوزادان بزرگتر، قطره استامینوفن (دوبرابر وزن) و پاشویه ولرم انجام دهید.";
-                if(q.includes("کولیک")) ans = "کولیک معمولاً در غروب‌ها شدیدتر می‌شود. صدای سفید، ماساژ ملایم شکم و حرکت دادن پاهای نوزاد مثل دوچرخه کمک‌کننده است.";
-                box.innerHTML += `<div class="msg msg-ai">${ans}</div>`;
+                let a = "لطفاً برای موارد بیماری حتماً با پزشک متخصص مشورت کنید. تغذیه و خواب کافی برای نوزاد حیاتی است.";
+                if(q.includes("تب")) a="تب بالای ۳۸ درجه در نوزاد زیر ۳ ماه اورژانسی است. برای بزرگترها استامینوفن دوبرابر وزن استفاده شود.";
+                if(q.includes("کولیک")) a="ماساژ شکم در جهت عقربه ساعت و صدای سفید برای کولیک عالی است.";
+                box.innerHTML += `<div class="msg msg-ai">${a}</div>`;
                 box.scrollTop = box.scrollHeight;
             }, 600);
         }
 
-        // --- GROWTH ---
+        /* GROWTH */
         function drawGrowthChart() {
             const c = document.getElementById('growthCanvas');
             const ctx = c.getContext('2d');
-            ctx.clearRect(0,0,300,180);
-            ctx.strokeStyle="#e2e8f0"; ctx.beginPath(); ctx.moveTo(30,10); ctx.lineTo(30,160); ctx.lineTo(290,160); ctx.stroke();
-            const drawCurve = (arr, col) => {
-                ctx.strokeStyle=col; ctx.beginPath();
-                arr.forEach((v,i) => { let x=30+(i*55), y=160-(v*10); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+            ctx.clearRect(0,0,300,200);
+            ctx.strokeStyle="#e2e8f0"; ctx.beginPath(); ctx.moveTo(30,10); ctx.lineTo(30,180); ctx.lineTo(290,180); ctx.stroke();
+            
+            const draw = (arr, color) => {
+                ctx.strokeStyle=color; ctx.beginPath();
+                arr.forEach((v,i) => { let x=30+(i*50), y=180-(v*12); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
                 ctx.stroke();
             };
-            drawCurve([4.5, 7, 9, 10.5, 12], "red"); // P97
-            drawCurve([3.3, 5.5, 7.5, 9, 10], "green"); // P50
-            drawCurve([2.5, 4.2, 5.8, 7, 8], "orange"); // P3
+            draw([4, 6.5, 8.5, 10, 11], "red");
+            draw([3.2, 5.5, 7.5, 9, 10], "green");
+            draw([2.5, 4.5, 6, 7.5, 8.5], "orange");
+
             ctx.fillStyle="blue";
-            nyyState.weights.forEach((v,i) => { ctx.beginPath(); ctx.arc(30+(i*55), 160-(v*10), 4, 0, 7); ctx.fill(); });
+            data.weights.forEach((v,i) => { ctx.beginPath(); ctx.arc(30+(i*50), 180-(v*12), 4, 0, 7); ctx.fill(); });
         }
 
-        function addWeightRecord() {
-            const val = parseFloat(document.getElementById('weightInp').value);
-            if(val) { nyyState.weights.push(val); saveState(); document.getElementById('weightInp').value=""; }
+        function addWeight() {
+            const v = parseFloat(document.getElementById('weightInp').value);
+            if(v) { data.weights.push(v); save(); document.getElementById('weightInp').value=""; }
         }
 
-        // --- NOISE ---
-        let noiseCtx, noiseSrc;
-        function toggleNoise(type) {
-            if(noiseSrc) { noiseSrc.stop(); noiseSrc=null; return; }
-            noiseCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const bufSize = noiseCtx.sampleRate * 2;
-            const buf = noiseCtx.createBuffer(1, bufSize, noiseCtx.sampleRate);
+        /* NOISE */
+        let nCtx, nSource;
+        function playNoise(type) {
+            if(nSource) { nSource.stop(); nSource=null; return; }
+            nCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const bufSize = nCtx.sampleRate * 2;
+            const buf = nCtx.createBuffer(1, bufSize, nCtx.sampleRate);
             const d = buf.getChannelData(0);
             for(let i=0; i<bufSize; i++) d[i] = Math.random()*2-1;
-            noiseSrc = noiseCtx.createBufferSource();
-            noiseSrc.buffer = buf; noiseSrc.loop=true; noiseSrc.connect(noiseCtx.destination);
-            noiseSrc.start();
-            setTimeout(() => { if(noiseSrc) {noiseSrc.stop(); noiseSrc=null;} }, document.getElementById('timerVal').innerText*60000);
+            nSource = nCtx.createBufferSource();
+            nSource.buffer = buf; nSource.loop=true; nSource.connect(nCtx.destination);
+            nSource.start();
+            setTimeout(() => { if(nSource) {nSource.stop(); nSource=null;} }, document.getElementById('tVal').innerText*60000);
         }
 
-        // --- PAYMENT & VIP ---
-        function requestMyketPay(sku) {
+        function myketPay(sku) {
             if(window.Myket) window.Myket.purchase(sku);
-            else { if(confirm("محیط تست: آیا پرداخت با موفقیت انجام شود؟")) onMyketPurchaseSuccess(sku); }
+            else { if(confirm("شبیه‌ساز خرید: پرداخت انجام شود؟")) { data.isVip=true; save(); closeVip(); } }
         }
 
-        function onMyketPurchaseSuccess(sku) {
-            nyyState.isVip = true;
-            saveState();
-            alert("اشتراک VIP با موفقیت فعال شد. از امکانات جدید لذت ببرید!");
-            closeVip();
+        function checkPromo() {
+            const p = document.getElementById('promo').value;
+            if(p==="MYKET1403" || p==="GIFTVIP") { data.isVip=true; save(); closeVip(); alert("VIP فعال شد!"); }
+            else alert("کد نامعتبر");
         }
 
-        function applyPromo() {
-            const p = document.getElementById('promoCode').value;
-            if(p==="MYKET1403" || p==="GIFTVIP") { nyyState.isVip=true; saveState(); closeVip(); alert("VIP فعال شد!"); }
-            else alert("کد نامعتبر است.");
-        }
-
-        function openVipModal() { document.getElementById('vipModal').style.display='flex'; }
-        function closeVip() { document.getElementById('vipModal').style.display='none'; }
-        function syncWithPartner() { const c = prompt("کد ۶ رقمی همسر را وارد کنید:"); if(c) { nyyState.name="همگام‌سازی شده"; saveState(); document.getElementById('onboarding').style.display='none'; } }
-        function handleAvatarClick() { /* Admin access hidden */ }
+        function openVip() { document.getElementById('vModal').style.display='flex'; }
+        function closeVip() { document.getElementById('vModal').style.display='none'; }
+        function partnerSync() { const c = prompt("کد همسر را وارد کنید:"); if(c) { data.name="همگام‌سازی شده"; save(); document.getElementById('onboarding').style.display='none'; } }
+        function handleAvatarClick() {}
     </script>
 </body>
 </html>

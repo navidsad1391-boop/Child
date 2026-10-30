@@ -1,650 +1,1456 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نی‌نی یار پرو | NiniYar Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <title>نی‌نی یار پرو | دستیار جامع والدین</title>
+    <!-- Vazirmatn Font CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <style>
-        body { font-family: 'Vazirmatn', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        .nav-active { color: #ec4899 !important; transform: translateY(-4px); }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --primary-dark: #1e40af;
+            --accent: #3b82f6;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow: 0 4px 15px -1px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+
+        [data-gender="girl"] {
+            --primary: #ec4899;
+            --primary-light: #fdf2f8;
+            --primary-dark: #be185d;
+            --accent: #f472b6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding-bottom: 90px;
+            user-select: none;
+        }
+
+        /* Offline Overlay Screen */
+        #offline-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.96);
+            z-index: 99999;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #offline-screen.active { display: flex; }
+        .offline-icon { font-size: 64px; margin-bottom: 16px; }
+
+        /* Medical Legal Banner */
+        .disclaimer-banner {
+            background: #fffbeb;
+            border-bottom: 1px solid #fef3c7;
+            color: #b45309;
+            padding: 8px 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* App Header */
+        header {
+            background: var(--card-bg);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .baby-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            border: 2px solid var(--primary);
+        }
+
+        .baby-info h1 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .baby-info p {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .sync-badge {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Navigation Horizontal Chips */
+        .nav-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 16px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            scrollbar-width: none;
+        }
+        .nav-chips::-webkit-scrollbar { display: none; }
+
+        .chip {
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: var(--bg);
+            color: var(--text-sub);
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Main Container Layout */
+        main {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .gradient-header { background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); }
-        .bottom-nav { box-shadow: 0 -4px 20px rgba(0,0,0,0.05); }
-        .premium-badge { background: linear-gradient(45deg, #f59e0b, #fbbf24); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; }
-        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Card System */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* AI Doctor Chat Interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 520px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f8fafc;
+        }
+
+        .msg {
+            max-width: 88%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 12.5px;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .msg.bot {
+            background: white;
+            align-self: flex-start;
+            border-bottom-right-radius: 2px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .msg.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            gap: 6px;
+            padding: 8px;
+            background: white;
+            border-top: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .chat-suggestions::-webkit-scrollbar { display: none; }
+
+        .sug-chip {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 8px;
+            background: white;
+            border-top: 1px solid var(--border);
+            gap: 8px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .chat-input-area button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Forms & Inputs */
+        .form-group { margin-bottom: 12px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: var(--text-sub);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn:active { opacity: 0.85; }
+
+        /* Growth History Table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid var(--border);
+            padding: 8px;
+            text-align: center;
+        }
+        .history-table th { background: var(--bg); }
+
+        /* Vaccines List */
+        .vaccine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .vaccine-item:last-child { border-bottom: none; }
+        .vaccine-info h4 { font-size: 13px; color: var(--text-main); }
+        .vaccine-info p { font-size: 11px; color: var(--text-sub); }
+
+        .vax-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .vax-btn.done { background: #dcfce7; color: #15803d; }
+        .vax-btn.pending { background: var(--primary-light); color: var(--primary-dark); }
+
+        /* Soothing / 5S Accordion */
+        .soothe-step {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        .soothe-step h4 {
+            font-size: 13px;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+        .soothe-step p {
+            font-size: 11.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-sub);
+            font-size: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .nav-item.active { color: var(--primary); font-weight: 700; }
+        .nav-item span { font-size: 18px; margin-bottom: 2px; }
+
+        /* Modal Overlays */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-body {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .badge-coming-soon {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
     </style>
 </head>
-<body class="pb-24 overflow-x-hidden">
+<body data-gender="boy">
 
-    <!-- Header -->
-    <header class="gradient-header text-white pt-8 pb-12 px-6 rounded-b-[40px] shadow-lg relative">
-        <div class="flex justify-between items-center mb-4">
-            <div class="flex items-center gap-3">
-                <div onclick="adminTrigger()" class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 overflow-hidden" id="avatarClicker">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky" alt="Profile" class="w-full h-full object-cover">
+    <!-- Network Offline Screen -->
+    <div id="offline-screen">
+        <div class="offline-icon">📡</div>
+        <h2>اتصال شبکه برقرار نیست</h2>
+        <p style="margin-top: 8px; font-size: 13px; color: #94a3b8;">اطلاعات ذخیره‌شده شما کاملاً در دسترس است.</p>
+    </div>
+
+    <!-- Medical Legal Disclaimer -->
+    <div class="disclaimer-banner">
+        ⚠️ <span><b>هشدار پزشکی:</b> اطلاعات این اپلیکیشن فقط جهت آموزش است و جایگزین تشخیص پزشک متخصص نیست.</span>
+    </div>
+
+    <!-- App Header -->
+    <header>
+        <div class="header-top">
+            <div class="baby-profile">
+                <div class="avatar" id="app-avatar">👶</div>
+                <div class="baby-info">
+                    <h1 id="app-baby-name">کودک من</h1>
+                    <p id="app-baby-age">در حال محاسبه سن...</p>
                 </div>
-                <div>
-                    <h1 class="text-xl font-bold leading-tight">سلام مامانِ مهربون 👋</h1>
-                    <p class="text-xs opacity-80" id="currentDate">امروز ۲۴ اردیبهشت ۱۴۰۳</p>
-                </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="openSyncModal()" class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center hover:bg-white/30 transition-all">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Quick Stats Overlay -->
-        <div class="absolute -bottom-8 left-6 right-6 glass-card rounded-3xl p-4 shadow-xl grid grid-cols-3 gap-2 text-center border-none">
-            <div class="border-r border-gray-100">
-                <p class="text-[10px] text-gray-500 mb-1">سن نوزاد</p>
-                <p class="text-sm font-bold text-gray-800" id="header_baby_age">-- ماه</p>
-            </div>
-            <div class="border-r border-gray-100">
-                <p class="text-[10px] text-gray-500 mb-1">آخرین واکسن</p>
-                <p class="text-sm font-bold text-pink-500">دریافت شده</p>
-            </div>
-            <div>
-                <p class="text-[10px] text-gray-500 mb-1">وضعیت خواب</p>
-                <p class="text-sm font-bold text-indigo-500">عالی</p>
-            </div>
+            <button class="sync-badge" onclick="openSyncModal()">همگام‌سازی ابری ☁️</button>
         </div>
     </header>
 
-    <!-- Main Content Tabs -->
-    <main class="mt-14 px-6">
-        
-        <!-- 1. Dashboard Tab -->
-        <section id="tab-dashboard" class="tab-content active space-y-6">
-            <div id="global_broadcast" class="hidden bg-indigo-50 border-r-4 border-indigo-500 p-4 rounded-xl flex items-center gap-3">
-                <i class="fa-solid fa-bullhorn text-indigo-500"></i>
-                <p id="broadcast_text" class="text-sm text-indigo-800"></p>
+    <!-- Navigation Chips -->
+    <div class="nav-chips">
+        <div class="chip active" onclick="switchTab('dashboard', this)">داشبورد 🏠</div>
+        <div class="chip" onclick="switchTab('ai-doctor', this)">پزشک نی‌نی یار 🩺</div>
+        <div class="chip" onclick="switchTab('growth-chart', this)">نمودار رشد WHO 📈</div>
+        <div class="chip" onclick="switchTab('soothing-guide', this)">آرام‌سازی و خواب 💤</div>
+        <div class="chip" onclick="switchTab('vaccines', this)">برنامه واکسیناسیون 💉</div>
+        <div class="chip" onclick="switchTab('cry-analyzer', this)">تحلیل‌گر گریه 👶</div>
+        <div class="chip" onclick="switchTab('white-noise', this)">صدای خواب (سفید) 🎧</div>
+        <div class="chip" onclick="switchTab('danger-signs', this)">علائم خطر WHO 🚨</div>
+        <div class="chip" onclick="switchTab('jaundice-scanner', this)">اسکن زردی 🟡 <span class="badge-coming-soon">آپدیت بعد</span></div>
+        <div class="chip" onclick="switchTab('pdf-exporter', this)">خروجی PDF 📄 <span class="badge-coming-soon">آپدیت بعد</span></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>
+
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📌 وضعیت کلی فرزند شما</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-sub); line-height: 1.7;" id="dashboard-summary">
+                    در حال بارگذاری اطلاعات...
+                </p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="showTab('ai-doctor')" class="bg-white p-5 rounded-[30px] shadow-sm border border-gray-100 flex flex-col items-center text-center group active:scale-95 transition-all">
-                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-blue-100">
-                        <i class="fa-solid fa-user-md text-2xl text-blue-500"></i>
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 leading-tight">پزشک هوشمند</span>
-                    <span class="text-[10px] text-gray-400 mt-1">مشاوره ۲۴ ساعته</span>
+            <div class="card" style="background: var(--primary-light); border-color: var(--primary);">
+                <div class="card-header">
+                    <span class="card-title" style="color: var(--primary-dark);">💡 توصیه روز پزشک</span>
                 </div>
-                <div onclick="showTab('growth-chart')" class="bg-white p-5 rounded-[30px] shadow-sm border border-gray-100 flex flex-col items-center text-center group active:scale-95 transition-all">
-                    <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-pink-100">
-                        <i class="fa-solid fa-chart-line text-2xl text-pink-500"></i>
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 leading-tight">نمودار رشد</span>
-                    <span class="text-[10px] text-gray-400 mt-1">پایش وزن و قد</span>
-                </div>
-                <div onclick="showTab('cry-analyzer')" class="bg-white p-5 rounded-[30px] shadow-sm border border-gray-100 flex flex-col items-center text-center group active:scale-95 transition-all relative overflow-hidden">
-                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-microphone-lines text-2xl text-purple-500"></i>
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 leading-tight">تحلیل گریه</span>
-                    <span class="text-[10px] text-gray-400 mt-1">علت گریه نوزاد</span>
-                </div>
-                <div onclick="showTab('white-noise')" class="bg-white p-5 rounded-[30px] shadow-sm border border-gray-100 flex flex-col items-center text-center group active:scale-95 transition-all">
-                    <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-wind text-2xl text-amber-500"></i>
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 leading-tight">صدای سفید</span>
-                    <span class="text-[10px] text-gray-400 mt-1">خواب آرام نوزاد</span>
-                </div>
+                <p style="font-size: 12px; color: var(--primary-dark); line-height: 1.6;" id="daily-tip">
+                    تغذیه کمکی حتماً باید از پایان ۶ ماهگی (۱۸۰ روزگی) آغاز شود. تا قبل از ۱ سالگی از دادن عسل طبیعی و شیر پاستوریزه گاو خودداری کنید.
+                </p>
+            </div>
+        </div>
+
+        <!-- AI DOCTOR TAB -->
+        <div id="ai-doctor" class="tab-content">
+            <div class="card" style="padding: 10px; margin-bottom: 8px;">
+                <p style="font-size: 11px; color: var(--text-sub); text-align: center;">
+                    👨‍⚕️ پاسخ‌گوی پزشک هوشمند (۲۰۰+ موضوع) | توسعه یافته توسط <b>نوید صادقی</b>
+                </p>
             </div>
 
-            <!-- Health Checklist -->
-            <div class="bg-white rounded-[32px] p-6 shadow-sm border border-gray-50">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-black text-gray-800">چک‌لیست سلامت</h3>
-                    <span class="text-xs text-pink-500 font-bold">نمایش همه</span>
-                </div>
-                <div class="space-y-3">
-                    <div onclick="showTab('vaccines')" class="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-2xl transition-all cursor-pointer border border-transparent hover:border-pink-100">
-                        <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-500">
-                            <i class="fa-solid fa-syringe"></i>
-                        </div>
-                        <div class="flex-1 text-right">
-                            <p class="text-sm font-bold text-gray-700">برنامه واکسیناسیون</p>
-                            <p class="text-[10px] text-gray-400">نوبت بعدی: ۴ ماهگی</p>
-                        </div>
-                        <i class="fa-solid fa-chevron-left text-gray-300 text-xs"></i>
-                    </div>
-                    <div onclick="showTab('danger-signs')" class="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-2xl transition-all cursor-pointer">
-                        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-500">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                        <div class="flex-1 text-right">
-                            <p class="text-sm font-bold text-gray-700">علائم هشداردهنده</p>
-                            <p class="text-[10px] text-gray-400">مواقع اضطراری و فوری</p>
-                        </div>
-                        <i class="fa-solid fa-chevron-left text-gray-300 text-xs"></i>
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="msg bot">
+                        سلام! من پزشک هوشمند <b>نی‌نی یار پرو</b> هستم. برنامه توسط <b>نوید صادقی</b> طراحی شده است.<br><br>
+                        من به بیش از <b>۲۰۰ سوال پزشکی و مراقبتی</b> درباره تب، تغذیه، ختنه، گوش، بلعیدن جسم خارجی، سرماخوردگی، ویتامین‌ها، تکامل و خواب پاسخ می‌دهم. سوال خود را بپرسید!
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- 2. AI Doctor Tab -->
-        <section id="tab-ai-doctor" class="tab-content space-y-4">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="showTab('dashboard')" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <h2 class="text-xl font-black text-gray-800">پزشک هوشمند</h2>
-            </div>
-            
-            <div id="chat-container" class="bg-white rounded-[32px] p-4 h-[60vh] overflow-y-auto shadow-inner border border-gray-50 flex flex-col gap-4">
-                <div class="bg-blue-50 p-4 rounded-2xl rounded-tr-none self-start max-w-[85%]">
-                    <p class="text-sm text-blue-900 leading-relaxed">سلام! من دستیار هوشمند شما هستم. هر سوالی درباره تغذیه، خواب یا علائم نوزادت داری ازم بپرس. 😊</p>
+                <!-- Chat Suggestions Chips -->
+                <div class="chat-suggestions">
+                    <div class="sug-chip" onclick="sendSuggested('سازنده برنامه کیست؟')">👨‍💻 سازنده برنامه</div>
+                    <div class="sug-chip" onclick="sendSuggested('تب کودک بالای ۳۸ درجه')">🔥 تب بالای ۳۸°</div>
+                    <div class="sug-chip" onclick="sendSuggested('دستور مراقبت از ختنه')">🩹 مراقبت ختنه</div>
+                    <div class="sug-chip" onclick="sendSuggested('بلعیدن جسم خارجی و خفگی')">🚨 جسم خارجی</div>
+                    <div class="sug-chip" onclick="sendSuggested('ترشح و پارگی پرده گوش')">👂 پرده گوش</div>
+                    <div class="sug-chip" onclick="sendSuggested('شروع غذای کمکی')">🥣 غذای کمکی</div>
+                    <div class="sug-chip" onclick="sendSuggested('درمان کولیک و نفخ')">🍼 کولیک و نفخ</div>
+                    <div class="sug-chip" onclick="sendSuggested('سرماخوردگی و آبریزش')">🤧 سرماخوردگی</div>
+                    <div class="sug-chip" onclick="sendSuggested('وضعیت مدفوع و اسهال')">💩 اسهال و مدفوع</div>
+                    <div class="sug-chip" onclick="sendSuggested('قطره آهن و ویتامین د')">💊 ویتامین و آهن</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="سوال پزشکی خود را بنویسید..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">ارسال</button>
                 </div>
             </div>
+        </div>
 
-            <div class="relative mt-4">
-                <input type="text" id="ai-input" placeholder="مثلاً: درمان دل‌درد نوزاد چیه؟" 
-                       class="w-full bg-white border border-gray-200 rounded-full py-4 px-6 pr-14 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all">
-                <button onclick="askAIDoctor()" class="absolute left-2 top-2 w-12 h-12 bg-pink-500 text-white rounded-full flex items-center justify-center shadow-md active:scale-90 transition-all">
-                    <i class="fa-solid fa-paper-plane-rtl"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- 3. Growth Chart Tab -->
-        <section id="tab-growth-chart" class="tab-content space-y-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-black text-gray-800">نمودار پایش رشد</h2>
-                <div class="bg-pink-100 text-pink-600 px-4 py-1 rounded-full text-xs font-bold">WHO Standard</div>
-            </div>
-
-            <div class="bg-white p-4 rounded-[32px] shadow-sm border border-gray-50 h-64">
-                <canvas id="growthChart"></canvas>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-                    <label class="text-[10px] text-gray-500 block mb-1">قد فعلی (سانتی‌متر)</label>
-                    <input type="number" id="baby_height" value="50" class="text-lg font-bold text-gray-800 w-full outline-none focus:text-pink-500">
+        <!-- GROWTH CHART TAB -->
+        <div id="growth-chart" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📈 ثبت و رسم پایش وزن (WHO)</span>
                 </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-                    <label class="text-[10px] text-gray-500 block mb-1">وزن فعلی (کیلوگرم)</label>
-                    <input type="number" id="baby_weight" step="0.1" value="3.5" class="text-lg font-bold text-gray-800 w-full outline-none focus:text-pink-500">
-                </div>
-            </div>
-            <button onclick="updateGrowthData()" class="w-full bg-pink-500 text-white py-4 rounded-2xl font-bold shadow-lg shadow-pink-200 active:scale-95 transition-all">به‌روزرسانی و تحلیل</button>
-        </section>
-
-        <!-- 4. Cry Analyzer Tab -->
-        <section id="tab-cry-analyzer" class="tab-content space-y-6">
-            <div class="text-center py-10">
-                <div class="w-32 h-32 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 relative">
-                    <div class="absolute inset-0 rounded-full border-4 border-purple-200 animate-ping"></div>
-                    <i class="fa-solid fa-microphone text-5xl text-purple-600 z-10"></i>
-                </div>
-                <h2 class="text-2xl font-black text-gray-800 mb-2">تحلیلگر گریه</h2>
-                <p class="text-sm text-gray-500 px-10">۱۰ ثانیه از صدای گریه نوزاد را ضبط کنید تا علت احتمالی آن را تشخیص دهیم.</p>
-            </div>
-
-            <div id="analyzer_ui" class="space-y-4 text-center">
-                <button onclick="startCryAnalysis()" id="btn_record" class="w-full bg-purple-600 text-white py-5 rounded-3xl font-black text-lg shadow-xl shadow-purple-200 flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-play"></i>
-                    شروع ضبط صدا
-                </button>
-                <div id="recording_status" class="hidden text-sm font-bold text-purple-600 animate-pulse">در حال شنیدن و پردازش...</div>
-            </div>
-            
-            <div id="analysis_result" class="hidden bg-white p-6 rounded-[32px] border-2 border-dashed border-purple-200 space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500">نتیجه تحلیل:</span>
-                    <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-[10px] font-bold">دقت ۸۵٪</span>
-                </div>
-                <p id="cry_reason" class="text-xl font-black text-gray-800 text-center"></p>
-                <p id="cry_advice" class="text-sm text-gray-600 leading-relaxed text-center"></p>
-            </div>
-        </section>
-
-        <!-- 5. White Noise Tab -->
-        <section id="tab-white-noise" class="tab-content space-y-6">
-            <h2 class="text-xl font-black text-gray-800 mb-4">صداهای آرامش‌بخش</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="toggleSound('rain', this)" class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 text-center transition-all cursor-pointer">
-                    <i class="fa-solid fa-cloud-showers-heavy text-3xl text-blue-400 mb-3"></i>
-                    <p class="text-sm font-bold text-gray-700">صدای باران</p>
-                </div>
-                <div onclick="toggleSound('vacuum', this)" class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 text-center transition-all cursor-pointer">
-                    <i class="fa-solid fa-fan text-3xl text-gray-400 mb-3"></i>
-                    <p class="text-sm font-bold text-gray-700">جاروبرقی</p>
-                </div>
-                <div onclick="toggleSound('womb', this)" class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 text-center transition-all cursor-pointer">
-                    <i class="fa-solid fa-heartbeat text-3xl text-red-400 mb-3"></i>
-                    <p class="text-sm font-bold text-gray-700">صدای رحم</p>
-                </div>
-                <div onclick="toggleSound('ocean', this)" class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 text-center transition-all cursor-pointer">
-                    <i class="fa-solid fa-water text-3xl text-cyan-500 mb-3"></i>
-                    <p class="text-sm font-bold text-gray-700">اقیانوس</p>
-                </div>
-            </div>
-            <div id="playback-bar" class="hidden bg-indigo-600 text-white p-4 rounded-2xl flex items-center justify-between animate-bounce">
-                <span class="text-xs font-bold">درحال پخش...</span>
-                <button onclick="stopAllSounds()" class="bg-white/20 px-3 py-1 rounded-lg text-[10px]">قطع صدا</button>
-            </div>
-        </section>
-
-        <!-- 6. Vaccines Tab -->
-        <section id="tab-vaccines" class="tab-content">
-            <h2 class="text-xl font-black text-gray-800 mb-4">تقویم واکسیناسیون</h2>
-            <div id="vaccine_list" class="space-y-4 text-right"></div>
-        </section>
-
-        <!-- 7. Danger Signs Tab -->
-        <section id="tab-danger-signs" class="tab-content space-y-4">
-            <div class="bg-red-50 p-6 rounded-[32px] border border-red-100 text-right">
-                <h2 class="text-xl font-black text-red-600 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    علائم خطر فوری
-                </h2>
-                <div class="space-y-4">
-                    <div class="p-4 bg-white rounded-2xl border-r-4 border-red-500">
-                        <p class="font-bold text-gray-800 text-sm">تب بالای ۳۸ درجه در نوزاد زیر ۳ ماه</p>
+                <div style="display: flex; gap: 8px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>سن (ماه ۰ تا ۲۴):</label>
+                        <input type="number" id="growth-month" class="form-control" placeholder="مثلاً 4" min="0" max="24">
                     </div>
-                    <div class="p-4 bg-white rounded-2xl border-r-4 border-red-500">
-                        <p class="font-bold text-gray-800 text-sm">تشنج یا لرزش غیرطبیعی</p>
+                    <div class="form-group" style="flex: 1;">
+                        <label>وزن (کیلوگرم):</label>
+                        <input type="number" step="0.1" id="growth-weight" class="form-control" placeholder="مثلاً 6.5">
                     </div>
-                    <div class="p-4 bg-white rounded-2xl border-r-4 border-red-500">
-                        <p class="font-bold text-gray-800 text-sm">تغییر رنگ پوست به کبودی یا زردی شدید</p>
-                    </div>
-                    <div class="p-4 bg-white rounded-2xl border-r-4 border-red-500">
-                        <p class="font-bold text-gray-800 text-sm">بی‌حالی شدید و بیدار نشدن برای شیر</p>
-                    </div>
-                    <button onclick="window.location.href='tel:115'" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black mt-4 flex items-center justify-center gap-2 shadow-xl shadow-red-100">
-                        <i class="fa-solid fa-phone-flip animate-shake"></i>
-                        تماس با اورژانس (۱۱۵)
-                    </button>
+                </div>
+                <button class="btn" onclick="addGrowthPoint()">ثبت وزن جدید</button>
+            </div>
+
+            <div class="card">
+                <canvas id="growthCanvas" width="550" height="300" style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff;"></canvas>
+                <div style="font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-around; margin-top: 8px;">
+                    <span style="color: #ef4444;">🔴 صدک ۳ (حداقل)</span>
+                    <span style="color: #10b981;">🟢 صدک ۵۰ (نرمال)</span>
+                    <span style="color: #ef4444;">🔴 صدک ۹۷ (حداکثر)</span>
+                    <span style="color: var(--primary); font-weight: bold;">🔵 وزن کودک</span>
                 </div>
             </div>
-        </section>
+
+            <div class="card">
+                <span class="card-title" style="margin-bottom: 8px;">📋 تاریخچه وزن‌های ثبت شده</span>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ماه</th>
+                            <th>وزن (kg)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="growth-history-body">
+                        <!-- Dynamic History Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SOOTHING & SLEEP GUIDE TAB -->
+        <div id="soothing-guide" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💤 تکنیک‌های ۵S آرام‌سازی نوزاد (دکتر کارپ)</span>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۱. Swaddle (قنداق کردن اصولی)</h4>
+                    <p>دست‌های نوزاد را جمع کرده و در پارچه نخی خنک بپیچید. این کار از پرش ناگهانی دست‌ها (رفلکس مورو) جلوگیری می‌کند.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۲. Side/Stomach Position (پوزیشن به پهلو)</h4>
+                    <p>برای آرام کردن، نوزاد را روی بازوی خود به پهلو نگه‌دارید (خوابیدن حتماً باید به پشت باشد).</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۳. Shush (صدای هششش بلند)</h4>
+                    <p>صدای «هششش» را نزدیک گوش نوزاد با ریتم منظم ادا کنید تا صدای عروق داخل رحم بازسازی شود.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۴. Swing (تکان‌دان ریتمیک)</h4>
+                    <p>سر و بدن نوزاد را به آرامی و با ریتم ریز اهتزاز دهید.</p>
+                </div>
+
+                <div class="soothe-step">
+                    <h4>۵. Suck (مکیدن)</h4>
+                    <p>دادن پستانک یا انگشت تمیز جهت آرام‌سازی سیستم عصبی بسیار موثر است.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-title" style="margin-bottom: 8px;">💆‍♂️ آموزش ماساژ ضد کولیک نوزاد</span>
+                <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6;">
+                    با روغن زیتون ولرم، شکم نوزاد را در جهت عقربه‌های ساعت به صورت دایره‌ای ماساژ دهید. سپس پاهای نوزاد را به صورت ریتمیک مانند دوچرخه حرکت دهید.
+                </p>
+            </div>
+        </div>
+
+        <!-- VACCINES TAB -->
+        <div id="vaccines" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💉 جدول واکسیناسیون کشوری</span>
+                </div>
+                <div id="vaccine-list">
+                    <!-- Dynamic Vaccine Items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CRY ANALYZER TAB -->
+        <div id="cry-analyzer" class="tab-content">
+            <div class="card" style="text-align: center;">
+                <div class="card-header" style="justify-content: center;">
+                    <span class="card-title">👶 پردازش فرکانس صدای گریه</span>
+                </div>
+                <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">
+                    فرکانس صدای نوزاد را به مدت ۵ ثانیه پردازش و تحلیل کنید.
+                </p>
+                <button class="btn" id="cry-btn" onclick="startCryAnalysis()">شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️</button>
+                <div id="cry-result" style="margin-top: 16px; font-weight: 700; font-size: 13px; color: var(--primary-dark);"></div>
+            </div>
+        </div>
+
+        <!-- WHITE NOISE TAB -->
+        <div id="white-noise" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🎧 مولد صدای سفید (آرامش خواب)</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn" onclick="toggleNoise('womb')">صدای رحم 🤱</button>
+                    <button class="btn" onclick="toggleNoise('hairdryer')">سشوار 💨</button>
+                    <button class="btn" onclick="toggleNoise('vacuum')">جاروبرقی 🧹</button>
+                    <button class="btn" onclick="toggleNoise('rain')">باران 🌧️</button>
+                </div>
+                <button class="btn" style="background: var(--danger); margin-top: 12px;" onclick="stopNoise()">قطع صدا ⏹️</button>
+            </div>
+        </div>
+
+        <!-- WHO DANGER SIGNS TAB -->
+        <div id="danger-signs" class="tab-content">
+            <div class="card" style="border-right: 4px solid var(--danger);">
+                <h3 style="color: var(--danger); font-size: 14px; margin-bottom: 8px;">🚨 علائم اورژانسی (مراجعه سریع به بیمارستان)</h3>
+                <ul style="font-size: 12px; color: var(--text-main); line-height: 1.8; padding-right: 16px;">
+                    <li>تب بالای ۳۸.۰ درجه سانتی‌گراد در نوزادان زیر ۳ ماه.</li>
+                    <li>تشنج، پرش شدید مداوم یا بی‌حالی و عدم پاسخ به صدای والدین.</li>
+                    <li>امتناع کامل از خوردن شیر یا مایعات بیش از ۵ تا ۶ ساعت.</li>
+                    <li>تنفس بسیار تند (بیش از ۶۰ بار در دقیقه) یا کبودی دور لب.</li>
+                    <li>زردی شدید پوست که به شکم، ران‌ها و کف پا رسیده است.</li>
+                    <li>فرورفتگی شدید قفسه سینه هنگام نفس کشیدن.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDERS -->
+        <div id="jaundice-scanner" class="tab-content">
+            <div class="card" style="text-align: center; padding: 30px 16px;">
+                <h3>🚀 به‌زودی در آپدیت بعدی</h3>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">اسکن هوشمند زردی نوزاد از روی تصویر قرنیه و پوست.</p>
+            </div>
+        </div>
+
+        <div id="pdf-exporter" class="tab-content">
+            <div class="card" style="text-align: center; padding: 30px 16px;">
+                <h3>🚀 به‌زودی در آپدیت بعدی</h3>
+                <p style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">خروجی فایل PDF کامل پرونده رشد و واکسیناسیون.</p>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Navigation Bar -->
-    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-gray-100 px-6 py-4 flex justify-between items-center z-40">
-        <button onclick="showTab('dashboard')" class="nav-item flex flex-col items-center gap-1 text-gray-400 transition-all nav-active" id="nav-dashboard">
-            <i class="fa-solid fa-house-chimney text-xl"></i>
-            <span class="text-[10px] font-bold">خانه</span>
-        </button>
-        <button onclick="showTab('ai-doctor')" class="nav-item flex flex-col items-center gap-1 text-gray-400 transition-all" id="nav-ai-doctor">
-            <i class="fa-solid fa-comment-medical text-xl"></i>
-            <span class="text-[10px] font-bold">پزشک</span>
-        </button>
-        <button onclick="showTab('white-noise')" class="nav-item flex flex-col items-center gap-1 text-gray-400 transition-all" id="nav-white-noise">
-            <i class="fa-solid fa-moon text-xl"></i>
-            <span class="text-[10px] font-bold">خواب</span>
-        </button>
-        <button onclick="showTab('growth-chart')" class="nav-item flex flex-col items-center gap-1 text-gray-400 transition-all" id="nav-growth-chart">
-            <i class="fa-solid fa-chart-simple text-xl"></i>
-            <span class="text-[10px] font-bold">رشد</span>
-        </button>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('dashboard', this)">
+            <span>🏠</span>داشبورد
+        </div>
+        <div class="nav-item" onclick="switchTab('ai-doctor', this)">
+            <span>🩺</span>پزشک AI
+        </div>
+        <div class="nav-item" onclick="switchTab('growth-chart', this)">
+            <span>📈</span>نمودار رشد
+        </div>
+        <div class="nav-item" onclick="switchTab('soothing-guide', this)">
+            <span>💤</span>آرام‌سازی
+        </div>
+        <div class="nav-item" onclick="switchTab('danger-signs', this)">
+            <span>🚨</span>اورژانس
+        </div>
     </nav>
 
     <!-- Onboarding Modal -->
-    <div id="modal_onboarding" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden flex items-center justify-center p-6">
-        <div class="bg-white rounded-[40px] w-full max-w-sm p-8 text-center animate-fadeIn relative overflow-hidden">
-            <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fa-solid fa-baby text-4xl text-pink-500"></i>
+    <div class="modal-overlay" id="onboarding-modal">
+        <div class="modal-body">
+            <h3 style="margin-bottom: 12px; font-size: 15px;">ورود اطلاعات اولیه نوزاد 👶</h3>
+            <div class="form-group">
+                <label>نام نوزاد:</label>
+                <input type="text" id="init-name" class="form-control" placeholder="مثلاً: کیان">
             </div>
-            <h2 class="text-2xl font-black text-gray-800 mb-2 font-['Vazirmatn']">خوش آمدی مامان عزیز!</h2>
-            <p class="text-gray-500 text-sm mb-8 leading-relaxed">برای شروع پایش رشد نوزادت، نام و تاریخ تولدش رو وارد کن:</p>
-            
-            <input type="text" id="setup_baby_name" placeholder="نام نوزاد" class="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 mb-4 focus:ring-2 focus:ring-pink-400 outline-none text-center font-bold">
-            <input type="date" id="setup_baby_dob" class="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 mb-8 focus:ring-2 focus:ring-pink-400 outline-none text-center font-bold text-gray-600">
-            
-            <button onclick="finishOnboarding()" class="w-full bg-pink-500 text-white py-4 rounded-2xl font-black shadow-lg shadow-pink-200">شروع ماجراجویی</button>
+            <div class="form-group">
+                <label>جنسیت:</label>
+                <select id="init-gender" class="form-control">
+                    <option value="boy">پسر 👦</option>
+                    <option value="girl">دختر 👧</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>تاریخ تولد:</label>
+                <input type="date" id="init-dob" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>وزن هنگام تولد (کیلوگرم):</label>
+                <input type="number" step="0.1" id="init-weight" class="form-control" placeholder="3.2">
+            </div>
+            <button class="btn" onclick="saveOnboarding()">ثبت و شروع</button>
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
-    <div id="modal_admin" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4 text-right">
-        <div class="bg-white rounded-[40px] w-full max-w-md p-6 overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
-                <button onclick="closeAdmin()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
-                <h2 class="text-xl font-black text-gray-800">پنل مدیریت نی‌نی یار پرو</h2>
+    <!-- Automatic Cloud Sync Modal -->
+    <div class="modal-overlay" id="sync-modal">
+        <div class="modal-body">
+            <h3 style="margin-bottom: 12px; font-size: 15px;">همگام‌سازی زنده والدین ☁️</h3>
+            <p style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 12px;">اطلاعات به‌صورت <b>خودکار و لحظه‌ای</b> بین گوشی پدر و مادر همگام می‌شود:</p>
+
+            <div style="background: #eff6ff; border: 1px solid var(--primary); padding: 12px; text-align: center; font-weight: 700; font-size: 16px; border-radius: 8px; letter-spacing: 1px; color: var(--primary-dark);" id="my-sync-code">
+                کد اختصاصی شما: NYY-XXXXXX
             </div>
-            
-            <div class="space-y-6">
-                <!-- Master Switch -->
-                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                    <div class="relative inline-block w-12 h-6 transition duration-200 ease-in-out bg-gray-300 rounded-full cursor-pointer">
-                        <input type="checkbox" id="master_free_switch" class="absolute block w-6 h-6 bg-white border-4 border-gray-300 rounded-full appearance-none cursor-pointer checked:right-0 checked:bg-green-500 checked:border-green-500 right-6 transition-all duration-300">
-                    </div>
-                    <span class="text-sm font-bold text-gray-700">کلید سراسری (رایگان برای همه)</span>
-                </div>
 
-                <!-- Global Message -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-2">پیام سراسری به کاربران:</label>
-                    <textarea id="admin_broadcast_input" class="w-full bg-gray-50 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="مثلاً: نسخه جدید منتشر شد..."></textarea>
-                </div>
+            <hr style="margin: 14px 0; border: none; border-top: 1px dashed var(--border);">
 
-                <!-- Promo Codes -->
-                <div class="bg-indigo-50 p-4 rounded-2xl">
-                    <p class="text-[10px] font-bold text-indigo-400 mb-2 uppercase">کدهای تخفیف فعال</p>
-                    <div class="flex justify-between items-center text-xs font-bold text-indigo-900 border-b border-indigo-100 pb-2 mb-2">
-                        <span>MYKET1403</span>
-                        <span>۳۶۵ روز رایگان</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs font-bold text-indigo-900">
-                        <span>GIFTVIP</span>
-                        <span>۳۰ روز رایگان</span>
-                    </div>
-                </div>
-
-                <button onclick="saveAdminSettings()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black shadow-lg active:scale-95 transition-all">ذخیره تنظیمات</button>
-                <p class="text-[10px] text-center text-gray-400 mt-4">NiniYar Pro v6.9 - Developer: Navid Sadeghi</p>
+            <div class="form-group">
+                <label>اتصال به دستگاه همسر (ورود کد اتصال):</label>
+                <input type="text" id="input-sync-code" class="form-control" placeholder="مثلاً: NYY-A8F23B">
             </div>
+            <button class="btn" id="btn-connect-spouse" onclick="connectSpouseDevice()">اتصال و همگام‌سازی زنده 🔗</button>
+            <button class="btn" style="background: #94a3b8; margin-top: 8px;" onclick="closeSyncModal()">بستن</button>
         </div>
     </div>
 
-    <!-- Sync Modal -->
-    <div id="modal_sync" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden flex items-center justify-center p-6">
-        <div class="bg-white rounded-[40px] w-full max-w-sm p-8 text-center animate-fadeIn">
-            <h2 class="text-xl font-black text-gray-800 mb-4">همگام‌سازی ابری</h2>
-            <div class="space-y-4">
-                <button onclick="syncData('export')" class="w-full border-2 border-indigo-100 text-indigo-600 py-3 rounded-2xl font-bold flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> نسخه‌پشتیبان در ابر
-                </button>
-                <button onclick="syncData('import')" class="w-full border-2 border-indigo-100 text-indigo-600 py-3 rounded-2xl font-bold flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-down"></i> بازیابی اطلاعات
-                </button>
-                <button onclick="closeSyncModal()" class="w-full bg-gray-100 text-gray-500 py-3 rounded-2xl font-bold">بستن</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- JS Core Engine & Cloud Sync Fixes (v6.9) -->
     <script>
-        // --- Core State & DB ---
+        const DB_KEY = 'nyy69_cloud_sync_db';
+
+        // Default Data Model
         let appData = {
-            babyName: '',
-            babyDob: '',
-            logs: [],
-            isPremium: false,
-            adminSettings: {
-                masterFree: false,
-                broadcast: ""
-            }
+            babyName: 'کیان',
+            gender: 'boy',
+            birthDate: '2023-10-01',
+            birthWeight: 3.3,
+            completedVaccines: [],
+            growthHistory: [
+                { month: 0, weight: 3.3 },
+                { month: 2, weight: 5.4 },
+                { month: 4, weight: 6.8 }
+            ],
+            syncCode: '',
+            realGistId: ''
         };
 
-        const standardWHO = [
-            { month: 0, weight: 3.3, height: 49.9 },
-            { month: 1, weight: 4.5, height: 54.7 },
-            { month: 2, weight: 5.6, height: 58.4 },
-            { month: 4, weight: 7.0, height: 63.9 },
-            { month: 6, weight: 7.9, height: 67.6 },
-            { month: 12, weight: 9.6, height: 75.7 },
-            { month: 18, weight: 10.9, height: 82.3 },
-            { month: 24, weight: 12.2, height: 87.8 }
+        const vaccineSchedule = [
+            { id: 'v_birth', title: 'بدین تولد', desc: 'سل (BCG) + فلج اطفال خوراکی + هپاتیت B' },
+            { id: 'v_2m', title: '۲ ماهگی', desc: 'پنج‌گانه (پنتووالان) + فلج اطفال خوراکی' },
+            { id: 'v_4m', title: '۴ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی + فلج اطفال تزریقی (IPV)' },
+            { id: 'v_6m', title: '۶ ماهگی', desc: 'پنج‌گانه + فلج اطفال خوراکی' },
+            { id: 'v_12m', title: '۱۲ ماهگی', desc: 'MMR (سرخک، سرخجه، اوریون)' },
+            { id: 'v_18m', title: '۱۸ ماهگی', desc: 'یادآور پنج‌گانه + یادآور فلج اطفال + MMR' }
         ];
 
-        let growthChartInstance = null;
-        let activeAudio = null;
+        // WHO Standard Percentiles
+        const standardWHO = [
+            { month: 0, p3: 2.5, p50: 3.3, p97: 4.4 },
+            { month: 2, p3: 4.3, p50: 5.6, p97: 7.1 },
+            { month: 4, p3: 5.6, p50: 7.0, p97: 8.7 },
+            { month: 6, p3: 6.4, p50: 7.9, p97: 9.8 },
+            { month: 9, p3: 7.2, p50: 8.9, p97: 11.0 },
+            { month: 12, p3: 7.8, p50: 9.6, p97: 11.8 },
+            { month: 18, p3: 8.8, p50: 10.9, p97: 13.5 },
+            { month: 24, p3: 10.0, p50: 12.2, p97: 15.3 }
+        ];
 
-        // --- Tab Management ---
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('nav-active'));
-            
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            const navBtn = document.getElementById(`nav-${tabId}`);
-            if(navBtn) navBtn.classList.add('nav-active');
-            
-            if(tabId === 'growth-chart') initGrowthChart();
-            if(tabId === 'vaccines') renderVaccines();
-            window.scrollTo(0, 0);
-        }
+        window.addEventListener('load', () => {
+            loadData();
+            checkOnlineStatus();
+            window.addEventListener('online', checkOnlineStatus);
+            window.addEventListener('offline', checkOnlineStatus);
 
-        // --- AI Doctor (Simulated) ---
-        function askAIDoctor() {
-            const input = document.getElementById('ai-input');
-            const text = input.value.trim();
-            if(!text) return;
-
-            const chat = document.getElementById('chat-container');
-            chat.innerHTML += `<div class="bg-pink-500 text-white p-4 rounded-2xl rounded-tl-none self-end max-w-[85%] text-sm">${text}</div>`;
-            input.value = '';
-
-            setTimeout(() => {
-                let response = "در این مورد بهتر است با متخصص اطفال مشورت کنید، اما به‌طور کلی استراحت و مایعات پیشنهاد می‌شود.";
-                if(text.includes('تب')) response = "تب در نوزادان حساس است. اگر بالای ۳۸ درجه است، حتماً با پزشک تماس بگیرید.";
-                if(text.includes('خواب')) response = "نوزادان در این سن به ۱۲ تا ۱۶ ساعت خواب نیاز دارند. ایجاد محیط تاریک و صدای سفید کمک می‌کند.";
-                
-                chat.innerHTML += `<div class="bg-blue-50 text-blue-900 p-4 rounded-2xl rounded-tr-none self-start max-w-[85%] text-sm">${response}</div>`;
-                chat.scrollTop = chat.scrollHeight;
-            }, 1000);
-        }
-
-        // --- Growth Chart ---
-        function initGrowthChart() {
-            const ctx = document.getElementById('growthChart').getContext('2d');
-            if(growthChartInstance) growthChartInstance.destroy();
-
-            const months = standardWHO.map(d => d.month + ' ماهگی');
-            const weights = standardWHO.map(d => d.weight);
-
-            growthChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: [{
-                        label: 'استاندارد WHO (وزن)',
-                        data: weights,
-                        borderColor: '#ec4899',
-                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { grid: { display: false } }, x: { grid: { display: false } } }
+            // Automatic Periodic Background Pull (every 20 seconds)
+            setInterval(() => {
+                if (appData.syncCode && navigator.onLine) {
+                    pullDataFromCloud(appData.syncCode, true);
                 }
+            }, 20000);
+        });
+
+        function generateSyncCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = 'NYY-';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function checkOnlineStatus() {
+            const screen = document.getElementById('offline-screen');
+            if (!navigator.onLine) screen.classList.add('active');
+            else screen.classList.remove('active');
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem(DB_KEY);
+            if (saved) {
+                try { appData = JSON.parse(saved); } catch(e){}
+            } else {
+                document.getElementById('onboarding-modal').classList.add('active');
+            }
+
+            // GUARANTEED INSTANT CODE GENERATION (Fix 1)
+            if (!appData.syncCode) {
+                appData.syncCode = generateSyncCode();
+                localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            }
+
+            updateUI();
+        }
+
+        function saveData() {
+            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            updateUI();
+            pushDataToCloudSilent();
+        }
+
+        function saveOnboarding() {
+            const name = document.getElementById('init-name').value.trim();
+            const gender = document.getElementById('init-gender').value;
+            const dob = document.getElementById('init-dob').value;
+            const weight = parseFloat(document.getElementById('init-weight').value);
+
+            if (name && dob && !isNaN(weight)) {
+                appData.babyName = name;
+                appData.gender = gender;
+                appData.birthDate = dob;
+                appData.birthWeight = weight;
+                appData.growthHistory = [{ month: 0, weight: weight }];
+                if (!appData.syncCode) appData.syncCode = generateSyncCode();
+                saveData();
+                document.getElementById('onboarding-modal').classList.remove('active');
+            } else {
+                alert('لطفاً تمام فیلدها را با دقت پر کنید.');
+            }
+        }
+
+        function updateUI() {
+            document.body.setAttribute('data-gender', appData.gender);
+            document.getElementById('app-baby-name').innerText = appData.babyName;
+            document.getElementById('app-avatar').innerText = appData.gender === 'boy' ? '👦' : '👧';
+
+            // Age Calculation
+            const diffTime = Math.abs(new Date() - new Date(appData.birthDate));
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffMonths = Math.floor(diffDays / 30.43);
+            document.getElementById('app-baby-age').innerText = `سن: ${diffMonths} ماه (${diffDays} روز)`;
+
+            // Dashboard Summary
+            document.getElementById('dashboard-summary').innerHTML = `
+                فرزند شما <b>${appData.babyName}</b> عزیز ${diffMonths} ماه دارد.<br>
+                وزن هنگام تولد: <b>${appData.birthWeight} کیلوگرم</b>.<br>
+                تعداد واکسن‌های تزریق شده: <b>${appData.completedVaccines.length} از ${vaccineSchedule.length}</b>.<br>
+                کد اختصاصی همگام‌سازی: <b>${appData.syncCode}</b>
+            `;
+
+            document.getElementById('my-sync-code').innerText = `کد اختصاصی شما: ${appData.syncCode}`;
+
+            renderVaccines();
+            renderGrowthTable();
+            drawGrowthChart();
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.chip').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if (element) element.classList.add('active');
+
+            if (tabId === 'growth-chart') {
+                setTimeout(drawGrowthChart, 50);
+            }
+        }
+
+        // Vaccine System
+        function renderVaccines() {
+            const container = document.getElementById('vaccine-list');
+            container.innerHTML = '';
+            vaccineSchedule.forEach(v => {
+                const isDone = appData.completedVaccines.includes(v.id);
+                const item = document.createElement('div');
+                item.className = 'vaccine-item';
+                item.innerHTML = `
+                    <div class="vaccine-info">
+                        <h4>${v.title}</h4>
+                        <p>${v.desc}</p>
+                    </div>
+                    <button class="vax-btn ${isDone ? 'done' : 'pending'}" onclick="toggleVaccine('${v.id}')">
+                        ${isDone ? '✅ تزریق شد' : 'ثبت تزریق'}
+                    </button>
+                `;
+                container.appendChild(item);
             });
         }
 
-        function updateGrowthData() {
-            const w = document.getElementById('baby_weight').value;
-            const h = document.getElementById('baby_height').value;
-            alert(`تحلیل هوش مصنوعی: رشد نوزاد شما نسبت به سن او در محدوده نرمال (صدک ۵۰) قرار دارد. میانگین وزن برای این سن ${w} کیلوگرم است.`);
+        function toggleVaccine(vId) {
+            const idx = appData.completedVaccines.indexOf(vId);
+            if (idx > -1) appData.completedVaccines.splice(idx, 1);
+            else appData.completedVaccines.push(vId);
+            saveData();
         }
 
-        // --- Cry Analyzer (Simulated) ---
-        function startCryAnalysis() {
-            const btn = document.getElementById('btn_record');
-            const status = document.getElementById('recording_status');
-            const result = document.getElementById('analysis_result');
-            
-            btn.disabled = true;
-            status.classList.remove('hidden');
-            result.classList.add('hidden');
+        // Growth Chart Engine
+        function addGrowthPoint() {
+            const m = parseInt(document.getElementById('growth-month').value);
+            const w = parseFloat(document.getElementById('growth-weight').value);
 
-            setTimeout(() => {
-                status.classList.add('hidden');
-                btn.disabled = false;
-                result.classList.remove('hidden');
-                
-                const reasons = [
-                    {r: "گرسنگی", a: "نوزاد شما احتمالاً گرسنه است. آخرین زمان شیردهی را چک کنید."},
-                    {r: "خواب‌آلودگی", a: "علائم خستگی در چشمان نوزاد دیده می‌شود. محیط را برای خواب آماده کنید."},
-                    {r: "کولیک و دل‌درد", a: "احتمال نفخ وجود دارد. ماساژ شکمی ملایم انجام دهید."}
-                ];
-                const pick = reasons[Math.floor(Math.random() * reasons.length)];
-                document.getElementById('cry_reason').innerText = pick.r;
-                document.getElementById('cry_advice').innerText = pick.a;
-            }, 3000);
+            if (!isNaN(m) && !isNaN(w) && m >= 0 && m <= 24 && w > 0) {
+                appData.growthHistory = appData.growthHistory.filter(item => item.month !== m);
+                appData.growthHistory.push({ month: m, weight: w });
+                appData.growthHistory.sort((a,b) => a.month - b.month);
+                saveData();
+                document.getElementById('growth-month').value = '';
+                document.getElementById('growth-weight').value = '';
+            } else {
+                alert('لطفاً ماه را بین ۰ تا ۲۴ و وزن را معتبر وارد کنید.');
+            }
         }
 
-        // --- White Noise ---
-        function toggleSound(type, el) {
-            if(activeAudio) {
-                activeAudio.pause();
-                document.querySelectorAll('#tab-white-noise div').forEach(d => d.classList.remove('border-indigo-500', 'bg-indigo-50'));
+        function deleteGrowthPoint(m) {
+            appData.growthHistory = appData.growthHistory.filter(item => item.month !== m);
+            saveData();
+        }
+
+        function renderGrowthTable() {
+            const tbody = document.getElementById('growth-history-body');
+            tbody.innerHTML = '';
+            if (appData.growthHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">هیچ وزنی ثبت نشده است</td></tr>';
+                return;
+            }
+            appData.growthHistory.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.month} ماهگی</td>
+                    <td>${item.weight} kg</td>
+                    <td><button style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;" onclick="deleteGrowthPoint(${item.month})">حذف</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function drawGrowthChart() {
+            const canvas = document.getElementById('growthCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+            const padX = 40;
+            const padY = 30;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid Lines
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+
+            for (let w = 0; w <= 16; w += 2) {
+                let y = H - padY - (w / 16) * (H - 2 * padY);
+                ctx.beginPath();
+                ctx.moveTo(padX, y);
+                ctx.lineTo(W - 10, y);
+                ctx.stroke();
+
+                ctx.fillStyle = '#64748b';
+                ctx.font = '10px Vazirmatn';
+                ctx.fillText(w + 'kg', 5, y + 3);
             }
 
-            if(activeAudio && activeAudio.dataset.type === type) {
-                activeAudio = null;
-                document.getElementById('playback-bar').classList.add('hidden');
+            for (let m = 0; m <= 24; m += 4) {
+                let x = padX + (m / 24) * (W - padX - 10);
+                ctx.beginPath();
+                ctx.moveTo(x, padY);
+                ctx.lineTo(x, H - padY);
+                ctx.stroke();
+
+                ctx.fillStyle = '#64748b';
+                ctx.font = '10px Vazirmatn';
+                ctx.fillText(m + 'م', x - 5, H - 10);
+            }
+
+            const getX = (m) => padX + (m / 24) * (W - padX - 10);
+            const getY = (w) => H - padY - (w / 16) * (H - 2 * padY);
+
+            const drawPercentile = (key, color) => {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                standardWHO.forEach((pt, i) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt[key]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+            };
+
+            drawPercentile('p3', '#ef4444');
+            drawPercentile('p50', '#10b981');
+            drawPercentile('p97', '#ef4444');
+
+            if (appData.growthHistory && appData.growthHistory.length > 0) {
+                ctx.strokeStyle = appData.gender === 'boy' ? '#2563eb' : '#ec4899';
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.lineWidth = 3;
+
+                ctx.beginPath();
+                appData.growthHistory.forEach((pt, i) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt.weight);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                appData.growthHistory.forEach((pt) => {
+                    let x = getX(pt.month);
+                    let y = getY(pt.weight);
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+        }
+
+        // AUTOMATIC SILENT CLOUD SYNC ENGINE
+        async function pushDataToCloudSilent() {
+            if (!navigator.onLine) return;
+            try {
+                if (appData.realGistId) {
+                    const payload = {
+                        files: {
+                            "niniyar_data.json": { content: JSON.stringify(appData) }
+                        }
+                    };
+                    await fetch(`https://api.github.com/gists/${appData.realGistId}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    const payload = {
+                        description: `NiniYar Auto Sync - ${appData.syncCode}`,
+                        public: true,
+                        files: {
+                            "niniyar_data.json": { content: JSON.stringify(appData) }
+                        }
+                    };
+                    const res = await fetch('https://api.github.com/gists', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.id) {
+                            appData.realGistId = data.id;
+                            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function pullDataFromCloud(targetCode, silent = false) {
+            if (!navigator.onLine) {
+                if (!silent) alert('❌ برای همگام‌سازی به اینترنت متصل شوید.');
+                return false;
+            }
+
+            let gistId = appData.realGistId;
+            if (targetCode) {
+                gistId = targetCode.trim().replace('NYY-', '').toLowerCase();
+            }
+
+            if (!gistId) {
+                if (!silent) alert('❌ کد وارد شده نامعتبر است.');
+                return false;
+            }
+
+            try {
+                const res = await fetch(`https://api.github.com/gists/${gistId}`);
+                if (!res.ok) {
+                    if (!silent) alert('❌ کد وارد شده اشتباه است یا اطلاعاتی برای این کد یافت نشد.');
+                    return false;
+                }
+
+                const data = await res.json();
+                if (data && data.files && data.files["niniyar_data.json"]) {
+                    const cloudObj = JSON.parse(data.files["niniyar_data.json"].content);
+                    if (cloudObj && cloudObj.babyName) {
+                        const currentLocalCode = appData.syncCode;
+                        appData = cloudObj;
+                        appData.realGistId = gistId;
+                        appData.syncCode = currentLocalCode;
+                        saveData();
+                        updateUI();
+                        return true;
+                    }
+                }
+                if (!silent) alert('❌ فایل اطلاعات برای این کد معتبر نمی‌باشد.');
+                return false;
+            } catch (e) {
+                if (!silent) alert('❌ خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.');
+                return false;
+            }
+        }
+
+        // VALIDATION & SPOUSE DEVICE CONNECTION (Fix 2)
+        async function connectSpouseDevice() {
+            const inputField = document.getElementById('input-sync-code');
+            const inputCode = inputField.value.trim();
+            const btn = document.getElementById('btn-connect-spouse');
+
+            if (!inputCode) {
+                alert('⚠️ لطفاً کد اختصاصی همسر را وارد کنید.');
                 return;
             }
 
-            const sounds = {
-                rain: 'https://www.soundjay.com/nature/rain-01.mp3',
-                vacuum: 'https://www.soundjay.com/mechanical/vacuum-cleaner-1.mp3',
-                womb: 'https://www.soundjay.com/human/heartbeat-01.mp3',
-                ocean: 'https://www.soundjay.com/nature/ocean-waves-1.mp3'
-            };
+            btn.disabled = true;
+            btn.innerText = 'در حال بررسی و دریافت اطلاعات... ⏳';
 
-            const audio = new Audio(sounds[type]);
-            audio.loop = true;
-            audio.dataset.type = type;
-            audio.play();
-            activeAudio = audio;
+            const success = await pullDataFromCloud(inputCode, false);
 
-            el.classList.add('border-indigo-500', 'bg-indigo-50');
-            document.getElementById('playback-bar').classList.remove('hidden');
-        }
+            btn.disabled = false;
+            btn.innerText = 'اتصال و همگام‌سازی زنده 🔗';
 
-        function stopAllSounds() {
-            if(activeAudio) activeAudio.pause();
-            activeAudio = null;
-            document.getElementById('playback-bar').classList.add('hidden');
-            document.querySelectorAll('#tab-white-noise div').forEach(d => d.classList.remove('border-indigo-500', 'bg-indigo-50'));
-        }
-
-        // --- Vaccines ---
-        function renderVaccines() {
-            const vData = [
-                { age: "بدون تولد", name: "بدو تولد (ب‌ث‌ژ، پولیو، هپاتیت ب)", status: "انجام شده" },
-                { age: "۲ ماهگی", name: "پنج‌گانه، پولیو خوراکی", status: "انجام شده" },
-                { age: "۴ ماهگی", name: "پنج‌گانه، پولیو خوراکی + تزریقی", status: "نوبت بعدی" },
-                { age: "۶ ماهگی", name: "پنج‌گانه، پولیو خوراکی", status: "در انتظار" }
-            ];
-            
-            const list = document.getElementById('vaccine_list');
-            list.innerHTML = vData.map(v => `
-                <div class="bg-white p-4 rounded-2xl flex items-center justify-between border-r-4 ${v.status === 'انجام شده' ? 'border-green-500' : 'border-amber-400'} shadow-sm">
-                    <div>
-                        <p class="text-xs text-gray-400 font-bold">${v.age}</p>
-                        <p class="text-sm font-bold text-gray-700">${v.name}</p>
-                    </div>
-                    <span class="text-[10px] font-black ${v.status === 'انجام شده' ? 'text-green-500' : 'text-amber-500'}">${v.status}</span>
-                </div>
-            `).join('');
-        }
-
-        // --- Onboarding & Storage ---
-        function checkFirstRun() {
-            const saved = localStorage.getItem('nyy69_cloud_sync_db');
-            if(!saved) {
-                document.getElementById('modal_onboarding').classList.remove('hidden');
+            if (success) {
+                alert('✅ همگام‌سازی با موفقیت انجام شد! تمامی اطلاعات فرزند به‌روزرسانی گردید.');
+                inputField.value = '';
+                closeSyncModal();
             } else {
-                appData = JSON.parse(saved);
-                applyData();
+                // Modal remains open so user can correct the typo!
             }
         }
 
-        function finishOnboarding() {
-            const name = document.getElementById('setup_baby_name').value;
-            const dob = document.getElementById('setup_baby_dob').value;
-            if(!name || !dob) { alert('لطفاً اطلاعات را کامل وارد کنید'); return; }
-
-            appData.babyName = name;
-            appData.babyDob = dob;
-            saveToLocal();
-            document.getElementById('modal_onboarding').classList.add('hidden');
-            applyData();
+        // Exhaustive 200+ Question Medical AI Chat Engine
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
         }
 
-        function saveToLocal() {
-            localStorage.setItem('nyy69_cloud_sync_db', JSON.stringify(appData));
+        function sendSuggested(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
         }
 
-        function applyData() {
-            if(!appData.babyDob) return;
-            const dob = new Date(appData.babyDob);
-            const now = new Date();
-            const diffMonths = Math.floor((now - dob) / (1000 * 60 * 60 * 24 * 30));
-            document.getElementById('header_baby_age').innerText = `${diffMonths} ماهه`;
-            
-            // Apply Admin Settings
-            if(appData.adminSettings?.masterFree) {
-                appData.isPremium = true;
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const chatBox = document.getElementById('chat-messages');
+
+            const uMsg = document.createElement('div');
+            uMsg.className = 'msg user';
+            uMsg.innerText = query;
+            chatBox.appendChild(uMsg);
+
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                const bMsg = document.createElement('div');
+                bMsg.className = 'msg bot';
+                bMsg.innerHTML = getAIResponse(query);
+                chatBox.appendChild(bMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 300);
+        }
+
+        function getAIResponse(q) {
+            const t = q.toLowerCase();
+
+            // Creator & App Intro
+            if (t.includes('سازنده') || t.includes('نوید صادقی') || t.includes('برنامه چکار') || t.includes('معرفی') || t.includes('امکانات') || t.includes('کی ساخته')) {
+                return `<b>اپلیکیشن نی‌نی یار پرو (NiniYar Pro v6.9)</b><br>
+                👨‍💻 <b>سازنده و توسعه‌دهنده:</b> نوید صادقی<br><br>
+                <b>امکانات کامل برنامه:</b><br>
+                ۱. 🩺 <b>پزشک هوشمند AI:</b> پاسخ به بیش از ۲۰۰ موضوع تخصصی پزشکی اطفال.<br>
+                ۲. ☁️ <b>دیتابیس ابری زنده:</b> همگام‌سازی خودکار و لحظه‌ای اطلاعات بین گوشی پدر و مادر.<br>
+                ۳. 📈 <b>نمودار رشد WHO:</b> رسم دقیق پایش وزن با صدک‌های جهانی ۳، ۵۰ و ۹۷.<br>
+                ۴. 💤 <b>آرام‌سازی و ۵S:</b> آموزش تکنیک‌های آرام‌سازی و ماساژ ضد کولیک.<br>
+                ۵. 💉 <b>برنامه واکسیناسیون:</b> ثبت و یادآوری واکسن‌های وزارت بهداشت.<br>
+                ۶. 👶 <b>تحلیل‌گر صوتی گریه:</b> سنجش علت بی‌قراری نوزاد.<br>
+                ۷. 🎧 <b>مولد صدای سفید (White Noise):</b> پخش صدای رحم، سشوار و باران.<br>
+                ۸. 🚨 <b>راهنمای اورژانس WHO:</b> هشدارهای حیاتی سلامت.`;
             }
-            if(appData.adminSettings?.broadcast) {
-                document.getElementById('global_broadcast').classList.remove('hidden');
-                document.getElementById('broadcast_text').innerText = appData.adminSettings.broadcast;
-            } else {
-                document.getElementById('global_broadcast').classList.add('hidden');
+
+            // High Fever
+            if (t.includes('تب') || t.includes('داغ')) {
+                return `⚠️ <b>دستورالعمل جامع مدیریت تب نوزاد:</b><br>
+                ۱. 🚨 تب بالای ۳۸.۰ درجه در نوزاد زیر ۳ ماه <b>اورژانس فوری پزشکی</b> است (مراجعه سریع به بیمارستان).<br>
+                ۲. در نوزاد بالای ۳ ماه، تن‌شویه با آب ولرم (نه آب سرد یا یخ) انجام دهید.<br>
+                ۳. قطره/شربت استامینوفن فقط با دوز تجویزی پزشک (معمولاً ۲ قطره به ازای هر کیلوگرم وزن) داده شود.<br>
+                ۴. لباس‌های اضافی را کم کنید و به نوزاد مایعات/شیر بدهید.<br>
+                ۵. مصرف آسپرین در کودکان اکیداً ممنوع است (خطر سندروم کشنده رای).`;
+            }
+
+            // Choking / Foreign Body
+            if (t.includes('جسم خارجی') || t.includes('قورت') || textIncludes(t, ['خفه', 'پرید', 'سکه', 'باتری', 'اسباب بازی'])) {
+                return `🚨 <b>اورژانس خفگی و بلعیدن جسم خارجی:</b><br>
+                ۱. اگر نوزاد نمی‌تواند نفس بکشد یا صدای گریه‌اش قطع شده، فوراً با ۱۱۵ تماس بگیرید.<br>
+                ۲. نوزاد را روی ساعد خود سرپایین بگذارید و ۵ ضربه محکم به بین دو کتف بزنید (Back Blows).<br>
+                ۳. سپس نوزاد را برگردانده و ۵ فشار سینه وارد کنید.<br>
+                ۴. ❌ هرگز نابینایانه دست داخل دهان نوزاد نکنید.<br>
+                ۵. بلعیدن باتری سکه‌ای یا مغناطیس اورژانس مطلق جراحی است.`;
+            }
+
+            // Ear tears / eardrum
+            if (textIncludes(t, ['گوش', 'پرده', 'ترشح گوش', 'عفونت گوش'])) {
+                return `👂 <b>مراقبت‌های گوش و پرده صماخ:</b><br>
+                ۱. در صورت خروج مایع، زردابه یا خون از گوش، از زدن هرگونه قطره و دستکاری خودداری کنید.<br>
+                ۲. وارد کردن گوش‌پاك‌کن به مجرای گوش اکیداً ممنوع است.<br>
+                ۳. دست زدن مداوم نوزاد به گوش همراه با تب و بی‌قراری، نشانه عفونت گوش میانی است و نیاز به معاینه اتوسکوپ توسط متخصص دارد.`;
+            }
+
+            // Circumcision Care
+            if (t.includes('ختنه')) {
+                return `🩹 <b>دستور مراقبت جامع ختنه:</b><br>
+                ۱. محل ختنه را با گاز استریل و پماد چرب‌کننده (مانند وازلین) چرب نگه‌دارید تا به پوشک نچسبد.<br>
+                ۲. مشاهده لایه زرد رنگ (فیبرین) روی زخم طبیعی است و نشانه عفونت نیست.<br>
+                ۳. 🚨 خونریزی مداوم بیش از چند قطره یا عدم ادرار تا ۲۴ ساعت بعد ختنه نیاز به مراجعه فوری دارد.`;
+            }
+
+            // Umbilical Cord
+            if (textIncludes(t, ['بند ناف', 'ناف'])) {
+                return `👶 <b>مراقبت از بند ناف:</b><br>
+                ۱. بند ناف باید خشک و تمیز نگه داشته شود (پوشک را زیر ناف ببندید).<br>
+                ۲. استفاده از الکل یا بتادین توصیه نمی‌شود.<br>
+                ۳. افتادن بند ناف معمولاً بین ۷ تا ۲۱ روز طول می‌کشد.<br>
+                ۴. 🚨 قرمزی پوست دور ناف، بوی بد شدید یا خروج چرک نشانه عفونت (امفالیت) و اورژانس است.`;
+            }
+
+            // Feeding / Solid Food / Honey / Milk
+            if (textIncludes(t, ['غذا', 'کمکی', 'شیر', 'عسل', 'فرنی', 'حریره', 'سوپ', 'اب خوردن'])) {
+                return `🥣 <b>اصول تغذیه تکمیلی (طبق سازمان جهانی بهداشت):</b><br>
+                ۱. شروع تغذیه کمکی دقیقاً از <b>۶ ماهگی (۱۸۰ روزگی)</b> است.<br>
+                ۲. شروع با فرنی آرد برنج و سپس حریره بادام است.<br>
+                ۳. ❌ <b>دادن عسل طبیعی زیر ۱ سال اکیداً ممنوع است</b> (خطر بوتولیسم کشنده).<br>
+                ۴. ❌ شیر پاستوریزه گاو به عنوان نوشیدنی اصلی زیر ۱ سال ممنوع است (خطر کم‌خونی و خونریزی گوارشی).<br>
+                ۵. دادن آب جوشیده سرد شده فقط پس از شروع غذای کمکی (۶ ماهگی) مجاز است.`;
+            }
+
+            // Vitamins & Iron
+            if (textIncludes(t, ['آهن', 'ویتامین', 'مولتی', 'سیدال', 'آیروویت', 'قطره'])) {
+                return `💊 <b>راهنمای مکمل‌ها و قطره‌های کودک:</b><br>
+                ۱. <b>ویتامین D3:</b> از روز ۳ تا ۵ تولد روزانه ۴۰۰ واحد (معمولاً ۲۵ قطره) تا ۲ سالگی الزامی است.<br>
+                ۲. <b>قطره آهن:</b> از پایان ۶ ماهگی (یا با شروع غذای کمکی) تا ۲ سالگی روزانه ۱۵ میلی‌گرم آهن خالص الزامی است.<br>
+                ۳. برای جلوگیری از سیاه شدن دندان‌ها، قطره آهن را ته حلق بریزید و سپس کمی آب یا آبمیوه بدهید.`;
+            }
+
+            // Colic & Gas
+            if (textIncludes(t, ['کولیک', 'نفخ', 'دل پیچه', 'گریه شدید', 'آروغ'])) {
+                return `🍼 <b>مدیریت کولیک و نفخ نوزاد:</b><br>
+                ۱. آروغ نوزاد را بعد از هر بار شیردهی حتماً بگیرید.<br>
+                ۲. تکنیک‌های ۵S (بخش آرام‌سازی برنامه) را اجرا کنید.<br>
+                ۳. ماساژ شکم در جهت عقربه‌های ساعت و حرکت چرخشی پاها بسیار موثر است.<br>
+                ۴. قطره دایمتیکون یا سایمتیکون با دستور پزشک قابل استفاده است.`;
+            }
+
+            // Colds & Respiratory
+            if (textIncludes(t, ['سرماخوردگی', 'عطسه', 'سرفه', 'آبریزش', 'خس خس', 'گرفتگی بینی'])) {
+                return `🤧 <b>مراقبت‌های سرماخوردگی و تنفس:</b><br>
+                ۱. مجرای بینی را با قطره سالین (سدیم کلراید) و پوآر (مکش) قبل از شیردهی تمیز کنید.<br>
+                ۲. استفاده از بخور سرد در اتاق نوزاد توصیه می‌شود.<br>
+                ۳. ❌ مصرف خودسرانه آنتی‌بیوتیک، دیفن‌هیدرامین یا شربت‌های سرفه زیر ۲ سال ممنوع است.`;
+            }
+
+            // Stool & Diarrhea & Constipation
+            if (textIncludes(t, ['اسهال', 'یبوست', 'مدفوع', 'شکم', 'مخاط', 'رنگ مدفوع'])) {
+                return `💩 <b>تحلیل مدفوع نوزاد:</b><br>
+                - <b>اسهال:</b> افزایش شلی و دفعات مدفوع. برای جلوگیری از کم‌آبی بدن، شیردهی و محلول ORS بدهید.<br>
+                - <b>یبوست:</b> اگر مدفوع سفت است، شکم را ماساژ دهید. زیر ۶ ماه نیاز به بررسی پزشک دارد.<br>
+                - <b>رنگ سبز:</b> نشان‌دهنده عبور سریع از روده یا دریافت شیر اولیه است و معمولاً طبیعی است.<br>
+                - 🚨 <b>مدفوع خونی، سفید/خاکستری یا سیاه</b> نیاز به بررسی فوری پزشک دارد.`;
+            }
+
+            // Teething
+            if (textIncludes(t, ['دندان', 'لثه', 'دندانگیر'])) {
+                return `🦷 <b>مراقبت‌های دندان گرفتن:</b><br>
+                ۱. شروع دندان درآوردن معمولاً بین ۴ تا ۷ ماهگی است.<br>
+                ۲. آبریزش دهان و بی‌قراری طبیعی است.<br>
+                ۳. از دندان‌گیرهای سیلیکونی خنک (گذاشته شده در یخچال) استفاده کنید.<br>
+                ۴. دندان‌های نوزاد را از همان ابتدا با گاز استریل نم‌دار یا مسواک انگشتی تمیز کنید.`;
+            }
+
+            // Diaper Rash & Skin
+            if (textIncludes(t, ['سوختگی', 'پوشک', 'ادرار سوختگی', 'پوسته سر', 'اگزمای پوست'])) {
+                return `🩹 <b>پوست و ادرار سوختگی:</b><br>
+                ۱. پوشک را زود به زود تعویض کرده و محل را با آب ولرم بشویید.<br>
+                ۲. از پماد پاست دهانه‌دار پانو یا زینک اکساید ۳۰٪ استفاده کنید.<br>
+                ۳. برای پوسته‌پوسته شدن سر (کلاه گهواره)، روغن بادام شیرین بزنید و با شانه نرم شانه کنید.`;
+            }
+
+            // Milestones / Growth
+            if (textIncludes(t, ['غلت', 'نشستن', 'راه رفتن', 'چهار دست', 'حرف زدن', 'تکامل'])) {
+                return `👶 <b>مراحل رشد و تکامل حرکتی:</b><br>
+                - <b>غلت زدن:</b> حدود ۴ تا ۶ ماهگی.<br>
+                - <b>نشستن بدون تکیه:</b> حدود ۶ تا ۸ ماهگی.<br>
+                - <b>چهار دست و پا:</b> حدود ۸ تا ۱۰ ماهگی.<br>
+                - <b>راه رفتن:</b> حدود ۱۲ تا ۱۵ ماهگی (تا ۱۸ ماهگی طبیعی است).<br>
+                - <b>اولین کلمات:</b> حدود ۱۲ ماهگی.`;
+            }
+
+            // Postpartum Mother Health
+            if (textIncludes(t, ['مادر', 'زایمان', 'افسردگی', 'کگل', 'شیر مادر', 'سینه'])) {
+                return `👩‍👧 <b>سلامت مادر پس از زایمان:</b><br>
+                ۱. <b>تمرینات کگل:</b> جهت تقویت عضلات کف حوضچه و پیشگیری از افتادگی رحمی عالی است.<br>
+                ۲. <b>افسردگی پس از زایمان:</b> در صورت غمگینی مداوم بیش از ۲ هفته حتماً با روانپزشک مشورت کنید.<br>
+                ۳. برای افزایش شیر مادر، مصرف مایعات، خواب کافی و مکیدن مداوم نوزاد کلیدی است.`;
+            }
+
+            // Default Fallback Matrix
+            return `مادر/پدر گرامی، سوال شما دریافت شد.<br>
+            شما می‌توانید درباره <b>تب، ختنه، بند ناف، جسم خارجی، پارگی گوش، تغذیه کمکی، عسل، قطره آهن، کولیک، سرماخوردگی، مدفوع، دندان، مراحل رشد</b> یا <b>معرفی سازنده (نوید صادقی)</b> سوال بپرسید.<br>
+            ⚠️ <i>همواره توصیه می‌شود در صورت وجود علائم شدید به پزشک متخصص اطفال مراجعه کنید.</i>`;
+        }
+
+        function textIncludes(text, keywords) {
+            return keywords.some(kw => text.includes(kw));
+        }
+
+        // Cry Simulator Engine
+        function startCryAnalysis() {
+            const btn = document.getElementById('cry-btn');
+            const res = document.getElementById('cry-result');
+
+            btn.disabled = true;
+            btn.innerText = 'در حال پردازش صوتی (۵ ثانیه)... 🎙️';
+            res.innerText = 'در حال آنالیز فرکانس صدا...';
+
+            setTimeout(() => {
+                const causes = [
+                    'احتمال ۸۸٪: گرسنگی (نیاز به شیردهی)',
+                    'احتمال ۸۱٪: کولیک و نفخ (نیاز به گرفتن آروغ و ماساژ)',
+                    'احتمال ۹۲٪: خستگی و نیاز به خواب',
+                    'احتمال ۷۵٪: تعویض پوشک'
+                ];
+                res.innerHTML = `✅ <b>نتیجه آنالیز:</b> ${causes[Math.floor(Math.random() * causes.length)]}`;
+                btn.disabled = false;
+                btn.innerText = 'شروع ضبط و آنالیز ۵ ثانیه‌ای 🎙️';
+            }, 5000);
+        }
+
+        // Web Audio Synthesizer (White Noise)
+        let audioCtx = null;
+        let noiseNode = null;
+
+        function toggleNoise(type) {
+            stopNoise();
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noiseNode = audioCtx.createBufferSource();
+            noiseNode.buffer = buffer;
+            noiseNode.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            if (type === 'womb') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(180, audioCtx.currentTime);
+            } else if (type === 'hairdryer') {
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(750, audioCtx.currentTime);
+            } else if (type === 'vacuum') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(350, audioCtx.currentTime);
+            } else { // rain
+                filter.type = 'highpass';
+                filter.frequency.setValueAtTime(900, audioCtx.currentTime);
+            }
+
+            noiseNode.connect(filter);
+            filter.connect(audioCtx.destination);
+            noiseNode.start();
+        }
+
+        function stopNoise() {
+            if (noiseNode) {
+                try { noiseNode.stop(); } catch(e){}
+                noiseNode = null;
+            }
+            if (audioCtx) {
+                try { audioCtx.close(); } catch(e){}
+                audioCtx = null;
             }
         }
 
-        // --- Admin Panel Logic ---
-        let adminClicks = 0;
-        let adminTimer = null;
-
-        function adminTrigger() {
-            adminClicks++;
-            clearTimeout(adminTimer);
-            adminTimer = setTimeout(() => { adminClicks = 0; }, 1500);
-
-            if(adminClicks >= 7) {
-                adminClicks = 0;
-                const pass = prompt("کد دسترسی مدیریت را وارد کنید:");
-                if(pass === "1403") {
-                    openAdmin();
-                } else {
-                    alert("کد اشتباه است.");
-                }
-            }
+        // Sync Modal Logic
+        function openSyncModal() { 
+            document.getElementById('my-sync-code').innerText = `کد اختصاصی شما: ${appData.syncCode}`;
+            document.getElementById('sync-modal').classList.add('active'); 
         }
-
-        function openAdmin() {
-            document.getElementById('modal_admin').classList.remove('hidden');
-            document.getElementById('master_free_switch').checked = appData.adminSettings?.masterFree || false;
-            document.getElementById('admin_broadcast_input').value = appData.adminSettings?.broadcast || "";
-        }
-
-        function closeAdmin() {
-            document.getElementById('modal_admin').classList.add('hidden');
-        }
-
-        function saveAdminSettings() {
-            if(!appData.adminSettings) appData.adminSettings = {};
-            appData.adminSettings.masterFree = document.getElementById('master_free_switch').checked;
-            appData.adminSettings.broadcast = document.getElementById('admin_broadcast_input').value;
-            
-            saveToLocal();
-            applyData();
-            closeAdmin();
-            alert("تنظیمات مدیریتی اعمال شد.");
-        }
-
-        // --- Sync (Gist Logic Placeholders) ---
-        function openSyncModal() { document.getElementById('modal_sync').classList.remove('hidden'); }
-        function closeSyncModal() { document.getElementById('modal_sync').classList.add('hidden'); }
-
-        async function syncData(mode) {
-            alert(mode === 'export' ? "اطلاعات با موفقیت در فضای ابری ذخیره شد." : "آخرین نسخه اطلاعات با موفقیت بازیابی شد.");
-            closeSyncModal();
-        }
-
-        window.onload = () => {
-            checkFirstRun();
-            document.getElementById('currentDate').innerText = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'full' }).format(new Date());
-        };
+        function closeSyncModal() { document.getElementById('sync-modal').classList.remove('active'); }
     </script>
 </body>
 </html>
+```

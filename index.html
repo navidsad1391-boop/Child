@@ -3,283 +3,484 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>نی‌نی یار پرو</title>
+  <title>نی‌نی یار پرو - نسخه جامع</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
   <style>
-    :root { --primary: #2563eb; --bg: #f8fafc; --surface: #ffffff; --text: #0f172a; --radius: 18px; }
+    :root {
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --border: #e2e8f0;
+      --radius: 20px;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
-    
-    .header { background: var(--surface); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-    .avatar { width: 45px; height: 45px; border-radius: 50%; background: #eff6ff; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; }
-    .vip-tag { position: absolute; top: -5px; right: -5px; background: #8b5cf6; color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 8px; border: 1px solid #fff; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; overflow-x: hidden; }
 
-    .nav-tabs { overflow-x: auto; display: flex; gap: 8px; padding: 12px 15px; background: #fff; border-bottom: 1px solid #e2e8f0; }
-    .tab { padding: 8px 16px; background: #f1f5f9; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; color: #64748b; border: 1px solid #e2e8f0; }
-    .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    /* Header */
+    .header {
+      background: var(--surface);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .profile-area { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      position: relative;
+      cursor: pointer;
+    }
+    .vip-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #8b5cf6;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 10px;
+      border: 2px solid white;
+    }
 
-    .container { padding: 15px; max-width: 600px; margin: 0 auto; }
-    .card { background: #fff; border-radius: var(--radius); padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-    
-    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; margin-top: 10px; }
-    .form-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; font-size: 14px; outline: none; background: #fff; color: #000; }
-    .form-control:focus { border-color: var(--primary); }
+    /* Tabs */
+    .nav-scroller {
+      overflow-x: auto;
+      padding: 12px 16px;
+      display: flex;
+      gap: 8px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-scroller::-webkit-scrollbar { display: none; }
+    .chip {
+      padding: 8px 18px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #64748b;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
 
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; padding: 10px 0; border-top: 1px solid #e2e8f0; }
-    .nav-item { flex: 1; text-align: center; font-size: 11px; color: #64748b; cursor: pointer; }
+    /* Content Card */
+    .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid #f1f5f9;
+    }
+    .card-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+    /* Forms */
+    .form-control {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+      margin-bottom: 12px;
+    }
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    /* AI Chat */
+    .chat-container {
+      height: 280px;
+      overflow-y: auto;
+      background: #f8fafc;
+      border-radius: 15px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+    .msg { padding: 10px 14px; border-radius: 15px; font-size: 13px; line-height: 1.6; max-width: 85%; }
+    .msg.bot { background: #fff; align-self: flex-start; border: 1px solid var(--border); }
+    .msg.user { background: var(--primary); color: white; align-self: flex-end; }
+
+    /* Table */
+    .v-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .v-table th, .v-table td { padding: 12px; text-align: right; border-bottom: 1px solid var(--border); }
+    .v-table th { color: var(--primary); font-weight: 800; }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #94a3b8; cursor: pointer; }
     .nav-item.active { color: var(--primary); font-weight: bold; }
 
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1000; }
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
     .modal.active { display: flex; }
-    .modal-content { background: #fff; padding: 25px; border-radius: 24px; width: 100%; max-width: 400px; }
-
-    .chat-box { height: 250px; overflow-y: auto; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
-    .msg { padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 85%; }
-    .msg.bot { background: #fff; align-self: flex-start; border: 1px solid #e2e8f0; }
-    .msg.user { background: var(--primary); color: #fff; align-self: flex-end; }
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 28px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
 
     .page { display: none; }
-    .page.active { display: block; }
+    .page.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <div class="header">
-    <div class="profile" id="profileBtn">
-      <div class="avatar">👶 <span id="vipBadge" class="vip-tag" style="display:none">VIP</span></div>
+    <div class="profile-area" id="profileBtn">
+      <div class="avatar">
+        👶 <span class="vip-badge" id="vipBadge" style="display:none">VIP</span>
+      </div>
       <div class="user-info">
-        <h3 id="childNameTitle">کودک من</h3>
-        <p id="childAgeSub">نی‌نی یار پرو</p>
+        <h3 id="displayChildName">کودک من</h3>
+        <p id="displayAge" style="font-size:11px; color:#64748b;">نی‌نی یار پرو</p>
       </div>
     </div>
-    <button onclick="openModal('vipModal')" style="border:none; background:#fef3c7; color:#b45309; padding:5px 12px; border-radius:15px; font-size:12px; font-weight:bold;">👑 نسخه VIP</button>
+    <button onclick="openModal('vipModal')" style="border:none; background:#fef3c7; color:#b45309; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:bold;">👑 نسخه VIP</button>
   </div>
 
-  <div class="nav-tabs">
-    <div class="tab active" onclick="showPage('home', this)">🏠 خانه</div>
-    <div class="tab" onclick="showPage('doctor', this)">🩺 پزشک AI</div>
-    <div class="tab" onclick="showPage('growth', this)">📈 رشد</div>
-    <div class="tab" onclick="showPage('cry', this)">😭 تحلیل گریه</div>
-    <div class="tab" onclick="showPage('jaundice', this)">👁️ زردی‌سنج</div>
+  <!-- Tabs -->
+  <div class="nav-scroller">
+    <div class="chip active" onclick="showTab('home', this)">🏠 داشبورد</div>
+    <div class="chip" onclick="showTab('doctor', this)">🩺 پزشک AI</div>
+    <div class="chip" onclick="showTab('growth', this)">📈 رشد و وزن</div>
+    <div class="chip" onclick="showTab('vaccine', this)">💉 واکسن‌ها</div>
+    <div class="chip" onclick="showTab('cry', this)">😭 تحلیل گریه</div>
+    <div class="chip" onclick="showTab('jaundice', this)">👁️ زردی‌سنج</div>
+    <div class="chip" onclick="showTab('lullaby', this)">💤 خواب و لالایی</div>
   </div>
 
   <div class="container">
     
-    <!-- HOME -->
-    <div id="page-home" class="page active">
-      <div class="card" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff;">
-        <h2 id="welcomeName">خوش آمدید ❤️</h2>
-        <p style="font-size: 12px; opacity: 0.8;">دستیار هوشمند والدین</p>
+    <!-- PAGE: HOME -->
+    <div id="tab-home" class="page active">
+      <div class="card" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: white;">
+        <h2 id="welcomeText" style="font-size:20px; margin-bottom:5px;">سلام خوش آمدید ❤️</h2>
+        <p style="font-size:12px; opacity: 0.9;">امروز وضعیت نوزاد چطوره؟</p>
       </div>
+
       <div class="card" style="text-align:center;">
-        <div style="font-weight:bold; margin-bottom:10px;">🎡 گردونه امتیاز</div>
-        <canvas id="wheel" width="200" height="200" style="margin-bottom:10px;"></canvas>
+        <div class="card-title" style="justify-content:center;">🎡 گردونه امتیاز روزانه</div>
+        <canvas id="wheel" width="220" height="220" style="margin:10px auto; display:block;"></canvas>
         <button class="btn" onclick="spinWheel()">چرخش شانس</button>
+        <p id="wheelMsg" style="margin-top:10px; font-weight:bold; color:var(--primary);"></p>
       </div>
     </div>
 
-    <!-- DOCTOR -->
-    <div id="page-doctor" class="page">
+    <!-- PAGE: DOCTOR -->
+    <div id="tab-doctor" class="page">
       <div class="card">
-        <div class="chat-box" id="chatBox">
-          <div class="msg bot">سلام! هر سوالی درباره سلامتی یا تغذیه نوزاد داری بپرس.</div>
+        <div class="card-title">🩺 پزشک هوشمند نی‌نی یار</div>
+        <div class="chat-container" id="chatBox">
+          <div class="msg bot">سلام! من پزشک هوشمند هستم. هر سوالی درباره سلامتی، تغذیه یا کولیک نوزاد داری بپرس.</div>
         </div>
-        <div style="display:flex; gap:5px;">
-          <input id="chatInput" class="form-control" style="margin:0" placeholder="مثلا: علائم کولیک...">
-          <button class="btn" style="width:70px; margin:0" onclick="askDoctor()">ارسال</button>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="chatInput" class="form-control" style="margin-bottom:0" placeholder="مثلاً: درمان تب نوزاد...">
+          <button class="btn" style="width:80px;" onclick="askDoctor()">ارسال</button>
         </div>
       </div>
     </div>
 
-    <!-- GROWTH -->
-    <div id="page-growth" class="page">
+    <!-- PAGE: GROWTH -->
+    <div id="tab-growth" class="page">
       <div class="card">
-        <p style="font-size:13px; margin-bottom:10px;">ثبت وزن نوزاد در نمودار WHO:</p>
+        <div class="card-title">📈 ثبت وزن در نمودار WHO</div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:15px;">وزن نوزاد را بر اساس سن (ماه) وارد کنید تا در نمودار استاندارد پایش شود.</p>
         <input type="number" id="wInput" class="form-control" placeholder="وزن (کیلوگرم)">
         <input type="number" id="mInput" class="form-control" placeholder="سن (ماه)">
-        <button class="btn" onclick="alert('در نسخه بعدی فعال می شود')">ثبت نقطه رشد</button>
+        <button class="btn" onclick="addGrowthPoint()">ثبت نقطه رشد</button>
+        <canvas id="growthChart" style="width:100%; height:180px; margin-top:20px; border-bottom:2px solid #e2e8f0;"></canvas>
       </div>
     </div>
 
-    <!-- CRY -->
-    <div id="page-cry" class="page">
+    <!-- PAGE: VACCINE -->
+    <div id="tab-vaccine" class="page">
       <div class="card">
-        <label style="font-size:12px;">نوع صدای گریه نوزاد را انتخاب کنید:</label>
-        <select id="crySelect" class="form-control" style="margin-top:10px;">
+        <div class="card-title">💉 برنامه واکسیناسیون کشوری</div>
+        <table class="v-table">
+          <thead><tr><th>زمان</th><th>واکسن‌ها</th><th>وضعیت</th></tr></thead>
+          <tbody id="vTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: CRY -->
+    <div id="tab-cry" class="page">
+      <div class="card">
+        <div class="card-title">😭 تحلیل‌گر گریه (متد دانستان)</div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:15px;">صدای گریه نوزاد شبیه به کدام آوا است؟</p>
+        <select id="crySelect" class="form-control">
           <option value="neh">صدای «نِه» (گرسنگی)</option>
           <option value="owh">صدای «اوه» (خواب‌آلودگی)</option>
           <option value="eairh">صدای «اِره» (نفخ شکم)</option>
           <option value="eh">صدای «اِه» (نیاز به آروغ)</option>
+          <option value="heh">صدای «هِه» (ناراحتی پوستی/دما)</option>
         </select>
-        <button class="btn" onclick="analyzeCry()">تحلیل گریه نوزاد</button>
-        <div id="cryResult" class="card" style="display:none; margin-top:10px; background:#eff6ff; font-size:13px;"></div>
+        <button class="btn" onclick="analyzeCry()">تحلیل بالینی</button>
+        <div id="cryResult" class="card" style="display:none; margin-top:15px; background:var(--primary-light);"></div>
       </div>
     </div>
 
-    <!-- JAUNDICE -->
-    <div id="page-jaundice" class="page">
+    <!-- PAGE: JAUNDICE -->
+    <div id="tab-jaundice" class="page">
       <div class="card">
-        <label style="font-size:12px;">زردی تا کجای بدن نوزاد دیده می‌شود؟</label>
-        <select id="jZone" class="form-control" style="margin-top:10px;">
-          <option value="1">فقط صورت</option>
-          <option value="2">قفسه سینه</option>
-          <option value="3">شکم و ران‌ها</option>
-          <option value="4">ساق پا و بازوها</option>
-          <option value="5">کف دست و پا</option>
+        <div class="card-title">👁️ زردی‌سنج هوشمند (شاخص کرامر)</div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:15px;">زردی پوست نوزاد را در کدام قسمت بدن مشاهده می‌کنید؟</p>
+        <select id="jZone" class="form-control">
+          <option value="1">فقط در سر و صورت</option>
+          <option value="2">تا بالای ناف (قفسه سینه)</option>
+          <option value="3">تا زانوها (شکم و ران)</option>
+          <option value="4">تا مچ دست و مچ پا</option>
+          <option value="5">کف دست و کف پا</option>
         </select>
-        <button class="btn" onclick="analyzeJaundice()">بررسی بالینی</button>
-        <div id="jResult" class="card" style="display:none; margin-top:10px; font-size:13px;"></div>
+        <button class="btn" onclick="analyzeJaundice()">ارزیابی زردی</button>
+        <div id="jResult" class="card" style="display:none; margin-top:15px;"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: LULLABY -->
+    <div id="tab-lullaby" class="page">
+      <div class="card">
+        <div class="card-title">🎙️ استودیو ضبط لالایی والدین</div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">صدای خودتان را ضبط کنید تا نوزاد با آرامش بخوابد.</p>
+        <button id="recBtn" class="btn" onclick="toggleRecord()">🎤 شروع ضبط صدا</button>
+        <div id="audioBox" style="margin-top:15px;"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">💤 صدای سفید (White Noise)</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <button class="btn" style="background:#64748b" onclick="playWhiteNoise('rain')">🌧️ باران</button>
+          <button class="btn" style="background:#64748b" onclick="playWhiteNoise('vacuum')">🧹 جاروبرقی</button>
+        </div>
       </div>
     </div>
 
   </div>
 
+  <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <div class="nav-item active" onclick="showPage('home')">🏠<br>خانه</div>
-    <div class="nav-item" onclick="showPage('doctor')">🩺<br>پزشک</div>
-    <div class="nav-item" onclick="showPage('growth')">📈<br>رشد</div>
-    <div class="nav-item" onclick="showPage('cry')">😭<br>گریه</div>
-    <div class="nav-item" onclick="showPage('jaundice')">👁️<br>زردی</div>
+    <div class="nav-item active" onclick="showTab('home')">🏠<span>خانه</span></div>
+    <div class="nav-item" onclick="showTab('doctor')">🩺<span>پزشک</span></div>
+    <div class="nav-item" onclick="showTab('growth')">📈<span>رشد</span></div>
+    <div class="nav-item" onclick="showTab('cry')">😭<span>گریه</span></div>
+    <div class="nav-item" onclick="showTab('lullaby')">💤<span>خواب</span></div>
   </div>
 
-  <!-- ONBOARDING MODAL (FIXED SELECTS) -->
-  <div class="modal" id="startModal">
+  <!-- MODAL: ONBOARDING -->
+  <div class="modal" id="onboardingModal">
     <div class="modal-content">
-      <h3 style="margin-bottom:15px; text-align:center;">ثبت‌نام نوزاد</h3>
-      <input id="inName" class="form-control" placeholder="نام نوزاد (مثلا: کیان)">
+      <h3 style="text-align:center; margin-bottom:15px;">👶 خوش آمدید به نی‌نی یار</h3>
+      <input type="text" id="inChildName" class="form-control" placeholder="نام نوزاد (مثلاً: آراد)">
       
-      <label style="font-size:12px;">سال تولد:</label>
-      <select id="inY" class="form-control">
-        <option value="1403">1403</option>
-        <option value="1402">1402</option>
-        <option value="1401">1401</option>
-        <option value="1400">1400</option>
+      <label style="font-size:12px; font-weight:bold;">سال تولد:</label>
+      <select id="inYear" class="form-control">
+        <option value="1403">1403</option><option value="1402">1402</option><option value="1401">1401</option><option value="1400">1400</option><option value="1399">1399</option><option value="1398">1398</option>
       </select>
 
-      <label style="font-size:12px;">ماه تولد:</label>
-      <select id="inM" class="form-control">
+      <label style="font-size:12px; font-weight:bold;">ماه تولد:</label>
+      <select id="inMonth" class="form-control">
         <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
         <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
         <option value="7">مهر</option><option value="8">آبان</option><option value="9">آذر</option>
         <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
       </select>
 
-      <button class="btn" onclick="saveStart()">ورود به برنامه</button>
+      <button class="btn" onclick="saveOnboarding()">ثبت و شروع</button>
     </div>
   </div>
 
-  <!-- VIP MODAL -->
+  <!-- MODAL: VIP -->
   <div class="modal" id="vipModal">
     <div class="modal-content">
-      <h3 style="text-align:center; color:var(--primary)">👑 فعالسازی نسخه VIP</h3>
-      <p style="font-size:12px; color:#64748b; margin:10px 0; text-align:center;">دسترسی کامل به تحلیل‌گر گریه و زردی‌سنج</p>
-      <button class="btn" onclick="buyVIP('vip_1m')">خرید اشتراک ۱ ماهه</button>
-      <div style="margin-top:15px">
-        <input id="pCode" class="form-control" placeholder="کد هدیه">
-        <button class="btn" style="background:#64748b" onclick="applyCode()">اعمال کد هدیه</button>
+      <h3 style="text-align:center; color:var(--primary);">👑 فعالسازی نسخه VIP</h3>
+      <p style="font-size:13px; text-align:center; color:#64748b; margin:10px 0;">دسترسی کامل به زردی‌سنج، تحلیل گریه و حذف محدودیت‌ها</p>
+      <button class="btn" onclick="triggerPurchase('vip_1m')">خرید اشتراک (۱۲۹,۰۰۰ تومان)</button>
+      <div style="margin-top:15px;">
+        <input type="text" id="pCode" class="form-control" placeholder="کد هدیه">
+        <button class="btn" style="background:#64748b" onclick="applyPromo()">اعمال کد هدیه</button>
       </div>
-      <button class="btn" style="background:#f1f5f9; color:#000" onclick="closeModal('vipModal')">بستن</button>
+      <button class="btn" style="background:#f1f5f9; color:#000; margin-top:10px;" onclick="closeModal('vipModal')">بستن</button>
     </div>
   </div>
 
   <script>
-    let appData = JSON.parse(localStorage.getItem('niniyar_v7_data')) || { name: '', isVIP: false };
+    let app = JSON.parse(localStorage.getItem('niniyar_pro_v8')) || { name: '', isVIP: false, points: [] };
+    let mediaRecorder;
+    let audioChunks = [];
 
     window.onload = () => {
-      if (!appData.name) openModal('startModal');
+      if (!app.name) openModal('onboardingModal');
       updateUI();
       drawWheel();
-      
-      // Admin Trick
+      renderVaccines();
+
+      // Admin Hidden Access
       let avClicks = 0;
       document.querySelector('.avatar').onclick = () => {
         avClicks++;
         if(avClicks >= 7) {
-          let p = prompt("Enter PIN:");
-          if(p == "1403") { appData.isVIP = true; save(); updateUI(); alert("VIP Active!"); }
+          let p = prompt("PIN:");
+          if(p == "1403") { app.isVIP = true; save(); updateUI(); alert("VIP فعال شد!"); }
           avClicks = 0;
         }
       };
     };
 
-    function save() { localStorage.setItem('niniyar_v7_data', JSON.stringify(appData)); }
+    function save() { localStorage.setItem('niniyar_pro_v8', JSON.stringify(app)); }
 
     function updateUI() {
-      document.getElementById('childNameTitle').innerText = appData.name || "کودک من";
-      document.getElementById('welcomeName').innerText = "سلام، والدین " + (appData.name || "") + " ❤️";
-      document.getElementById('vipBadge').style.display = appData.isVIP ? 'block' : 'none';
-    }
-
-    function showPage(id, el) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.getElementById('page-'+id).classList.add('active');
-      if(el) el.classList.add('active');
+      document.getElementById('displayChildName').innerText = app.name || "کودک من";
+      document.getElementById('welcomeText').innerText = "سلام، والدین " + (app.name || "") + " عزیز ❤️";
+      document.getElementById('vipBadge').style.display = app.isVIP ? 'block' : 'none';
     }
 
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function saveStart() {
-      let n = document.getElementById('inName').value;
-      if(!n) return alert("لطفا نام را وارد کنید");
-      appData.name = n;
+    function saveOnboarding() {
+      let n = document.getElementById('inChildName').value;
+      if(!n) return alert("نام نوزاد را وارد کنید");
+      app.name = n;
       save();
       updateUI();
-      closeModal('startModal');
+      closeModal('onboardingModal');
     }
 
-    function buyVIP(sku) {
+    function showTab(id, el) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      if(el) el.classList.add('active');
+    }
+
+    function triggerPurchase(sku) {
       if(window.MyketBridge) window.MyketBridge.startPurchase(sku);
-      else alert("اتصال به مایکت برقرار نشد.");
+      else alert("اتصال به بازار/مایکت برقرار نشد.");
     }
 
-    function applyCode() {
+    function applyPromo() {
       if(document.getElementById('pCode').value == "MYKET1403") {
-        appData.isVIP = true; save(); updateUI(); alert("VIP فعال شد!"); closeModal('vipModal');
-      } else alert("کد نامعتبر");
+        app.isVIP = true; save(); updateUI(); alert("VIP فعال شد!"); closeModal('vipModal');
+      } else alert("کد معتبر نیست.");
     }
 
     function askDoctor() {
       let q = document.getElementById('chatInput').value;
       if(!q) return;
-      let box = document.getElementById('chatBox');
-      box.innerHTML += `<div class="msg user">${q}</div>`;
+      let b = document.getElementById('chatBox');
+      b.innerHTML += `<div class="msg user">${q}</div>`;
       document.getElementById('chatInput').value = "";
       setTimeout(() => {
-        let ans = "در این مورد توصیه می‌شود دمای بدن نوزاد را چک کرده و در صورت بی‌قراری با پزشک مشورت کنید. تغذیه با شیر مادر اولویت است.";
-        if(q.includes("تب")) ans = "اگر تب بالای ۳۸ درجه است، پاشویه با آب ولرم انجام دهید و حتما با پزشک تماس بگیرید.";
-        box.innerHTML += `<div class="msg bot">${ans}</div>`;
-        box.scrollTop = box.scrollHeight;
+        let a = "در این مورد توصیه می‌شود وضعیت خواب و تغذیه نوزاد را چک کنید. در صورت تب حتماً با پزشک تماس بگیرید.";
+        if(q.includes("تب")) a = "تب بالای ۳۸ درجه در نوزاد خطرناک است. پاشویه با آب ولرم انجام دهید و فوراً به پزشک مراجعه کنید.";
+        if(q.includes("کولیک")) a = "برای کولیک، ماساژ دورانی شکم و استفاده از صدای سفید (مثل سشوار) بسیار موثر است.";
+        b.innerHTML += `<div class="msg bot">${a}</div>`;
+        b.scrollTop = b.scrollHeight;
       }, 600);
     }
 
     function analyzeCry() {
-      if(!appData.isVIP) return openModal('vipModal');
+      if(!app.isVIP) return openModal('vipModal');
       let v = document.getElementById('crySelect').value;
-      let res = document.getElementById('cryResult');
-      let text = {
-        'neh': '🍼 نیاز به شیر: صدای نِه به دلیل چسبیدن زبان به سقف دهان (غریزه مکیدن) ایجاد می‌شود.',
-        'owh': '😴 نیاز به خواب: نوزاد خسته است و آوایی شبیه به خمیازه تولید می‌کند.',
-        'eairh': '💨 نفخ شکم: نوزاد تحت فشار است، پاهایش را در شکم جمع می‌کند و نیاز به ماساژ آرام دارد.',
-        'eh': '👶 نیاز به آروغ: هوای اضافی در معده نوزاد حبس شده و باید آروغ گرفته شود.'
+      let r = document.getElementById('cryResult');
+      let m = {
+        'neh': '🍼 نیاز به شیر: نوزاد گرسنه است. صدای نِه به علت رفلکس مکیدن ایجاد می‌شود.',
+        'owh': '😴 نیاز به خواب: نوزاد خسته است. این آوا شبیه خمیازه است.',
+        'eairh': '💨 نفخ شکم: نوزاد درد دارد. پاهایش را در شکم جمع می‌کند.',
+        'eh': '👶 نیاز به آروغ: هوای اضافی در معده حبس شده است.',
+        'heh': '🌡️ ناراحتی محیطی: نوزاد یا گرمش است یا سردش، یا پوشک نیاز به تعویض دارد.'
       };
-      res.innerText = text[v];
-      res.style.display = 'block';
+      r.innerText = m[v];
+      r.style.display = 'block';
     }
 
     function analyzeJaundice() {
-      if(!appData.isVIP) return openModal('vipModal');
-      let z = document.getElementById('jZone').value;
-      let res = document.getElementById('jResult');
-      if(z >= 4) {
-        res.innerHTML = "⚠️ <b>هشدار جدی:</b> زردی به دست و پا رسیده است. احتمال بیلی‌روبین بالا وجود دارد. سریعاً به بیمارستان مراجعه کنید.";
-        res.style.color = "red";
-      } else {
-        res.innerHTML = "✅ وضعیت فعلی زردی متوسط است. پایش چشمی روزانه و شیردهی مکرر توصیه می‌شود.";
-        res.style.color = "green";
-      }
-      res.style.display = 'block';
+       if(!app.isVIP) return openModal('vipModal');
+       let z = document.getElementById('jZone').value;
+       let r = document.getElementById('jResult');
+       if(z >= 4) {
+         r.innerHTML = "<b style='color:red'>⚠️ هشدار جدی:</b> زردی به اندام‌ها رسیده است. سریعاً به پزشک مراجعه کنید.";
+       } else {
+         r.innerHTML = "<b style='color:green'>✅ وضعیت متوسط:</b> فعلاً نیاز به پایش روزانه و تغذیه مکرر با شیر مادر است.";
+       }
+       r.style.display = 'block';
+    }
+
+    function renderVaccines() {
+      const data = [
+        {t: 'بدو تولد', v: 'سل، هپاتیت B، فلج اطفال'},
+        {t: '۲ ماهگی', v: 'پنج‌گانه، فلج اطفال نوبت اول'},
+        {t: '۴ ماهگی', v: 'پنج‌گانه، فلج اطفال نوبت دوم'},
+        {t: '۶ ماهگی', v: 'پنج‌گانه، فلج اطفال نوبت سوم'}
+      ];
+      let h = '';
+      data.forEach(x => h += `<tr><td>${x.t}</td><td>${x.v}</td><td>⏳</td></tr>`);
+      document.getElementById('vTable').innerHTML = h;
     }
 
     function drawWheel() {
@@ -287,18 +488,42 @@
       for(let i=0; i<6; i++) {
         c.beginPath();
         c.fillStyle = i % 2 == 0 ? "#2563eb" : "#fbbf24";
-        c.moveTo(100,100);
-        c.arc(100,100,90, i*Math.PI/3, (i+1)*Math.PI/3);
+        c.moveTo(110,110);
+        c.arc(110,110,100, i*Math.PI/3, (i+1)*Math.PI/3);
         c.fill();
-        c.closePath();
       }
     }
 
     function spinWheel() {
       let w = document.getElementById('wheel');
-      w.style.transition = "transform 3s cubic-bezier(0.15, 0, 0.15, 1)";
+      w.style.transition = "transform 3s cubic-bezier(0.1, 0, 0.2, 1)";
       w.style.transform = "rotate(1440deg)";
-      setTimeout(() => { alert("🎉 ۱۰ امتیاز هدیه برنده شدید!"); w.style.transform = "rotate(0deg)"; w.style.transition = "none"; }, 3200);
+      setTimeout(() => {
+        document.getElementById('wheelMsg').innerText = "🎉 تبریک! ۱۰ امتیاز هدیه گرفتید.";
+        w.style.transform = "rotate(0deg)"; w.style.transition = "none";
+      }, 3200);
+    }
+
+    async function toggleRecord() {
+      const btn = document.getElementById('recBtn');
+      if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunks, { type: 'audio/mp3' });
+          const url = URL.createObjectURL(blob);
+          document.getElementById('audioBox').innerHTML = `<audio controls src="${url}" style="width:100%"></audio>`;
+        };
+        mediaRecorder.start();
+        btn.innerText = "⏹️ توقف ضبط";
+        btn.style.background = "#ef4444";
+      } else {
+        mediaRecorder.stop();
+        btn.innerText = "🎤 شروع ضبط صدا";
+        btn.style.background = "var(--primary)";
+      }
     }
   </script>
 </body>
